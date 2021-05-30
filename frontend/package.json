@@ -1,0 +1,21 @@
+{
+  "name": "application-framework",
+  "version": "1.0.0",
+  "description": "This is a MERN stack Conference Management Tool for Application Framework module",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel public/index.html",
+    "client": "parcel public/index.html"
+  },
+  "author": "Mahadi, Pasidu, Aflal, Avishka",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.3.1"
+  }
+}
