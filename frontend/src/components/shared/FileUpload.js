@@ -1,8 +1,8 @@
-import React from "react";
-import "react-dropzone-uploader/dist/styles.css";
-import Dropzone from "react-dropzone-uploader";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React from 'react';
+import 'react-dropzone-uploader/dist/styles.css';
+import Dropzone from 'react-dropzone-uploader';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 toast.configure();
 
 const fileUploader = ({
@@ -13,7 +13,7 @@ const fileUploader = ({
   getFileCallback,
 }) => {
   const handleChangeStatus = async (e) => {
-    if (e.meta.status === "done") {
+    if (e.meta.status === 'done') {
       return await getFileCallback(e.file);
     } else {
       return await getFileCallback(null);
