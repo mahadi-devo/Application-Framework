@@ -8,8 +8,8 @@ import Paper from '@material-ui/core/Paper';
 const ResearcherForm = () => {
   return (
     <form>
-      <Typography variant='h6' gutterBottom>
-        Researcher Form
+      <Typography variant='h5' className='m-2' gutterBottom>
+        Add Researcher
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>

@@ -10,18 +10,22 @@
   "author": "Mahadi, Pasidu, Aflal, Avishka",
   "license": "MIT",
   "dependencies": {
+    "3d-react-carousal": "^3.1.0",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
     "js-cookie": "^2.2.1",
+    "material-ui-search-bar": "^1.0.0",
     "rc-upload": "^4.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-dropzone-uploader": "^2.11.0",
     "react-router-dom": "^5.2.0",
-    "react-toastify": "^7.0.4"
+    "react-toastify": "^7.0.4",
+    "react-transition-group": "^4.4.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "parcel": "^2.0.0-beta.3.1"
+    "parcel": "^2.0.0-nightly.714"
   }
 }
