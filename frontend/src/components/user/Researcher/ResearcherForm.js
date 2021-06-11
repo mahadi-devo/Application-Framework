@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import FileUpload from '../../shared/FileUpload';
 
 import ResearcherContext from '../../../context/user/researcher/researcher-context';
 
@@ -121,6 +122,7 @@ const ResearcherForm = () => {
             autoComplete='area'
           />
         </Grid>
+        <FileUpload />
         <Grid item xs={12}>
           <Button
             type='submit'
