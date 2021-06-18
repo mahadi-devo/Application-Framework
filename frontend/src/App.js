@@ -17,19 +17,18 @@ const App = () => {
     <Router>
       <CssBaseline />
       <Header />
-      <Container maxWidth='lg' style={{ minHeight: '90vh' }}>
-        <ConferenceState>
-          <Switch>
-            <Route exact path='/sign-in' component={SignIn} />
-            <Route exact path='/sign-up' component={SignUp} />
-            <Route exact path='/conferences' component={Conference} />
-            <Route exact path='/conferences/:id' component={ConferenceHome} />
-            <Route exact path='/conferences-add' component={AddConference} />
-            <Route exact path='/pending' component={PendingConference} />
-            <Route exact path='/keynote-add' component={AddKeynote} />
-          </Switch>
-        </ConferenceState>
-      </Container>
+      <ConferenceState>
+        <Switch>
+          <Route exact path='/sign-in' component={SignIn} />
+          <Route exact path='/sign-up' component={SignUp} />
+          <Route exact path='/conferences' component={Conference} />
+          <Route exact path='/conferences/:id' component={ConferenceHome} />
+          <Route exact path='/conferences-add' component={AddConference} />
+          <Route exact path='/pending' component={PendingConference} />
+          <Route exact path='/keynote-add' component={AddKeynote} />
+        </Switch>
+      </ConferenceState>
+
       <Footer />
     </Router>
   );
