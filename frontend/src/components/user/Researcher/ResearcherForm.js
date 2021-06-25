@@ -3,9 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import FileUpload from '../../shared/FileUpload';
-
+import FileUploader from '../../shared/FileUpload';
 import ResearcherContext from '../../../context/user/researcher/researcher-context';
 
 const ResearcherForm = () => {
@@ -15,27 +13,39 @@ const ResearcherForm = () => {
     title: '',
     author: '',
     email: '',
-    phone: '',
     abstract: '',
     area: '',
+    file: '',
   });
 
-  const { title, author, email, phone, abstract, area } = research;
+  const { title, author, email, abstract, area, file } = research;
 
-  const onChange = (e) =>
+  const onChange = (e) => {
     setResearch({ ...research, [e.target.name]: e.target.value });
+  };
+
+  const getFile = (FileData) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(FileData);
+    reader.onloadend = () => {
+      researcherContext.addResearch({ ...research, file: reader.result });
+    };
+    reader.onerror = () => {
+      console.error('AHHHHHHHH!!');
+    };
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
     researcherContext.addResearch(research);
-    // console.log(researchs);
+
     setResearch({
       title: '',
       author: '',
       email: '',
-      phone: '',
       abstract: '',
       area: '',
+      file: '',
     });
   };
   return (
@@ -83,7 +93,7 @@ const ResearcherForm = () => {
             autoComplete='email'
           />
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <TextField
             required
             fullWidth
@@ -95,7 +105,7 @@ const ResearcherForm = () => {
             name='phone'
             autoComplete='phone'
           />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12}>
           <TextField
             required
@@ -122,7 +132,16 @@ const ResearcherForm = () => {
             autoComplete='area'
           />
         </Grid>
-        <FileUpload />
+        <Grid item xs={12}>
+          <FileUploader
+            noOfFiles='1'
+            // id='file'
+            // name='file'
+            multiple={false}
+            input='Upload Your Resource Here'
+            getFileCallback={getFile}
+          />
+        </Grid>
         <Grid item xs={12}>
           <Button
             type='submit'

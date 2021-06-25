@@ -10,6 +10,7 @@ import Conference from './components/conference/Conference';
 import ConferenceHome from './components/conference/ConferenceHome';
 import ConferenceState from './context/auth/conference/conferenceState';
 import ResearcherState from './context/user/researcher/researcherState';
+import WorkshopState from './context/user/workshop/workshopState';
 import AddConference from './components/conference/AddConference';
 import { Container, CssBaseline } from '@material-ui/core';
 
@@ -20,17 +21,23 @@ const App = () => {
       <Container maxWidth='lg' style={{ minHeight: '90vh' }}>
         <ConferenceState>
           <ResearcherState>
-            <Header />
-            <Switch>
-              <Route exact path='/sign-in' component={SignIn} />
-              <Route exact path='/sign-up' component={SignUp} />
-              <Route exact path='/conferences' component={Conference} />
-              <Route exact path='/conferences/:id' component={ConferenceHome} />
-              <Route exact path='/conferencesAdd' component={AddConference} />
-              <Route exact path='/conferencesAdd' component={AddConference} />
-              <Route exact path='/research' component={Researcher} />
-              <Route exact path='/workshop' component={Workshop} />
-            </Switch>
+            <WorkshopState>
+              <Header />
+              <Switch>
+                <Route exact path='/sign-in' component={SignIn} />
+                <Route exact path='/sign-up' component={SignUp} />
+                <Route exact path='/conferences' component={Conference} />
+                <Route
+                  exact
+                  path='/conferences/:id'
+                  component={ConferenceHome}
+                />
+                <Route exact path='/conferencesAdd' component={AddConference} />
+                <Route exact path='/conferencesAdd' component={AddConference} />
+                <Route exact path='/research' component={Researcher} />
+                <Route exact path='/workshop' component={Workshop} />
+              </Switch>
+            </WorkshopState>
           </ResearcherState>
         </ConferenceState>
       </Container>

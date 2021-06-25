@@ -15,6 +15,7 @@ const researcherState = (props) => {
         email: 'aflal@gmail.com',
         abstract: 'Learn about react hooks...',
         area: 'MERN Stack',
+        file: '',
       },
       {
         id: 2,
@@ -23,15 +24,31 @@ const researcherState = (props) => {
         email: 'ahamed@gmail.com',
         abstract: 'Learn about archi...',
         area: 'MicroKernal Architect',
+        file: '',
       },
     ],
   };
 
   const [state, dispatch] = useReducer(ResearcherReduser, initialState);
 
-  const addResearch = (research) => {
-    research.id = uuid;
-    dispatch({ type: ADD_RESEARCH, payload: research });
+  const addResearch = async (research) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const formData = {
+      user: '60b3c8d692ac32b7fba8acc7',
+      data: research,
+    };
+
+    try {
+      const res = await axios.post('/api/v1/researcher', formData, config);
+      dispatch({ type: ADD_RESEARCH, payload: res.data });
+    } catch (error) {
+      console.error();
+    }
   };
 
   return (

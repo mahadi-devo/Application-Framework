@@ -1,12 +1,48 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import WorkshopContext from '../../../context/user/workshop/workshop-context';
 
 const WorkshopForm = () => {
+  const workshopContext = useContext(WorkshopContext);
+
+  const [workshop, setWorkshop] = useState({
+    title: '',
+    author: '',
+    email: '',
+    phone: '',
+    discription: '',
+    address: '',
+    start: '',
+    end: '',
+  });
+
+  const { title, author, email, phone, discription, address, start, end } =
+    workshop;
+
+  const onChange = (e) => {
+    setWorkshop({ ...workshop, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    workshopContext.addWorkshop(workshop);
+
+    setWorkshop({
+      title: '',
+      author: '',
+      email: '',
+      phone: '',
+      discription: '',
+      address: '',
+      start: '',
+      end: '',
+    });
+  };
   return (
-    <form>
+    <form onSubmit={onSubmit}>
       <Typography variant='h6' gutterBottom>
         Workshop Upload Form
       </Typography>
@@ -17,8 +53,8 @@ const WorkshopForm = () => {
             fullWidth
             id='title'
             type='text'
-            // value={}
-            // onChange={}
+            value={title}
+            onChange={onChange}
             label='Research Title'
             name='title'
             autoComplete='title'
@@ -30,8 +66,8 @@ const WorkshopForm = () => {
             fullWidth
             id='author'
             type='text'
-            // value={}
-            // onChange={}
+            value={author}
+            onChange={onChange}
             label='Author'
             name='author'
             autoComplete='author'
@@ -43,8 +79,8 @@ const WorkshopForm = () => {
             fullWidth
             id='email'
             type='email'
-            // value={}
-            // onChange={}
+            value={email}
+            onChange={onChange}
             label='Email'
             name='email'
             autoComplete='email'
@@ -56,8 +92,8 @@ const WorkshopForm = () => {
             fullWidth
             id='phone'
             type='text'
-            // value={}
-            // onChange={}
+            value={phone}
+            onChange={onChange}
             label='Phone'
             name='phone'
             autoComplete='phone'
@@ -67,13 +103,13 @@ const WorkshopForm = () => {
           <TextField
             required
             fullWidth
-            id='distcription'
+            id='discription'
             type='text'
-            // value={}
-            // onChange={}
+            value={discription}
+            onChange={onChange}
             label='Small Discription'
-            name='distcription'
-            autoComplete='distcription'
+            name='discription'
+            autoComplete='discription'
           />
         </Grid>
         <Grid item xs={12}>
@@ -82,8 +118,8 @@ const WorkshopForm = () => {
             fullWidth
             id='address'
             type='text'
-            // value={}
-            // onChange={}
+            value={address}
+            onChange={onChange}
             label='Address'
             name='address'
             autoComplete='address'
@@ -95,8 +131,8 @@ const WorkshopForm = () => {
             fullWidth
             id='start'
             type='date'
-            // value={}
-            // onChange={}
+            value={start}
+            onChange={onChange}
             label='Starting Date'
             name='start'
             autoComplete='start'
@@ -108,15 +144,15 @@ const WorkshopForm = () => {
             fullWidth
             id='end'
             type='date'
-            // value={}
-            // onChange={}
+            value={end}
+            onChange={onChange}
             label='Ending Date'
             name='end'
             autoComplete='end'
           />
         </Grid>
         <Grid item xs={12}>
-          <Button variant='contained' color='primary'>
+          <Button variant='contained' type='submit' color='primary'>
             Submit
           </Button>
         </Grid>
