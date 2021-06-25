@@ -1,10 +1,10 @@
-const Workshop = require('../models/workshop.model');
+const Workshop = require("../models/workshop.model");
 
 const add = async (req, res) => {
   const { address, author, discription, email, end, phone, start, title } =
     req.body;
 
-  console.log(address);
+  console.log(req.body);
 
   try {
     const newWorkShop = new Workshop({
@@ -22,7 +22,7 @@ const add = async (req, res) => {
     res.json(workshop);
   } catch (err) {
     console.error(err);
-    res.status(500).json('Server error here');
+    res.status(500).json("Server error here");
   }
 };
 
