@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   useRouteMatch,
@@ -11,6 +10,7 @@ import SideBar from './SideBar/SideBar';
 import ConferenceManage from './conferenceManage/conferenceManage';
 import Home from './home/home';
 import UserManage from './userManage/userManage';
+import AddUser from './userManage/AddUser/AddUser';
 
 const useStyles = makeStyles({
   root: {
@@ -33,7 +33,7 @@ const adminDashboard = () => {
       <div className={classes.leftbar}>
         <Switch>
           <Route exact path={`${path}/user`} component={UserManage} />
-          <Route exact path={`${path}/user/add`} component={UserManage} />
+          <Route exact path={`${path}/user/add`} component={AddUser} />
           <Route
             exact
             path={`${path}/conference`}
