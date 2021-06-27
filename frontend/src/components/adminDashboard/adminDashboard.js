@@ -33,6 +33,7 @@ const adminDashboard = () => {
       <div className={classes.leftbar}>
         <Switch>
           <Route exact path={`${path}/user`} component={UserManage} />
+          <Route exact path={`${path}/user/add`} component={UserManage} />
           <Route
             exact
             path={`${path}/conference`}

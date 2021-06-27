@@ -2,6 +2,8 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import TimelineIcon from '@material-ui/icons/Timeline';
 import { Link, useRouteMatch } from 'react-router-dom';
 
 const useStyles = makeStyles({
@@ -46,7 +48,7 @@ function SideBar() {
       </Typography>
 
       <ul className={classes.menu}>
-        <Link to={`${url}`}>
+        <Link to={`${url}`} className={classes.link}>
           <li className={classes.menuItem}>
             <HomeIcon />
             <Typography variant="h6" display="inline">
@@ -54,17 +56,17 @@ function SideBar() {
             </Typography>
           </li>
         </Link>
-        <Link to={`${url}/user`}>
+        <Link to={`${url}/user`} className={classes.link}>
           <li className={classes.menuItem}>
-            <HomeIcon />
+            <PeopleAltIcon />
             <Typography variant="h6" display="inline">
               User
             </Typography>
           </li>
         </Link>
-        <Link to={`${url}/conference`}>
+        <Link to={`${url}/conference`} className={classes.link}>
           <li className={classes.menuItem}>
-            <HomeIcon />
+            <TimelineIcon />
             <Typography variant="h6" display="inline">
               Conference
             </Typography>
