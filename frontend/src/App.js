@@ -8,6 +8,7 @@ import Conference from './components/conference/Conference';
 import ConferenceHome from './components/conference/ConferenceHome';
 import ConferenceState from './context/auth/conference/conferenceState';
 import AddConference from './components/conference/AddConference';
+import AdminDashboard from './components/adminDashboard/adminDashboard';
 import { Container, CssBaseline } from '@material-ui/core';
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
             <Route exact path='/conferences' component={Conference} />
             <Route exact path='/conferences/:id' component={ConferenceHome} />
             <Route exact path='/conferencesAdd' component={AddConference} />
+            <Route path='/adminDashboard' component={AdminDashboard} />
           </Switch>
         </ConferenceState>
       </Container>
