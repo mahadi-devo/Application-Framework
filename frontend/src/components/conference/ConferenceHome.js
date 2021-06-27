@@ -136,7 +136,7 @@ const ConferenceHome = ({ match }) => {
           </Typography>
         </Grid>
         <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
-          {keynotes && <KeynoteMap id={_id} />}
+          {keynotes && <KeynoteMap id={match.params.id} />}
         </Grid>
       </Grid>
 
