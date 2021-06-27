@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -7,6 +7,25 @@ import WorkshopContext from '../../../context/user/workshop/workshop-context';
 
 const WorkshopForm = () => {
   const workshopContext = useContext(WorkshopContext);
+
+  const { current, clearItem } = workshopContext;
+
+  useEffect(() => {
+    if (current !== null) {
+      setWorkshop(current);
+    } else {
+      setWorkshop({
+        title: '',
+        author: '',
+        email: '',
+        phone: '',
+        discription: '',
+        address: '',
+        start: '',
+        end: '',
+      });
+    }
+  }, [workshopContext, current]);
 
   const [workshop, setWorkshop] = useState({
     title: '',
@@ -28,18 +47,18 @@ const WorkshopForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    workshopContext.addWorkshop(workshop);
 
-    setWorkshop({
-      title: '',
-      author: '',
-      email: '',
-      phone: '',
-      discription: '',
-      address: '',
-      start: '',
-      end: '',
-    });
+    if (current == null) {
+      workshopContext.addWorkshop(workshop);
+    } else {
+      workshopContext.updateeWorkshop(workshop);
+    }
+
+    //clear();
+  };
+
+  const clear = () => {
+    clearItem();
   };
   return (
     <form onSubmit={onSubmit}>
@@ -154,6 +173,9 @@ const WorkshopForm = () => {
         <Grid item xs={12}>
           <Button variant='contained' type='submit' color='primary'>
             Submit
+          </Button>
+          <Button variant='contained' onClick={clear} color='secondary'>
+            Clear
           </Button>
         </Grid>
       </Grid>

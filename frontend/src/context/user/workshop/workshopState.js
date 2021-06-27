@@ -3,34 +3,19 @@ import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import WorkshopContext from './workshop-context';
 import WorkshopReducer from './workshop-reduser';
-import { ADD_WORKSHOP } from './types';
+import {
+  ADD_WORKSHOP,
+  GET_WORKSHOP,
+  UPDATE_WORKSHOP,
+  DELETE_WORKSHOP,
+  SET_WORKSHOP,
+  CLEAR_WORKSHOP,
+} from './types';
 
 const workshopState = (props) => {
   const initialState = {
-    workshops: [
-      {
-        id: 1,
-        title: 'Application Framework Workshop',
-        author: 'Aflal',
-        email: 'aflal@gmail.com',
-        phone: '07688888888',
-        abstract: 'Learn about react hooks...',
-        address: 'MERN Stack',
-        start: '',
-        end: '',
-      },
-      {
-        id: 2,
-        title: 'Application Framework Workshop',
-        author: 'Ahamed',
-        email: 'ahamed@gmail.com',
-        phone: '07688888888',
-        abstract: 'Learn about react hooks...',
-        address: 'Software Architecture',
-        start: '',
-        end: '',
-      },
-    ],
+    workshops: null,
+    current: null,
   };
 
   const [state, dispatch] = useReducer(WorkshopReducer, initialState);
@@ -45,18 +30,79 @@ const workshopState = (props) => {
     console.log(workshop);
 
     try {
-      const res = await axios.post('/api/v1/workshop', workshop, config);
+      const res = await axios.post(
+        'http://localhost:5000/api/v1/workshop',
+        workshop,
+        config
+      );
       dispatch({ type: ADD_WORKSHOP, payload: res.data });
     } catch (error) {
       console.error();
     }
   };
 
+  const getWorkshop = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/v1/workshop');
+      dispatch({ type: GET_WORKSHOP, payload: res.data });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteWorkshop = async (id) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    console.log(id);
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/api/v1/workshop/${id}`
+      );
+      dispatch({ type: DELETE_WORKSHOP, payload: id });
+    } catch (error) {}
+  };
+
+  const updateeWorkshop = async (workshop) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/v1/workshop/${workshop._id}`,
+        workshop,
+        config
+      );
+      console.log(res);
+      dispatch({ type: UPDATE_WORKSHOP, payload: res.data });
+    } catch (error) {
+      console.error();
+    }
+  };
+  const setItem = (workshop) => {
+    dispatch({ type: SET_WORKSHOP, payload: workshop });
+  };
+
+  const clearItem = () => {
+    console.log('Clear method');
+    dispatch({ type: CLEAR_WORKSHOP });
+  };
+
   return (
     <WorkshopContext.Provider
       value={{
         workshops: state.workshops,
+        current: state.current,
         addWorkshop,
+        getWorkshop,
+        updateeWorkshop,
+        deleteWorkshop,
+        setItem,
+        clearItem,
       }}>
       {props.children}
     </WorkshopContext.Provider>
