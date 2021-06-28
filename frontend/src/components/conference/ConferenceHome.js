@@ -62,8 +62,6 @@ const ConferenceHome = ({ match }) => {
     setOpenKeynote(false);
   };
 
-  console.log(keynotes);
-
   return (
     <Fragment>
       <Grid container justify='center' style={{ marginTop: '15px' }}>

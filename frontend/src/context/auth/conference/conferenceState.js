@@ -27,8 +27,16 @@ const ConferenceState = (props) => {
 
   const getAllConferences = async () => {
     // dispatch({ type: GET_CONFERENCE, payload: id });
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/conferences');
+      const res = await axios.get(
+        'http://localhost:5000/api/v1/conferences',
+        config
+      );
       console.log(res);
       dispatch({ type: GET_CONFERENCES, payload: res.data.data });
     } catch (error) {}
@@ -80,9 +88,15 @@ const ConferenceState = (props) => {
   };
 
   const getConference = async (id) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/v1/conferences/${id}`
+        `http://localhost:5000/api/v1/conferences/${id}`,
+        config
       );
       dispatch({ type: GET_CONFERENCE, payload: res.data.data });
     } catch (error) {}
