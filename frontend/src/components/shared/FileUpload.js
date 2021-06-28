@@ -27,7 +27,6 @@ const fileUploader = ({
       multiple={multiple}
       styles={{ dropzone: { minHeight: 100, maxHeight: 100 } }}
       inputContent={input}
-      accept={fileTypes}
       canRemove={true}
     />
   );

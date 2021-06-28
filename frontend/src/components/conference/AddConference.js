@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useContext, useState, useEffect, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import ConferenceContext from '../../context/auth/conference/conference-context';
 import FileUploader from '../shared/FileUpload';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 toast.configure();
 
@@ -34,11 +35,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddConference = (props) => {
+const AddConference = (confer) => {
   const classes = useStyles();
 
   const conferenceContext = useContext(ConferenceContext);
-  const { addConference } = conferenceContext;
+  const { addConference, editConference } = conferenceContext;
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (confer.confer !== null) {
+      console.log(confer);
+      setConference(confer.confer);
+    } else {
+      setConference({
+        title: '',
+        location: '',
+        endDate: '',
+        startDate: '',
+        description: '',
+        image: '',
+        keynotes: '',
+        status: '',
+      });
+    }
+  }, []);
 
   const [conference, setConference] = useState({
     title: '',
@@ -46,9 +66,10 @@ const AddConference = (props) => {
     endDate: '',
     startDate: '',
     description: '',
-    picture: '',
+    image: '',
+    keynotes: '',
+    status: '',
   });
-
   const { title, location, date, description, endDate, startDate, picture } =
     conference;
 
@@ -58,22 +79,37 @@ const AddConference = (props) => {
 
   const getFile = (FileData) => {
     const reader = new FileReader();
-    reader.readAsDataURL(FileData);
-    reader.onloadend = () => {
-      setConference({ ...conference, picture: reader.result });
-    };
-    reader.onerror = () => {
-      console.error('AHHHHHHHH!!');
-    };
+    if (FileData.size > 1000000 || FileData.size === 0) {
+      toast('File size must be less than 1mb and greater that 0', {
+        type: 'error',
+      });
+    } else {
+      reader.readAsDataURL(FileData);
+      reader.onloadend = () => {
+        setConference({ ...conference, image: reader.result });
+      };
+      reader.onerror = () => {
+        console.error('AHHHHHHHH!!');
+      };
+    }
   };
 
   const onsubmit = async (e) => {
     e.preventDefault();
 
-    if (title === '' || location === '' || date === '') {
+    if (title === '' || location === '' || startDate === '' || endDate === '') {
       toast('Fields can not be empty', { type: 'error' });
     } else {
-      const statues = await addConference(conference);
+      if (confer.confer !== null) {
+        if (editConference(conference)) {
+          toast('Conference edited successfully', { type: 'success' });
+        }
+      } else {
+        if (addConference(conference)) {
+          toast('Conference added successfully', { type: 'success' });
+          setShow(true);
+        }
+      }
 
       setConference({
         title: '',
@@ -81,7 +117,7 @@ const AddConference = (props) => {
         endDate: '',
         startDate: '',
         description: '',
-        picture: '',
+        image: '',
       });
     }
   };
@@ -91,7 +127,7 @@ const AddConference = (props) => {
       <CssBaseline />
       <div className={classes.paperContainer}>
         <Typography component='h1' variant='h6'>
-          Create Confernece
+          {confer.confer !== null ? 'Edit Confernece' : 'Create Conference'}
         </Typography>
         <form className={classes.form} onSubmit={onsubmit}>
           <Grid container spacing={2}>
@@ -181,11 +217,36 @@ const AddConference = (props) => {
             className={classes.submit}>
             Save
           </Button>
-          <Grid container justify='flex-center'></Grid>
+          <Fragment>
+            {show && (
+              <Grid container justify='flex-center'>
+                {confer.confer === null && (
+                  <Button
+                    type='submit'
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                    component={Link}
+                    to='/keynote-add'
+                    className={classes.submit}>
+                    Add Keynote Speakers
+                  </Button>
+                )}
+              </Grid>
+            )}
+          </Fragment>
         </form>
       </div>
     </Container>
   );
+};
+
+AddConference.propTypes = {
+  confer: PropTypes.object,
+};
+
+AddConference.defaultProps = {
+  confer: null,
 };
 
 export default AddConference;

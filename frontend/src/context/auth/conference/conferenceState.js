@@ -8,66 +8,78 @@ import {
   GET_CONFERENCE,
   FILTER_CONFERENCE,
   CLEAR_FILTER,
+  CLEAR_KEYNOTES,
+  GET_KEYNOTES,
+  SAVE_CONFERENCE,
+  EDIT_CONFERENCE,
 } from './types';
 
 const ConferenceState = (props) => {
   const initialState = {
-    conferences: [
-      {
-        _id: 1,
-        name: '3RD INTERNATIONAL CONFERENCE ON ADVANCEMENTS IN COMPUTING 2021',
-        keynnote: 'prof koliya',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore perspiciatis dolor deserunt enim ipsam impedit provident quod, delectus repellat, eaque facilis cum magni architecto maiores porro consectetur tenetur dignissimos tempore!',
-        img: 'https://picsum.photos/800/304/?random',
-        location: 'SLIIT',
-        date: '2021-dec-21',
-      },
-      {
-        _id: 2,
-        name: 'conf 2',
-        keynnote: 'prof nuwan',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore perspiciatis dolor deserunt enim ipsam impedit provident quod, delectus repellat, eaque facilis cum magni architecto maiores porro consectetur tenetur dignissimos tempore!',
-        img: 'https://picsum.photos/800/304/?random',
-        date: '2021-dec-22',
-      },
-      {
-        _id: 3,
-        name: 'conf 3',
-        keynnote: 'prof samantha',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore perspiciatis dolor deserunt enim ipsam impedit provident quod, delectus repellat, eaque facilis cum magni architecto maiores porro consectetur tenetur dignissimos tempore!',
-        img: 'https://picsum.photos/800/304/?random',
-        date: '2021-dec-23',
-      },
-      {
-        _id: 4,
-        name: 'conf 4',
-        keynnote: 'prof rohan',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore perspiciatis dolor deserunt enim ipsam impedit provident quod, delectus repellat, eaque facilis cum magni architecto maiores porro consectetur tenetur dignissimos tempore!',
-        img: 'https://picsum.photos/800/304/?random',
-        date: '2021-dec-24',
-      },
-    ],
-    conference: {
-      _id: 1,
-      name: '3RD INTERNATIONAL CONFERENCE ON ADVANCEMENTS IN COMPUTING 2021',
-      keynnote: 'prof koliya',
-      description: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eum, vero? Placeat exercitationem, libero necessitatibus quo adipisci, delectus, architecto dolorum inventore iure obcaecati fugiat voluptate ipsa non amet minus culpa omnis.
-        Blanditiis dolores accusamus nihil odio, sapiente dignissimos rem vero aspernatur ut magni maiores sunt aut placeat quibusdam quisquam corporis asperiores, harum vitae! Repudiandae nobis similique, aut delectus provident facere consequuntur.
-        Nulla, consequuntur ipsam quia sed porro repudiandae tempora ducimus sit natus quos eligendi culpa commodi incidunt sint voluptates error. Ducimus minus eos ad ipsa rem cupiditate quam sit facere officia!`,
-      img: 'https://picsum.photos/800/304/?random',
-      location: 'Sri Lanka Institute of Information Technology',
-      date: '2021-December-21',
-    },
+    conferences: [],
+    conference: {},
+    conferenceId: '',
+    keynotes: [],
   };
 
   const [state, dispatch] = useReducer(ConferenceReducer, initialState);
 
-  const getConference = (id) => {
+  const getAllConferences = async () => {
     // dispatch({ type: GET_CONFERENCE, payload: id });
+    try {
+      const res = await axios.get('http://localhost:5000/api/v1/conferences');
+      console.log(res);
+      dispatch({ type: GET_CONFERENCES, payload: res.data.data });
+    } catch (error) {}
+  };
+
+  const editConference = async (conference) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/v1/conferences/${conference._id}`,
+        conference,
+        config
+      );
+      console.log(res.data.conference);
+      dispatch({ type: EDIT_CONFERENCE, payload: res.data.conference });
+    } catch (error) {}
+  };
+
+  const addKeynote = async (keynote) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      const res = await axios.post(
+        'http://localhost:5000/api/v1/keynotes',
+        keynote,
+        config
+      );
+
+      console.log(res.data.keynote.conferenceId);
+      dispatch({
+        type: SAVE_CONFERENCE,
+        payload: res.data.keynote.conferenceId,
+      });
+    } catch (error) {}
+  };
+
+  const getConference = async (id) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/v1/conferences/${id}`
+      );
+      dispatch({ type: GET_CONFERENCE, payload: res.data.data });
+    } catch (error) {}
   };
 
   const addConference = async (data) => {
@@ -76,8 +88,6 @@ const ConferenceState = (props) => {
         'Content-Type': 'application/json',
       },
     };
-
-    console.log(data);
 
     const formData = {
       user: '60b3c8d692ac32b7fba8acc7',
@@ -90,10 +100,26 @@ const ConferenceState = (props) => {
         formData,
         config
       );
-      console.log(res);
+
+      console.log(res.data.conference._id);
+
+      dispatch({ type: SAVE_CONFERENCE, payload: res.data.conference._id });
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const getKeynotes = async (id) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/api/v1/keynotes/${id}`
+      );
+      dispatch({ type: GET_KEYNOTES, payload: res.data.data });
+    } catch (error) {}
+  };
+
+  const clearKeynotes = async () => {
+    dispatch({ type: CLEAR_KEYNOTES });
   };
 
   return (
@@ -101,8 +127,15 @@ const ConferenceState = (props) => {
       value={{
         conferences: state.conferences,
         conference: state.conference,
+        conferenceId: state.conferenceId,
+        keynotes: state.keynotes,
         getConference,
+        clearKeynotes,
         addConference,
+        getAllConferences,
+        editConference,
+        addKeynote,
+        getKeynotes,
       }}>
       {props.children}
     </ConferenceContext.Provider>
