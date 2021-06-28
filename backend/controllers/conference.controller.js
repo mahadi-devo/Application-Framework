@@ -25,7 +25,7 @@ const get = async (req, res) => {
 
 const getPending = async (req, res) => {
   try {
-    const data = await Conference.find({status: 'pending'});
+    const data = await Conference.find({ status: 'pending' });
 
     res.status(200).json({
       data,
@@ -97,6 +97,48 @@ const update = async (req, res) => {
   }
 };
 
+const conferenceConfirmation = async (req, res) => {
+  console.log('start');
+
+  const { status, _id } = req.body;
+
+  const conferenceFields = {};
+
+  if (status === 1) {
+    conferenceFields.status = 'approved';
+  } else if (status === 2) {
+    conferenceFields.status = 'declined';
+  } else {
+    conferenceFields.status = 'pending';
+  }
+
+  console.log('conferenceFields', status, _id);
+
+  try {
+    let conference = await Conference.findById(_id);
+    console.log('findById');
+    if (!conference) {
+      res.status(404).json({
+        message: 'conference is not availabe',
+      });
+    }
+
+    conference = await Conference.findByIdAndUpdate(
+      _id,
+      { $set: conferenceFields },
+      { new: true }
+    );
+    console.log('update');
+
+    res.status(200).json({ conference, success: true });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      mss: error,
+    });
+  }
+};
+
 const getConference = async (req, res) => {
   try {
     const id = req.params.id;
@@ -146,4 +188,12 @@ const updateKeynotes = async (conferenceId, keynoteId) => {
   );
 };
 
-module.exports = { add, get, update, getConference, updateKeynotes, getPending };
+module.exports = {
+  add,
+  get,
+  update,
+  getConference,
+  updateKeynotes,
+  getPending,
+  conferenceConfirmation,
+};
