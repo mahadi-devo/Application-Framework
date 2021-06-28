@@ -8,6 +8,7 @@ import {
   SAVE_CONFERENCE,
   GET_KEYNOTES,
   EDIT_CONFERENCE,
+  GET_PENDING_CONFERENCES,
 } from './types';
 
 const ConferenceReducer = (state, action) => {
@@ -22,6 +23,12 @@ const ConferenceReducer = (state, action) => {
       return {
         ...state,
         conference: action.payload,
+      };
+
+    case GET_PENDING_CONFERENCES:
+      return {
+        ...state,
+        pendingConference: action.payload,
       };
 
     case EDIT_CONFERENCE:

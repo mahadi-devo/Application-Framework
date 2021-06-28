@@ -12,12 +12,14 @@ import {
   GET_KEYNOTES,
   SAVE_CONFERENCE,
   EDIT_CONFERENCE,
+  GET_PENDING_CONFERENCES,
 } from './types';
 
 const ConferenceState = (props) => {
   const initialState = {
     conferences: [],
     conference: {},
+    pendingConference: [],
     conferenceId: '',
     keynotes: [],
   };
@@ -30,6 +32,15 @@ const ConferenceState = (props) => {
       const res = await axios.get('http://localhost:5000/api/v1/conferences');
       console.log(res);
       dispatch({ type: GET_CONFERENCES, payload: res.data.data });
+    } catch (error) {}
+  };
+
+  const getPendingConferences = async () => {
+    // dispatch({ type: GET_CONFERENCE, payload: id });
+    try {
+      const res = await axios.get('http://localhost:5000/api/v1/conferences/pending');
+      console.log(res);
+      dispatch({ type: GET_PENDING_CONFERENCES, payload: res.data.data });
     } catch (error) {}
   };
 
@@ -128,6 +139,7 @@ const ConferenceState = (props) => {
         conferences: state.conferences,
         conference: state.conference,
         conferenceId: state.conferenceId,
+        pendingConferences: state.pendingConference,
         keynotes: state.keynotes,
         getConference,
         clearKeynotes,
@@ -136,6 +148,7 @@ const ConferenceState = (props) => {
         editConference,
         addKeynote,
         getKeynotes,
+        getPendingConferences,
       }}>
       {props.children}
     </ConferenceContext.Provider>
