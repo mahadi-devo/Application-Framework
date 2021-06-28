@@ -23,6 +23,22 @@ const get = async (req, res) => {
   }
 };
 
+const getPending = async (req, res) => {
+  try {
+    const data = await Conference.find({status: 'pending'});
+
+    res.status(200).json({
+      data,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error,
+      success: false,
+    });
+  }
+};
+
 const update = async (req, res) => {
   const {
     title,
@@ -130,4 +146,4 @@ const updateKeynotes = async (conferenceId, keynoteId) => {
   );
 };
 
-module.exports = { add, get, update, getConference, updateKeynotes };
+module.exports = { add, get, update, getConference, updateKeynotes, getPending };
