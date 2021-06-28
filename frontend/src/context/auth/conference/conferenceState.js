@@ -9,7 +9,6 @@ import {
   FILTER_CONFERENCE,
   CLEAR_FILTER,
   SAVE_KEYNOTES,
-  CLEAR_KEYNOTES,
   GET_KEYNOTES,
   SAVE_CONFERENCE,
   EDIT_CONFERENCE,
@@ -124,9 +123,9 @@ const ConferenceState = (props) => {
     } catch (error) {}
   };
 
-  const clearKeynotes = async () => {
-    dispatch({ type: CLEAR_KEYNOTES });
-  };
+  // const clearKeynotes = async () => {
+  //   dispatch({ type: CLEAR_KEYNOTES });
+  // };
 
   return (
     <ConferenceContext.Provider
@@ -136,7 +135,6 @@ const ConferenceState = (props) => {
         conferenceId: state.conferenceId,
         keynotes: state.keynotes,
         getConference,
-        clearKeynotes,
         addConference,
         getAllConferences,
         editConference,

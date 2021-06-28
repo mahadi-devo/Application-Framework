@@ -5,7 +5,6 @@ import {
   FILTER_CONFERENCE,
   CLEAR_FILTER,
   SAVE_KEYNOTES,
-  CLEAR_KEYNOTES,
   SAVE_CONFERENCE,
   GET_KEYNOTES,
   EDIT_CONFERENCE,
@@ -41,12 +40,6 @@ const ConferenceReducer = (state, action) => {
       return {
         ...state,
         keynotes: action.payload,
-      };
-
-    case CLEAR_KEYNOTES:
-      return {
-        ...state,
-        keynotes: null,
       };
 
     case SAVE_KEYNOTES:
