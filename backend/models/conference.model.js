@@ -10,11 +10,11 @@ const ConferenceSchema = mongoose.Schema({
     required: true,
   },
   startDate: {
-    type: Date,
+    type: String,
     required: true,
   },
   endDate: {
-    type: Date,
+    type: String,
     required: true,
   },
   location: {
@@ -28,10 +28,13 @@ const ConferenceSchema = mongoose.Schema({
   image: {
     type: String,
   },
+  status: {
+    type: String,
+  },
   keynotes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'keynote',
+      ref: 'Keynote',
     },
   ],
 });

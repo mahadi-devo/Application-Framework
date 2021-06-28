@@ -13,6 +13,7 @@ mongoConnect();
 // Routes
 const auth = require('./routes/auth.route');
 const conference = require('./routes/conference.route');
+const keynote = require('./routes/keynote.route');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(cors());
 // Mount routes
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/conferences', conference);
+app.use('/api/v1/keynotes', keynote);
 
 // morgan http
 process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : '';
