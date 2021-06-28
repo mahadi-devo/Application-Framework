@@ -33,22 +33,30 @@ const AdminHeader = () => {
             size='small'
             variant='outlined'
             component={Link}
-            to='/conferencesAdd'>
-            Add Confernece
+            to='/conferences'>
+            Approved Conferneces
           </Button>
         </Box>
+
         <Box mr={1}>
           <Button
             size='small'
             variant='outlined'
             component={Link}
-            to='/sign-in'>
-            Edit Conference
+            to='/conferences-add'>
+            Add Confernece
           </Button>
         </Box>
-        <Button variant='outlined' size='small' component={Link} to='/sign-up'>
-          Sign up
-        </Button>
+
+        <Box mr={1}>
+          <Button
+            size='small'
+            variant='outlined'
+            component={Link}
+            to='/pending'>
+            Pending Conferences
+          </Button>
+        </Box>
 
         {/*<form onSubmit={onsubmit}>*/}
         {/*  <Button type="submit" size="small" variant="outlined">*/}

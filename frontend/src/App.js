@@ -9,25 +9,28 @@ import ConferenceHome from './components/conference/ConferenceHome';
 import ConferenceState from './context/auth/conference/conferenceState';
 import AddConference from './components/conference/AddConference';
 import AdminDashboard from './components/adminDashboard/adminDashboard';
+import PendingConference from './components/conference/PendingConference';
+import AddKeynote from './components/conference/AddKeynote';
 import { Container, CssBaseline } from '@material-ui/core';
 
 const App = () => {
   return (
     <Router>
       <CssBaseline />
-      <Container maxWidth='lg' style={{ minHeight: '90vh' }}>
-        <ConferenceState>
-          <Header />
-          <Switch>
-            <Route exact path='/sign-in' component={SignIn} />
-            <Route exact path='/sign-up' component={SignUp} />
-            <Route exact path='/conferences' component={Conference} />
-            <Route exact path='/conferences/:id' component={ConferenceHome} />
-            <Route exact path='/conferencesAdd' component={AddConference} />
-            <Route path='/adminDashboard' component={AdminDashboard} />
-          </Switch>
-        </ConferenceState>
-      </Container>
+      <Header />
+      <ConferenceState>
+        <Switch>
+          <Route exact path='/sign-in' component={SignIn} />
+          <Route exact path='/sign-up' component={SignUp} />
+          <Route exact path='/conferences' component={Conference} />
+          <Route exact path='/conferences/:id' component={ConferenceHome} />
+          <Route exact path='/conferences-add' component={AddConference} />
+          <Route exact path='/pending' component={PendingConference} />
+          <Route exact path='/keynote-add' component={AddKeynote} />
+          <Route path='/adminDashboard' component={AdminDashboard} />
+        </Switch>
+      </ConferenceState>
+
       <Footer />
     </Router>
   );

@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
+import ConferenceContext from '../../context/auth/conference/conference-context';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,7 +28,12 @@ const useStyles = makeStyles({
 
 const Conferences = ({ conference }) => {
   const classes = useStyles();
-  const { name, img, date, keynnote, description, _id } = conference;
+  const { title, image, startDate, endDate, keynnotes, description, _id } =
+    conference;
+
+  const conferenceContext = useContext(ConferenceContext);
+
+  const { clearKeynotes } = conferenceContext;
 
   //   const productContext = useContext(ProductContext);
 
@@ -58,24 +64,25 @@ const Conferences = ({ conference }) => {
   //       });
   //     }
   //   };
+  const onHandle = () => {
+    clearKeynotes();
+  };
 
   return (
     <div>
       <Card className={classes.root}>
-        <CardActionArea component={Link} to={`/conferences/${_id}`}>
-          <CardMedia
-            component='img'
-            height='140'
-            className={classes.cardImg}
-            image={img}
-          />
+        <CardActionArea
+          component={Link}
+          to={`/conferences/${_id}`}
+          onClick={onHandle}>
+          <CardMedia component='img' height='180' image={image} />
           <CardContent>
             <Typography
               gutterBottom
               variant='h6'
               component='h2'
               style={{ textAlign: 'center' }}>
-              {name}
+              {title}
             </Typography>
             <Typography
               variant='body2'
@@ -87,19 +94,11 @@ const Conferences = ({ conference }) => {
             </Typography>
             <Typography
               variant='body2'
-              gutterBottom
-              color='textSecondary'
-              component='p'
-              style={{ textAlign: 'center' }}>
-              {keynnote}
-            </Typography>
-            <Typography
-              variant='body2'
               color='textPrimary'
               gutterBottom
               component='p'
               style={{ textAlign: 'center' }}>
-              {date}
+              {startDate} - {endDate}
             </Typography>
             <Typography
               variant='body2'
@@ -109,10 +108,6 @@ const Conferences = ({ conference }) => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size='small' color='primary'>
-            Update
-          </Button>
-
           <Button
             size='small'
             color='primary'
