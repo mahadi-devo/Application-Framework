@@ -12,20 +12,20 @@ import ConferenceState from './context/auth/conference/conferenceState';
 import ResearcherState from './context/user/researcher/researcherState';
 import WorkshopState from './context/user/workshop/workshopState';
 import AddConference from './components/conference/AddConference';
-import AdminDashboard from './components/adminDashboard/adminDashboard';
 import PendingConference from './components/conference/PendingConference';
 import AddKeynote from './components/conference/AddKeynote';
 import { Container, CssBaseline } from '@material-ui/core';
+import AdminDashboard from './components/adminDashboard/adminDashboard';
 
 const App = () => {
   return (
     <Router>
       <CssBaseline />
+      <Header />
       <Container maxWidth='lg' style={{ minHeight: '90vh' }}>
         <ConferenceState>
           <ResearcherState>
             <WorkshopState>
-              <Header />
               <Switch>
                 <Route exact path='/sign-in' component={SignIn} />
                 <Route exact path='/sign-up' component={SignUp} />
@@ -35,16 +35,22 @@ const App = () => {
                   path='/conferences/:id'
                   component={ConferenceHome}
                 />
-                <Route exact path='/conferencesAdd' component={AddConference} />
-                <Route exact path='/conferencesAdd' component={AddConference} />
+                <Route
+                  exact
+                  path='/conferences-add'
+                  component={AddConference}
+                />
+                <Route exact path='/pending' component={PendingConference} />
+                <Route exact path='/keynote-add' component={AddKeynote} />
+                <Route path='/adminDashboard' component={AdminDashboard} />
                 <Route exact path='/research' component={Researcher} />
                 <Route exact path='/workshop' component={Workshop} />
-                <Route path='/adminDashboard' component={AdminDashboard} />
               </Switch>
             </WorkshopState>
           </ResearcherState>
         </ConferenceState>
       </Container>
+
       <Footer />
     </Router>
   );

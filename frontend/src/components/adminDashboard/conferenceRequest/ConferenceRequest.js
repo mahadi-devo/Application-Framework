@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     marginTop: '10px',
   },
+  button: {
+    margin: theme.spacing(1),
+    padding: theme.spacing(0.5),
+  }
 }));
 
 const ConferenceRequest = () => {
@@ -61,6 +65,7 @@ const ConferenceRequest = () => {
               variant="contained"
               size="small"
               color="secondary" 
+              className={classes.button}
             >
               Decline
             </Button>
