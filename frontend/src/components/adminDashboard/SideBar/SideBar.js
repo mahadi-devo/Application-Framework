@@ -64,6 +64,14 @@ function SideBar() {
             </Typography>
           </li>
         </Link>
+        <Link to={`${url}/conferencerequest`} className={classes.link}>
+          <li className={classes.menuItem}>
+            <TimelineIcon />
+            <Typography variant="h6" display="inline">
+              Conference Request
+            </Typography>
+          </li>
+        </Link>
         <Link to={`${url}/conference`} className={classes.link}>
           <li className={classes.menuItem}>
             <TimelineIcon />

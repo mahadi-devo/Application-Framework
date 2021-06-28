@@ -11,6 +11,7 @@ import ConferenceManage from './conferenceManage/conferenceManage';
 import Home from './home/home';
 import UserManage from './userManage/userManage';
 import AddUser from './userManage/AddUser/AddUser';
+import ConferenceRequest from './conferenceRequest/ConferenceRequest';
 
 const useStyles = makeStyles({
   root: {
@@ -38,6 +39,11 @@ const adminDashboard = () => {
             exact
             path={`${path}/conference`}
             component={ConferenceManage}
+          />
+          <Route
+            exact
+            path={`${path}/conferencerequest`}
+            component={ConferenceRequest}
           />
           <Route exact path={`${path}`} component={Home} />
         </Switch>
