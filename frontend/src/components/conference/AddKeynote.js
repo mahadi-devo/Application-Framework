@@ -37,13 +37,12 @@ const useStyles = makeStyles((theme) => ({
 const AddKeynote = (conferId) => {
   const classes = useStyles();
 
-  console.log(conferId.conferId);
-
   const conferenceContext = useContext(ConferenceContext);
   const { addKeynote, conferenceId } = conferenceContext;
 
   useEffect(() => {
-    if (conferId !== null) {
+    if (conferId.conferId !== null) {
+      console.log('con id na');
       setKeynote({
         name: '',
         organization: '',
@@ -51,6 +50,7 @@ const AddKeynote = (conferId) => {
         image: '',
       });
     } else {
+      console.log('con id tiye');
       setKeynote({
         name: '',
         organization: '',
@@ -58,8 +58,9 @@ const AddKeynote = (conferId) => {
         image: '',
       });
     }
-    console.log(conferenceId);
   }, [conferenceId, addKeynote]);
+
+  console.log('add keynote', conferenceId);
 
   const [keynote, setKeynote] = useState({
     name: '',
@@ -92,6 +93,8 @@ const AddKeynote = (conferId) => {
 
   const onsubmit = async (e) => {
     e.preventDefault();
+
+    console.log('submit', keynote);
 
     if (name === '' || organization === '') {
       toast('Fields can not be empty', { type: 'error' });

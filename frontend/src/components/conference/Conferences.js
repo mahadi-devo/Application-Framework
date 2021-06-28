@@ -64,9 +64,7 @@ const Conferences = ({ conference }) => {
   //       });
   //     }
   //   };
-  const onHandle = () => {
-    clearKeynotes();
-  };
+  const onHandle = () => {};
 
   return (
     <div>
