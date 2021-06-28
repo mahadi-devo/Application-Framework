@@ -9,12 +9,24 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
+
 const ResearchItem = ({ research }) => {
   const { _id, title, author, email, abstract, area } = research;
 
   const researcherContext = useContext(ResearcherContext);
 
   const { setItem } = researcherContext;
+
+  const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -27,6 +39,7 @@ const ResearchItem = ({ research }) => {
 
   const deleteResearcher = () => {
     researcherContext.deleteResearch(_id);
+    toast('Research deleted successfully', { type: 'success' });
     handleClose();
   };
 
@@ -57,14 +70,16 @@ const ResearchItem = ({ research }) => {
           variant='contained'
           onClick={() => setItem(research)}
           color='primary'
-          className='p-1'>
+          className='p-1'
+          className={classes.button}>
           Update
         </Button>
         <Button
           variant='contained'
           color='secondary'
           className='p-1'
-          onClick={handleClickOpen}>
+          onClick={handleClickOpen}
+          className={classes.button}>
           Delete
         </Button>
       </Grid>

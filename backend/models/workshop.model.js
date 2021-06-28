@@ -27,12 +27,15 @@ const WorkshopSchema = mongoose.Schema({
   },
   phone: {
     type: String,
+    required: true,
   },
   start: {
     type: String,
+    required: true,
   },
   title: {
     type: String,
+    required: true,
   },
 });
 

@@ -14,7 +14,7 @@ const Researchs = () => {
     // eslint-disable-next-line
   }, []);
 
-  // console.log(researchs);
+  //console.log(researchs);
 
   return (
     <div>

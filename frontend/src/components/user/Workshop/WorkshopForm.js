@@ -4,11 +4,22 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import WorkshopContext from '../../../context/user/workshop/workshop-context';
+import { makeStyles } from '@material-ui/core/styles';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
 
 const WorkshopForm = () => {
   const workshopContext = useContext(WorkshopContext);
 
   const { current, clearItem } = workshopContext;
+
+  const classes = useStyles();
 
   useEffect(() => {
     if (current !== null) {
@@ -50,8 +61,10 @@ const WorkshopForm = () => {
 
     if (current == null) {
       workshopContext.addWorkshop(workshop);
+      toast('Workshop created successfully', { type: 'success' });
     } else {
       workshopContext.updateeWorkshop(workshop);
+      toast('Workshop edited successfully', { type: 'success' });
     }
 
     //clear();
@@ -171,10 +184,18 @@ const WorkshopForm = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          <Button variant='contained' type='submit' color='primary'>
+          <Button
+            variant='contained'
+            type='submit'
+            color='primary'
+            className={classes.button}>
             Submit
           </Button>
-          <Button variant='contained' onClick={clear} color='secondary'>
+          <Button
+            variant='contained'
+            onClick={clear}
+            color='secondary'
+            className={classes.button}>
             Clear
           </Button>
         </Grid>
