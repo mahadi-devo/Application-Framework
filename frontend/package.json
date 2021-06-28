@@ -4,7 +4,7 @@
   "description": "This is a MERN stack Conference Management Tool for Application Framework module",
   "main": "index.js",
   "scripts": {
-    "start": "parcel public/index.html",
+    "start": "react-scripts start",
     "client": "parcel public/index.html"
   },
   "author": "Mahadi, Pasidu, Aflal, Avishka",
@@ -12,6 +12,7 @@
   "dependencies": {
     "3d-react-carousal": "^3.1.0",
     "@material-ui/core": "^4.11.4",
+    "@material-ui/data-grid": "^4.0.0-alpha.32",
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
     "js-cookie": "^2.2.1",
@@ -21,11 +22,24 @@
     "react-dom": "^17.0.2",
     "react-dropzone-uploader": "^2.11.0",
     "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.3",
     "react-toastify": "^7.0.4",
     "react-transition-group": "^4.4.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "parcel": "^2.0.0-beta.3.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
