@@ -12,6 +12,7 @@ import ConferenceState from './context/auth/conference/conferenceState';
 import ResearcherState from './context/user/researcher/researcherState';
 import WorkshopState from './context/user/workshop/workshopState';
 import AddConference from './components/conference/AddConference';
+import AdminDashboard from './components/adminDashboard/adminDashboard';
 import PendingConference from './components/conference/PendingConference';
 import AddKeynote from './components/conference/AddKeynote';
 import { Container, CssBaseline } from '@material-ui/core';
@@ -43,6 +44,7 @@ const App = () => {
                 <Route exact path='/keynote-add' component={AddKeynote} />
                 <Route exact path='/research' component={Researcher} />
                 <Route exact path='/workshop' component={Workshop} />
+                <Route path='/adminDashboard' component={AdminDashboard} />
               </Switch>
             </WorkshopState>
           </ResearcherState>
