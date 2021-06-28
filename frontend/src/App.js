@@ -12,6 +12,8 @@ import ConferenceState from './context/auth/conference/conferenceState';
 import ResearcherState from './context/user/researcher/researcherState';
 import WorkshopState from './context/user/workshop/workshopState';
 import AddConference from './components/conference/AddConference';
+import PendingConference from './components/conference/PendingConference';
+import AddKeynote from './components/conference/AddKeynote';
 import { Container, CssBaseline } from '@material-ui/core';
 
 const App = () => {
