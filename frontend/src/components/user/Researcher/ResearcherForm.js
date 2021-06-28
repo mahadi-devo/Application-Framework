@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -8,6 +8,22 @@ import ResearcherContext from '../../../context/user/researcher/researcher-conte
 
 const ResearcherForm = () => {
   const researcherContext = useContext(ResearcherContext);
+
+  const { current, clearItem } = researcherContext;
+
+  useEffect(() => {
+    if (current !== null) {
+      setResearch(current);
+    } else {
+      setResearch({
+        title: '',
+        author: '',
+        email: '',
+        abstract: '',
+        area: '',
+      });
+    }
+  }, [researcherContext, current]);
 
   const [research, setResearch] = useState({
     title: '',
@@ -37,17 +53,18 @@ const ResearcherForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    researcherContext.addResearch(research);
 
-    setResearch({
-      title: '',
-      author: '',
-      email: '',
-      abstract: '',
-      area: '',
-      file: '',
-    });
+    if (current == null) {
+      researcherContext.addResearch(research);
+    } else {
+      researcherContext.updateResearch(research);
+    }
   };
+
+  const clear = () => {
+    clearItem();
+  };
+
   return (
     <form onSubmit={onSubmit}>
       <Typography variant='h5' className='m-2' gutterBottom>
@@ -149,6 +166,9 @@ const ResearcherForm = () => {
             variant='contained'
             color='primary'>
             Submit
+          </Button>
+          <Button variant='contained' onClick={clear} color='secondary'>
+            Clear
           </Button>
         </Grid>
       </Grid>

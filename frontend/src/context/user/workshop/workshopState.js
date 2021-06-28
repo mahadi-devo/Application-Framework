@@ -1,6 +1,5 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
-import { v4 as uuid } from 'uuid';
 import WorkshopContext from './workshop-context';
 import WorkshopReducer from './workshop-reduser';
 import {
@@ -62,7 +61,9 @@ const workshopState = (props) => {
         `http://localhost:5000/api/v1/workshop/${id}`
       );
       dispatch({ type: DELETE_WORKSHOP, payload: id });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const updateeWorkshop = async (workshop) => {
@@ -83,6 +84,7 @@ const workshopState = (props) => {
       console.error();
     }
   };
+
   const setItem = (workshop) => {
     dispatch({ type: SET_WORKSHOP, payload: workshop });
   };

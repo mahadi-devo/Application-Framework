@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-const ResearcherSchema = mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
-  },
+const ResearcherModel = mongoose.Schema({
+  // user: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'user',
+  // },
   title: {
     type: String,
     required: true,
@@ -30,4 +30,4 @@ const ResearcherSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('researcher', ResearcherSchema);
+module.exports = mongoose.model('researcher', ResearcherModel);

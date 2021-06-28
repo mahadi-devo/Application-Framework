@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import ResearchItem from './ResearchItem';
 import Spinner from '../../shared/Spinner';
@@ -7,7 +7,14 @@ import ResearcherContext from '../../../context/user/researcher/researcher-conte
 const Researchs = () => {
   const researcherContext = useContext(ResearcherContext);
 
-  const { researchs } = researcherContext;
+  const { researchs, getResearch } = researcherContext;
+
+  useEffect(() => {
+    getResearch();
+    // eslint-disable-next-line
+  }, []);
+
+  // console.log(researchs);
 
   return (
     <div>

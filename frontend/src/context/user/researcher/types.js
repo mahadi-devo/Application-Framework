@@ -1,1 +1,6 @@
-export const ADD_RESEARCH = 'ADD_RESEARCH';
+export const ADD_RESEARC = 'ADD_RESEARC';
+export const GET_RESEARC = 'GET_RESEARCHER';
+export const UPDATE_RESEARC = 'GET_RESEARC';
+export const DELETE_RESEARC = 'DELETE_RESEARC';
+export const SET_RESEARC = 'SET_RESEARC';
+export const CLEAR_RESEARC = 'CLEAR_RESEARC';
