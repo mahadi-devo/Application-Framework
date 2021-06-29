@@ -1,23 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
 import SearchBar from 'material-ui-search-bar';
+import ConferenceContext from '../../context/auth/conference/conference-context';
 
 const Search = () => {
-  //   const productContext = useContext(ProductContext);
+  const conferenceContext = useContext(ConferenceContext);
 
-  //   const { filtered, filterProducts, clearFilter } = productContext;
+  const { filtered, filterConferences, clearFilter } = conferenceContext;
 
   const [search, setSearch] = useState('');
 
-  //   useEffect(() => {
-  //     if (filtered === null) {
-  //       setSearch('');
-  //     }
-  //   }, [filtered]);
+  useEffect(() => {
+    if (filtered === null) {
+      setSearch('');
+    }
+  }, [filtered]);
 
   const onChange = (e) => {
     if (e !== '') {
       setSearch(e);
-      filterProducts(search);
+      filterConferences(search);
     } else {
       clearFilter();
     }

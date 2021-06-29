@@ -20,6 +20,7 @@ const ConferenceState = (props) => {
     conference: {},
     conferenceId: '',
     keynotes: [],
+    filtered: null,
   };
 
   const [state, dispatch] = useReducer(ConferenceReducer, initialState);
@@ -157,6 +158,18 @@ const ConferenceState = (props) => {
     } catch (error) {}
   };
 
+  const filterConferences = (text) => {
+    console.log(text);
+    dispatch({
+      type: FILTER_CONFERENCE,
+      payload: text,
+    });
+  };
+
+  const clearFilter = () => {
+    dispatch({ type: CLEAR_FILTER });
+  };
+
   return (
     <ConferenceContext.Provider
       value={{
@@ -164,6 +177,9 @@ const ConferenceState = (props) => {
         conference: state.conference,
         conferenceId: state.conferenceId,
         keynotes: state.keynotes,
+        filtered: state.filtered,
+        filterConferences,
+        clearFilter,
         getConference,
         addConference,
         getAllConferences,
