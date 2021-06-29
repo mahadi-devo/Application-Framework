@@ -1,5 +1,5 @@
-const Conference = require('../models/conference.model');
-const cloudinary = require('cloudinary').v2;
+const Conference = require("../models/conference.model");
+const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -55,7 +55,7 @@ const update = async (req, res) => {
     let conference = await Conference.findById(_id);
 
     const uploadResponse = await cloudinary.uploader.upload(image, {
-      upload_preset: 'ml_default',
+      upload_preset: "ml_default",
     });
 
     if (uploadResponse) {
@@ -66,7 +66,7 @@ const update = async (req, res) => {
 
     if (!conference) {
       res.status(404).json({
-        message: 'conference is not availabe',
+        message: "conference is not availabe",
       });
     }
 
@@ -74,7 +74,7 @@ const update = async (req, res) => {
       _id,
       { $set: conferenceFields },
       { new: true }
-    ).populate('keynotes');
+    ).populate("keynotes");
 
     res.status(200).json({ conference, success: true });
   } catch (error) {
@@ -88,7 +88,7 @@ const update = async (req, res) => {
 const getConference = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await Conference.findById(id).populate('keynotes');
+    const data = await Conference.findById(id).populate("keynotes");
 
     res.status(200).json({
       data,
@@ -112,10 +112,10 @@ const add = async (req, res) => {
 
     console.log(req.body.data.attendPrice, req.body.data.researchPrice);
 
-    const user = req.body.user;
+    const user = req.user;
 
     const uploadResponse = await cloudinary.uploader.upload(image, {
-      upload_preset: 'ml_default',
+      upload_preset: "ml_default",
     });
 
     const newConference = new Conference({
@@ -129,7 +129,7 @@ const add = async (req, res) => {
       researchPrice: researchPrice,
       image: uploadResponse.secure_url,
       keynotes: [],
-      status: 'pending',
+      status: "pending",
     });
 
     const conference = await newConference.save();

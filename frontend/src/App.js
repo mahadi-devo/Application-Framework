@@ -54,6 +54,7 @@ const App = () => {
                   component={Workshop}
                 />
                 <Route path="/adminDashboard" component={AdminDashboard} />
+                <Route exact path="/" component={Conference} />
               </Switch>
             </WorkshopState>
           </ResearcherState>

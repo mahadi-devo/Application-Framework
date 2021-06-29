@@ -1,7 +1,7 @@
-import React, { useReducer } from 'react';
-import ConferenceContext from './conference-context';
-import ConferenceReducer from './conference-reducer';
-import axios from 'axios';
+import React, { useReducer } from "react";
+import ConferenceContext from "./conference-context";
+import ConferenceReducer from "./conference-reducer";
+import axios from "axios";
 import {
   GET_CONFERENCES,
   ADD_CONFERENCES,
@@ -12,13 +12,13 @@ import {
   GET_KEYNOTES,
   SAVE_CONFERENCE,
   EDIT_CONFERENCE,
-} from './types';
+} from "./types";
 
 const ConferenceState = (props) => {
   const initialState = {
     conferences: [],
     conference: {},
-    conferenceId: '',
+    conferenceId: "",
     keynotes: [],
     filtered: null,
   };
@@ -28,7 +28,7 @@ const ConferenceState = (props) => {
   const getAllConferences = async () => {
     // dispatch({ type: GET_CONFERENCE, payload: id });
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/conferences');
+      const res = await axios.get("http://localhost:5000/api/v1/conferences");
       console.log(res);
       dispatch({ type: GET_CONFERENCES, payload: res.data.data });
     } catch (error) {}
@@ -37,7 +37,8 @@ const ConferenceState = (props) => {
   const editConference = async (conference) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
 
@@ -55,18 +56,19 @@ const ConferenceState = (props) => {
   const addKeynote = async (keynote) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/v1/keynotes',
+        "http://localhost:5000/api/v1/keynotes",
         keynote,
         config
       );
 
-      console.log('state', res.data);
+      console.log("state", res.data);
       dispatch({
         type: SAVE_CONFERENCE,
         payload: res.data.keynote.conferenceId,
@@ -91,23 +93,23 @@ const ConferenceState = (props) => {
   const addConference = async (data) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
 
     const formData = {
-      user: '60b3c8d692ac32b7fba8acc7',
       data: data,
     };
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/v1/conferences',
+        "http://localhost:5000/api/v1/conferences",
         formData,
         config
       );
 
-      console.log('state conf', res.data.conference._id);
+      console.log("state conf", res.data.conference._id);
 
       dispatch({ type: SAVE_CONFERENCE, payload: res.data.conference._id });
     } catch (error) {
@@ -127,11 +129,11 @@ const ConferenceState = (props) => {
   const updateKeynote = async (keynote) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
 
-    console.log('state keynote', keynote);
+    console.log("state keynote", keynote);
 
     try {
       const res = await axios.put(
@@ -146,7 +148,8 @@ const ConferenceState = (props) => {
   const deleteKeynote = async (keynote) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
     try {
@@ -188,7 +191,8 @@ const ConferenceState = (props) => {
         getKeynotes,
         updateKeynote,
         deleteKeynote,
-      }}>
+      }}
+    >
       {props.children}
     </ConferenceContext.Provider>
   );

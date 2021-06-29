@@ -1,22 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
-import SearchBar from 'material-ui-search-bar';
-import ConferenceContext from '../../context/auth/conference/conference-context';
+import React, { useContext, useEffect, useState } from "react";
+import SearchBar from "material-ui-search-bar";
+import ConferenceContext from "../../context/conference/conference-context";
 
 const Search = () => {
   const conferenceContext = useContext(ConferenceContext);
 
   const { filtered, filterConferences, clearFilter } = conferenceContext;
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     if (filtered === null) {
-      setSearch('');
+      setSearch("");
     }
   }, [filtered]);
 
   const onChange = (e) => {
-    if (e !== '') {
+    if (e !== "") {
       setSearch(e);
       filterConferences(search);
     } else {
@@ -26,10 +26,10 @@ const Search = () => {
 
   return (
     <div>
-      <form action=''>
+      <form action="">
         <SearchBar
-          placeholder='Search products ...'
-          type='text'
+          placeholder="Search products ..."
+          type="text"
           value={search}
           autoFocus
           onChange={onChange}

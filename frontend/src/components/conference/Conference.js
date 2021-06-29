@@ -1,18 +1,18 @@
-import React, { Fragment, useEffect, useContext } from 'react';
-import Carasoul from './Carasoul';
-import Search from '../shared/Search';
-import Grid from '@material-ui/core/Grid';
-import Conferences from './Conferences';
-import AdminHeader from '../shared/AdminHeader';
-import ConferencesContext from '../../context/auth/conference/conference-context';
-const { v4: uuidv4 } = require('uuid');
+import React, { Fragment, useEffect, useContext } from "react";
+import Carasoul from "./Carasoul";
+import Search from "../shared/Search";
+import Grid from "@material-ui/core/Grid";
+import Conferences from "./Conferences";
+import AdminHeader from "../shared/AdminHeader";
+import ConferencesContext from "../../context/conference/conference-context";
+const { v4: uuidv4 } = require("uuid");
 
 const Conference = () => {
   const conferencesContext = useContext(ConferencesContext);
   const { conferences, getAllConferences, filtered, clearFilter } =
     conferencesContext;
 
-  const user = 'editor';
+  const user = localStorage.getItem("userRole");
 
   useEffect(() => {
     clearFilter();
@@ -21,8 +21,8 @@ const Conference = () => {
 
   return (
     <Fragment>
-      <Grid container spacing={3} style={{ marginTop: '15' }}>
-        {user === 'editor' && (
+      <Grid container spacing={3} style={{ marginTop: "15" }}>
+        {user === "editor" && (
           <Grid item lg={12} md={12} sm={12}>
             <AdminHeader />
           </Grid>
@@ -38,13 +38,14 @@ const Conference = () => {
           (filtered !== null
             ? filtered.map((conf) => (
                 <Fragment key={conf._id}>
-                  {conf.status === 'approved' && (
+                  {conf.status === "approved" && (
                     <Grid
                       item
-                      style={{ marginTop: '15px' }}
+                      style={{ marginTop: "15px" }}
                       lg={4}
                       md={6}
-                      sm={12}>
+                      sm={12}
+                    >
                       <Conferences conference={conf} />
                     </Grid>
                   )}
@@ -52,13 +53,14 @@ const Conference = () => {
               ))
             : conferences.map((conf) => (
                 <Fragment key={conf._id}>
-                  {conf.status === 'approved' && (
+                  {conf.status === "approved" && (
                     <Grid
                       item
-                      style={{ marginTop: '15px' }}
+                      style={{ marginTop: "15px" }}
                       lg={4}
                       md={6}
-                      sm={12}>
+                      sm={12}
+                    >
                       <Conferences conference={conf} />
                     </Grid>
                   )}

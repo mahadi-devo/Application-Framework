@@ -1,21 +1,17 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
   registerController,
   loginController,
   logoutController,
-} = require('../controllers/auth.controller');
-const { register, login } = require('../validations/auth.validation.js');
-const validationMiddleware = require('../middleware/validation.middleware');
-const {
-  authorize,
-  roleAuthorization,
-} = require('../middleware/auth.middleware');
+} = require("../controllers/auth.controller");
+const { register, login } = require("../validations/auth.validation.js");
+const validationMiddleware = require("../middleware/validation.middleware");
 
-router.post('/register', validationMiddleware(register), registerController);
+router.post("/register", validationMiddleware(register), registerController);
 
-router.post('/login', validationMiddleware(login), loginController);
+router.post("/login", validationMiddleware(login), loginController);
 
-router.post('/logout', logoutController);
+router.post("/logout", logoutController);
 
 module.exports = router;

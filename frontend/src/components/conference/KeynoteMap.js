@@ -28,7 +28,7 @@ const KeynoteMap = (id) => {
 
   console.log(keynotes);
 
-  const user = "editor";
+  const user = localStorage.getItem("userRole");
 
   return (
     <Fragment>

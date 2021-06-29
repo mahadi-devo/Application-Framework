@@ -87,7 +87,7 @@ const Keynote = (keynote) => {
     setOpenDelete(true);
   };
 
-  const user = "editor";
+  const user = localStorage.getItem("userRole");
 
   return (
     <Fragment>
