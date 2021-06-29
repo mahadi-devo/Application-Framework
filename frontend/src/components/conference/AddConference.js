@@ -56,6 +56,8 @@ const AddConference = (confer) => {
         image: '',
         keynotes: '',
         status: '',
+        attendPrice: '',
+        researchPrice: '',
       });
     }
   }, []);
@@ -69,9 +71,19 @@ const AddConference = (confer) => {
     image: '',
     keynotes: '',
     status: '',
+    attendPrice: '',
+    researchPrice: '',
   });
-  const { title, location, date, description, endDate, startDate, picture } =
-    conference;
+  const {
+    title,
+    location,
+    description,
+    endDate,
+    startDate,
+    image,
+    attendPrice,
+    researchPrice,
+  } = conference;
 
   const onChange = (e) => {
     setConference({ ...conference, [e.target.name]: e.target.value });
@@ -98,8 +110,16 @@ const AddConference = (confer) => {
 
   const onsubmit = async (e) => {
     e.preventDefault();
+    console.log(conference);
 
-    if (title === '' || location === '' || startDate === '' || endDate === '') {
+    if (
+      title === '' ||
+      location === '' ||
+      startDate === '' ||
+      endDate === '' ||
+      attendPrice === '' ||
+      researchPrice === ''
+    ) {
       toast('Fields can not be empty', { type: 'error' });
     } else {
       if (confer.confer !== null) {
@@ -119,13 +139,15 @@ const AddConference = (confer) => {
         endDate: '',
         startDate: '',
         description: '',
+        attendPrice: '',
+        researchPrice: '',
         image: '',
       });
     }
   };
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container component='main' maxWidth='sm'>
       <CssBaseline />
       <div className={classes.paperContainer}>
         <Typography component='h1' variant='h6'>
@@ -158,6 +180,28 @@ const AddConference = (confer) => {
             <Grid item xs={12}>
               <TextField
                 variant='outlined'
+                onChange={onChange}
+                fullWidth
+                id='attendPrice'
+                value={attendPrice}
+                label='Price for Attend Conference'
+                name='attendPrice'
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant='outlined'
+                onChange={onChange}
+                fullWidth
+                id='researchPrice'
+                value={researchPrice}
+                label='Price for Research Submission'
+                name='researchPrice'
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                variant='outlined'
                 fullWidth
                 onChange={onChange}
                 name='startDate'
@@ -171,7 +215,7 @@ const AddConference = (confer) => {
                 id='startDate'
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <TextField
                 id='endDate'
                 name='endDate'

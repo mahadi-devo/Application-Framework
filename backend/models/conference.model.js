@@ -25,6 +25,14 @@ const ConferenceSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  attendPrice: {
+    type: String,
+    required: true,
+  },
+  researchPrice: {
+    type: String,
+    required: true,
+  },
   image: {
     type: String,
   },
