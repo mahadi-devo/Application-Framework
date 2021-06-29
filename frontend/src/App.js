@@ -16,7 +16,6 @@ import AdminDashboard from "./components/adminDashboard/adminDashboard";
 import PendingConference from "./components/conference/PendingConference";
 import AddKeynote from "./components/conference/AddKeynote";
 import { Container, CssBaseline } from "@material-ui/core";
-import { set } from "mongoose";
 
 const App = () => {
   return (

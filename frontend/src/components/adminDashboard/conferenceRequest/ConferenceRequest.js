@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useContext } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography,
   Grid,
@@ -8,19 +8,19 @@ import {
   FormControl,
   InputLabel,
   Select,
-} from '@material-ui/core';
-import { DataGrid } from '@material-ui/data-grid';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import axios from 'axios';
+} from "@material-ui/core";
+import { DataGrid } from "@material-ui/data-grid";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import axios from "axios";
 
-import ConferencesContext from '../../../context/auth/conference/conference-context';
+import ConferencesContext from "../../../context/conference/conference-context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: '10px',
+    margin: "10px",
   },
   title: {
-    marginTop: '10px',
+    marginTop: "10px",
   },
   button: {
     margin: theme.spacing(1),
@@ -37,7 +37,8 @@ const ConferenceRequest = () => {
   const OnButtonClicked = (id, status) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
 
@@ -58,24 +59,24 @@ const ConferenceRequest = () => {
   };
 
   const columns = [
-    { field: 'title', headerName: 'Conference Title', flex: 1 },
-    { field: 'startDate', headerName: 'Start Date', width: 145 },
+    { field: "title", headerName: "Conference Title", flex: 1 },
+    { field: "startDate", headerName: "Start Date", width: 145 },
     {
-      field: 'endDate',
-      headerName: 'End Date',
+      field: "endDate",
+      headerName: "End Date",
       sortable: true,
-      valueGetter: '',
+      valueGetter: "",
       width: 140,
     },
     {
-      field: 'user',
-      headerName: 'Editor',
-      type: 'string',
+      field: "user",
+      headerName: "Editor",
+      type: "string",
       width: 150,
     },
     {
-      field: 'action',
-      headerName: 'Action',
+      field: "action",
+      headerName: "Action",
       width: 170,
       renderCell: (params) => {
         // console.log('params',params);
@@ -128,7 +129,7 @@ const ConferenceRequest = () => {
         Conference Request
       </Typography>
 
-      <div style={{ height: '65vh', width: '100%' }}>
+      <div style={{ height: "65vh", width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}

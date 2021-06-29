@@ -13,14 +13,14 @@ import {
   SAVE_CONFERENCE,
   EDIT_CONFERENCE,
   GET_PENDING_CONFERENCES,
-} from './types';
+} from "./types";
 
 const ConferenceState = (props) => {
   const initialState = {
     conferences: [],
     conference: {},
     pendingConference: [],
-    conferenceId: '',
+    conferenceId: "",
     keynotes: [],
     filtered: null,
   };
@@ -37,9 +37,18 @@ const ConferenceState = (props) => {
   };
 
   const getPendingConferences = async () => {
-    // dispatch({ type: GET_CONFERENCE, payload: id });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/conferences/pending');
+      const res = await axios.get(
+        "http://localhost:5000/api/v1/conferences/pending",
+        config
+      );
       console.log(res);
       dispatch({ type: GET_PENDING_CONFERENCES, payload: res.data.data });
     } catch (error) {}

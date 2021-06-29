@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -170,13 +169,4 @@ const AddKeynote = (conferId) => {
     </Container>
   );
 };
-
-AddKeynote.propTypes = {
-  conferId: PropTypes.string,
-};
-
-AddKeynote.defaultProps = {
-  conferId: null,
-};
-
 export default AddKeynote;

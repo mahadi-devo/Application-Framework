@@ -1,4 +1,4 @@
-const User = require('../models/user.model');
+const User = require("../models/user.model");
 
 const addUser = async (req, res) => {
   try {
@@ -8,7 +8,7 @@ const addUser = async (req, res) => {
     if (userExist) {
       res.status(400).json({
         success: false,
-        message: 'User already exist',
+        message: "User already exist",
       });
     }
 
@@ -24,24 +24,24 @@ const addUser = async (req, res) => {
       message: e,
     });
   }
-}
+};
 
 const updateUser = async (req, res) => {
   const { _id, email, name, role } = req.body;
 
   const userFields = {};
 
-  if(_id) userFields._id=_id;
-  if(email) userFields.email=email;
-  if(name) userFields.name=name;
-  if(role) userFields.role=role;
+  if (_id) userFields._id = _id;
+  if (email) userFields.email = email;
+  if (name) userFields.name = name;
+  if (role) userFields.role = role;
 
   try {
-    let user = await User.findById(_id);
-    console.log('findById');
+    let user = await User.findById(req.user);
+    console.log("findById");
     if (!user) {
       res.status(404).json({
-        message: 'user is not availabe',
+        message: "user is not availabe",
       });
     }
 
@@ -50,7 +50,7 @@ const updateUser = async (req, res) => {
       { $set: userFields },
       { new: true }
     );
-    console.log('update');
+    console.log("update");
 
     res.status(200).json({ conference, success: true });
   } catch (error) {
@@ -59,10 +59,10 @@ const updateUser = async (req, res) => {
       mss: error,
     });
   }
-}
+};
 const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.user);
 
     res.status(200).json({
       user,
@@ -74,8 +74,7 @@ const getUser = async (req, res) => {
       success: false,
     });
   }
-
-}
+};
 const getAllUser = async (req, res) => {
   try {
     const data = await User.find({});
@@ -90,7 +89,7 @@ const getAllUser = async (req, res) => {
       success: false,
     });
   }
-}
+};
 const removeUser = async (req, res) => {
   const { _id } = req.body;
 
@@ -107,11 +106,11 @@ const removeUser = async (req, res) => {
       success: false,
     });
   }
-}
+};
 
 const getAllTypes = async (req, res) => {
   try {
-    const data = await User.distinct( 'role' );
+    const data = await User.distinct("role");
 
     res.status(200).json({
       data,
@@ -123,10 +122,10 @@ const getAllTypes = async (req, res) => {
       success: false,
     });
   }
-}
+};
 const getUserCount = async (req, res) => {
   try {
-    const data = await User.find( {role: req.params.type} );
+    const data = await User.find({ role: req.params.type });
 
     const count = data.length;
 
@@ -140,5 +139,13 @@ const getUserCount = async (req, res) => {
       success: false,
     });
   }
-}
-module.exports = { addUser, updateUser, getUser, getAllUser, removeUser, getAllTypes, getUserCount};
+};
+module.exports = {
+  addUser,
+  updateUser,
+  getUser,
+  getAllUser,
+  removeUser,
+  getAllTypes,
+  getUserCount,
+};

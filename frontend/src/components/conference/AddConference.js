@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect, Fragment } from "react";
-import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -287,14 +286,6 @@ const AddConference = (confer) => {
       </div>
     </Container>
   );
-};
-
-AddConference.propTypes = {
-  confer: PropTypes.object,
-};
-
-AddConference.defaultProps = {
-  confer: null,
 };
 
 export default AddConference;
