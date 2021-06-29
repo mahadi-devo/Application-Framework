@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 toast.configure();
 
@@ -38,8 +39,8 @@ const SignIn = (props) => {
   const classes = useStyles();
 
   const [user, setUser] = useState({
-    email: "admin@gmail.com",
-    password: "123456",
+    email: "admin123@gmail.com",
+    password: "123456789",
   });
 
   const { email, password } = user;
@@ -54,17 +55,32 @@ const SignIn = (props) => {
     if (email === "" || password === "") {
       toast("Fields can not be empty", { type: "error" });
     } else {
-      const statues = await login({
-        email,
-        password,
-      });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-      if (statues) {
-        if (role === "seller") {
-          props.history.push("/products");
-        } else {
-          props.history.push("/");
-        }
+      try {
+        const res = await axios.post(
+          `http://localhost:5000/api/v1/auth/login`,
+          user,
+          config
+        );
+
+        await localStorage.setItem("userId", res.data.user.id);
+        await localStorage.setItem("userEmail", res.data.user.email);
+        await localStorage.setItem("userRole", res.data.user.role);
+        await localStorage.setItem("token", res.data.token);
+        await toast("Login success!", { type: "success" });
+        props.history.push("/conferences");
+      } catch (error) {
+        toast(
+          error.response.data.message
+            ? error.response.data.message
+            : error.message,
+          { type: "error" }
+        );
       }
     }
 

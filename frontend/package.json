@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
-    "client": "parcel public/index.html"
+    "client": "react-scripts start",
+    "client-parcel": "parcel public/index.html"
   },
   "author": "Mahadi, Pasidu, Aflal, Avishka",
   "license": "MIT",
@@ -21,6 +22,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-dropzone-uploader": "^2.11.0",
+    "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "react-toastify": "^7.0.4",

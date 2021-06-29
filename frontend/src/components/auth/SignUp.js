@@ -14,7 +14,7 @@ import Container from "@material-ui/core/Container";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Radio } from "@material-ui/core";
-import FileUploader from "../shared/FileUpload";
+import axios from "axios";
 
 toast.configure();
 
@@ -46,11 +46,10 @@ const SignUp = (props) => {
     email: "",
     password: "",
     phone: "",
-    role: "buyer",
-    resource: null,
+    role: "attendee",
   });
 
-  const { name, email, password, phone, role, uploadResource } = user;
+  const { name, email, password, phone, role } = user;
 
   const [, setCheck] = useState(false);
 
@@ -59,31 +58,37 @@ const SignUp = (props) => {
     setCheck(e.target.checked);
   };
 
-  const getFile = (FileData) => {
-    setUser({ ...user, resource: FileData });
-  };
-
   const onsubmit = async (e) => {
     e.preventDefault();
 
     if (name === "" || email === "" || password === "" || phone === "") {
       toast("Fields can not be empty", { type: "error" });
     } else {
-      // const statues = await register({
-      //   name,
-      //   email,
-      //   password,
-      //   phone,
-      //   role,
-      //   uploadResource,
-      // });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-      if (statues) {
-        if (role === "seller") {
-          props.history.push("/products");
-        } else {
-          props.history.push("/");
-        }
+      try {
+        const res = await axios.post(
+          `http://localhost:5000/api/v1/auth/register`,
+          user,
+          config
+        );
+        localStorage.setItem("userId", res.data.user.id);
+        localStorage.setItem("userEmail", res.data.user.email);
+        localStorage.setItem("userRole", res.data.user.role);
+        localStorage.setItem("token", res.data.token);
+        toast("Register success!", { type: "success" });
+        props.history.push("/conferences");
+      } catch (error) {
+        toast(
+          error.response.data.message
+            ? error.response.data.message
+            : error.message,
+          { type: "error" }
+        );
       }
     }
 
@@ -92,8 +97,7 @@ const SignUp = (props) => {
       email: "",
       password: "",
       phone: "",
-      role: "buyer",
-      uploadResource: "",
+      role: "attendee",
     });
   };
 
@@ -186,14 +190,6 @@ const SignUp = (props) => {
                   label="Just need to attend a conference."
                 />
               </RadioGroup>
-            </Grid>
-            <Grid item xs={12}>
-              <FileUploader
-                noOfFiles="1"
-                multiple={false}
-                input="Upload Your Resource Here"
-                getFileCallback={getFile}
-              />
             </Grid>
           </Grid>
           <Button
