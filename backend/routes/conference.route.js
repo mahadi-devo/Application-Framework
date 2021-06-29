@@ -17,6 +17,6 @@ router.get("/", get);
 router.get('/pending', authorize, roleAuthorization("editor", "admin"), getPending);
 router.get("/:id", getConference);
 router.post("/", authorize, roleAuthorization("editor", "admin"), add);
-router.put("/:id", authorize, roleAuthorization("editor", "admin"), update);
 router.put('/confirmation', authorize, roleAuthorization("editor", "admin"), conferenceConfirmation);
+router.put("/:id", authorize, roleAuthorization("editor", "admin"), update);
 module.exports = router;
