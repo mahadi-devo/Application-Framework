@@ -98,8 +98,6 @@ const update = async (req, res) => {
 };
 
 const conferenceConfirmation = async (req, res) => {
-  console.log('start');
-
   const { status, _id } = req.body;
 
   const conferenceFields = {};
@@ -112,11 +110,8 @@ const conferenceConfirmation = async (req, res) => {
     conferenceFields.status = 'pending';
   }
 
-  console.log('conferenceFields', status, _id);
-
   try {
     let conference = await Conference.findById(_id);
-    console.log('findById');
     if (!conference) {
       res.status(404).json({
         message: 'conference is not availabe',
@@ -128,9 +123,9 @@ const conferenceConfirmation = async (req, res) => {
       { $set: conferenceFields },
       { new: true }
     );
-    console.log('update');
 
     res.status(200).json({ conference, success: true });
+    
   } catch (error) {
     res.status(500).json({
       success: false,
