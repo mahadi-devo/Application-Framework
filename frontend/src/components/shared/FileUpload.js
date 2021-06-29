@@ -13,6 +13,7 @@ const fileUploader = ({
   getFileCallback,
 }) => {
   const handleChangeStatus = async (e) => {
+    console.log(e);
     if (e.meta.status === 'done') {
       return await getFileCallback(e.file);
     } else {

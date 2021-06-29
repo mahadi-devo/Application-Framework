@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { Fragment, useContext } from 'react';
 import cx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
-import Divider from '@material-ui/core/Divider';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
+import EditKeynote from './EditKeynote';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import ConferenceContext from '../../context/auth/conference/conference-context';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction='up' ref={ref} {...props} />;
+});
 
 const useStyles = makeStyles(({ palette }) => ({
   card: {
@@ -50,25 +60,101 @@ const useStyles = makeStyles(({ palette }) => ({
 const Keynote = (keynote) => {
   const styles = useStyles();
 
-  const { image, name, organization } = keynote.keynote;
+  const conferenceContext = useContext(ConferenceContext);
+
+  const { deleteKeynote } = conferenceContext;
+
+  const { image, name, organization, _id } = keynote.keynote;
+
+  const [open, setOpen] = React.useState(false);
+  const [openDelete, setOpenDelete] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setOpenDelete(false);
+  };
+
+  const delKeynote = () => {
+    console.log('delete');
+    deleteKeynote(keynote.keynote);
+  };
+
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
+
+  const user = 'editor';
 
   return (
-    <Card className={cx(styles.card)}>
-      <CardContent>
-        <Avatar className={styles.avatar} src={image} />
-        <h3 className={styles.heading}>{name}</h3>
-        <span className={styles.subheader}>{organization}</span>
-      </CardContent>
-      <CardActions>
-        <Button size='small' variant='contained' color='secondary'>
-          Edit
-        </Button>
+    <Fragment>
+      <Card className={cx(styles.card)}>
+        <CardContent>
+          <Avatar className={styles.avatar} src={image} />
+          <h3 className={styles.heading}>{name}</h3>
+          <span className={styles.subheader}>{organization}</span>
+        </CardContent>
+        {user === 'editor' && (
+          <CardActions>
+            <Button
+              size='small'
+              variant='contained'
+              color='secondary'
+              onClick={handleClickOpen}>
+              Edit
+            </Button>
 
-        <Button size='small' variant='contained' color='secondary'>
-          Delete
-        </Button>
-      </CardActions>
-    </Card>
+            <Button
+              size='small'
+              variant='contained'
+              color='secondary'
+              onClick={handleClickOpenDelete}>
+              Delete
+            </Button>
+          </CardActions>
+        )}
+      </Card>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby='form-dialog-title'>
+        <EditKeynote keynot={keynote.keynote} />
+      </Dialog>
+
+      <Dialog
+        open={openDelete}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-labelledby='alert-dialog-slide-title'
+        aria-describedby='alert-dialog-slide-description'>
+        <DialogTitle id='alert-dialog-slide-title'>
+          {'Delete Keynote Speaker from conference'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id='alert-dialog-slide-description'>
+            {`Delete ${keynote.keynote.name}`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color='primary'>
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              delKeynote();
+              handleClose();
+            }}
+            color='primary'>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Fragment>
   );
 };
 

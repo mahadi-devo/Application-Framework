@@ -95,8 +95,18 @@ const getConference = async (req, res) => {
 
 const add = async (req, res) => {
   try {
-    const { title, startDate, endDate, location, description, image } =
-      req.body.data;
+    const {
+      title,
+      startDate,
+      endDate,
+      location,
+      description,
+      image,
+      attendPrice,
+      researchPrice,
+    } = req.body.data;
+
+    console.log(req.body.data.attendPrice, req.body.data.researchPrice);
 
     const user = req.body.user;
 
@@ -111,6 +121,8 @@ const add = async (req, res) => {
       endDate: endDate,
       location: location,
       description: description,
+      attendPrice: attendPrice,
+      researchPrice: researchPrice,
       image: uploadResponse.secure_url,
       keynotes: [],
       status: 'pending',

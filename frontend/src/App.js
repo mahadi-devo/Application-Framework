@@ -42,8 +42,16 @@ const App = () => {
                 />
                 <Route exact path='/pending' component={PendingConference} />
                 <Route exact path='/keynote-add' component={AddKeynote} />
-                <Route exact path='/research' component={Researcher} />
-                <Route exact path='/workshop' component={Workshop} />
+                <Route
+                  exact
+                  path='/conferences/research/:id'
+                  component={Researcher}
+                />
+                <Route
+                  exact
+                  path='/conferences/workshop/:id'
+                  component={Workshop}
+                />
                 <Route path='/adminDashboard' component={AdminDashboard} />
               </Switch>
             </WorkshopState>

@@ -123,9 +123,39 @@ const ConferenceState = (props) => {
     } catch (error) {}
   };
 
-  // const clearKeynotes = async () => {
-  //   dispatch({ type: CLEAR_KEYNOTES });
-  // };
+  const updateKeynote = async (keynote) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    console.log('state keynote', keynote);
+
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/v1/keynotes/${keynote._id}`,
+        keynote,
+        config
+      );
+      getKeynotes(keynote.conferenceId);
+    } catch (error) {}
+  };
+
+  const deleteKeynote = async (keynote) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/api/v1/keynotes/${keynote._id}`,
+        config
+      );
+      getKeynotes(keynote.conferenceId);
+    } catch (error) {}
+  };
 
   return (
     <ConferenceContext.Provider
@@ -140,6 +170,8 @@ const ConferenceState = (props) => {
         editConference,
         addKeynote,
         getKeynotes,
+        updateKeynote,
+        deleteKeynote,
       }}>
       {props.children}
     </ConferenceContext.Provider>
