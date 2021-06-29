@@ -81,6 +81,7 @@ const researcherState = (props) => {
       );
       console.log(res);
       dispatch({ type: UPDATE_RESEARC, payload: res.data });
+      getResearch();
     } catch (error) {
       console.error();
     }

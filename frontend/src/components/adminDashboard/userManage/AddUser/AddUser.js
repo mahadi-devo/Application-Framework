@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
@@ -14,7 +13,7 @@ import Container from '@material-ui/core/Container';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Radio } from '@material-ui/core';
-import { Link,useHistory  } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 toast.configure();
 
@@ -83,26 +82,26 @@ const AddUser = (props) => {
   };
 
   return (
-    <Container component="main" maxWidth="md" style={{ marginBottom: '30px' }}>
+    <Container component='main' maxWidth='md' style={{ marginBottom: '30px' }}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <PersonAddIcon />
         </Avatar>
-        <Typography component="h1" variant="h6">
+        <Typography component='h1' variant='h6'>
           Add User
         </Typography>
         <form className={classes.form} onSubmit={onsubmit}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
-                autoComplete="username"
-                name="username"
-                variant="outlined"
+                autoComplete='username'
+                name='username'
+                variant='outlined'
                 required
                 fullWidth
-                id="username"
-                label="Username"
+                id='username'
+                label='Username'
                 value={username}
                 autoFocus
                 onChange={onChange}
@@ -110,73 +109,71 @@ const AddUser = (props) => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                autoComplete="name"
-                name="name"
-                variant="outlined"
+                autoComplete='name'
+                name='name'
+                variant='outlined'
                 required
                 fullWidth
-                id="name"
-                label="Name"
+                id='name'
+                label='Name'
                 value={name}
                 onChange={onChange}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                variant="outlined"
+                variant='outlined'
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id='email'
+                label='Email Address'
+                name='email'
+                autoComplete='email'
                 value={email}
                 onChange={onChange}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                variant="outlined"
+                variant='outlined'
                 required
                 fullWidth
-                name="phone"
-                label="Phone number"
-                type="number"
-                id="phone"
+                name='phone'
+                label='Phone number'
+                type='number'
+                id='phone'
                 value={phone}
-                autoComplete="current-password"
+                autoComplete='current-password'
                 onChange={onChange}
               />
             </Grid>
             <Grid item md={12}>
               <Typography
                 style={{ marginTop: '20px' }}
-                variant="subtitle2"
-                gutterBottom
-              >
+                variant='subtitle2'
+                gutterBottom>
                 User Type
               </Typography>
               <RadioGroup
-                aria-label="customerType"
-                name="role"
+                aria-label='customerType'
+                name='role'
                 value={role}
                 onChange={onChange}
-                style={{ marginLeft: '20px' }}
-              >
+                style={{ marginLeft: '20px' }}>
                 <FormControlLabel
-                  value="researcher"
-                  control={<Radio color="primary" />}
-                  label="Admin"
+                  value='researcher'
+                  control={<Radio color='primary' />}
+                  label='Admin'
                 />
                 <FormControlLabel
-                  value="workshopConductor"
-                  control={<Radio color="primary" />}
-                  label="Editor"
+                  value='workshopConductor'
+                  control={<Radio color='primary' />}
+                  label='Editor'
                 />
                 <FormControlLabel
-                  value="attendee"
-                  control={<Radio color="primary" />}
-                  label="Reviewer"
+                  value='attendee'
+                  control={<Radio color='primary' />}
+                  label='Reviewer'
                 />
               </RadioGroup>
             </Grid>
@@ -184,24 +181,22 @@ const AddUser = (props) => {
           <Grid container spacing={2}>
             <Grid item item xs={6}>
               <Button
-                type="submit"
+                type='submit'
                 fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.button}
-              >
+                variant='contained'
+                color='primary'
+                className={classes.button}>
                 Add User
               </Button>
             </Grid>
             <Grid item item xs={6}>
               <Button
-                type="submit"
+                type='submit'
                 fullWidth
-                variant="contained"
-                color="secondary"
+                variant='contained'
+                color='secondary'
                 className={classes.button}
-                onClick={history.goBack}
-              >
+                onClick={history.goBack}>
                 Cancle
               </Button>
             </Grid>

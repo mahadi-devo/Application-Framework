@@ -80,6 +80,7 @@ const workshopState = (props) => {
       );
       console.log(res);
       dispatch({ type: UPDATE_WORKSHOP, payload: res.data });
+      getWorkshop();
     } catch (error) {
       console.error();
     }

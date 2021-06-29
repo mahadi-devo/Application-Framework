@@ -11,7 +11,7 @@ cloudinary.config({
 const add = async (req, res) => {
   try {
     const { name, organization, image, conferenceId } = req.body;
-    console.log(req.body);
+    console.log(req.body.conferenceId);
     const uploadResponse = await cloudinary.uploader.upload(image, {
       upload_preset: 'ml_default',
     });

@@ -8,7 +8,7 @@ import {
   GET_CONFERENCE,
   FILTER_CONFERENCE,
   CLEAR_FILTER,
-  CLEAR_KEYNOTES,
+  SAVE_KEYNOTES,
   GET_KEYNOTES,
   SAVE_CONFERENCE,
   EDIT_CONFERENCE,
@@ -65,10 +65,15 @@ const ConferenceState = (props) => {
         config
       );
 
-      console.log(res.data.keynote.conferenceId);
+      console.log('state', res.data);
       dispatch({
         type: SAVE_CONFERENCE,
         payload: res.data.keynote.conferenceId,
+      });
+
+      dispatch({
+        type: SAVE_KEYNOTES,
+        payload: res.data.keynote,
       });
     } catch (error) {}
   };
@@ -101,7 +106,7 @@ const ConferenceState = (props) => {
         config
       );
 
-      console.log(res.data.conference._id);
+      console.log('state conf', res.data.conference._id);
 
       dispatch({ type: SAVE_CONFERENCE, payload: res.data.conference._id });
     } catch (error) {
@@ -118,9 +123,9 @@ const ConferenceState = (props) => {
     } catch (error) {}
   };
 
-  const clearKeynotes = async () => {
-    dispatch({ type: CLEAR_KEYNOTES });
-  };
+  // const clearKeynotes = async () => {
+  //   dispatch({ type: CLEAR_KEYNOTES });
+  // };
 
   return (
     <ConferenceContext.Provider
@@ -130,7 +135,6 @@ const ConferenceState = (props) => {
         conferenceId: state.conferenceId,
         keynotes: state.keynotes,
         getConference,
-        clearKeynotes,
         addConference,
         getAllConferences,
         editConference,
