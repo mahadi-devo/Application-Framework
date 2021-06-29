@@ -35,12 +35,69 @@ const add = async (req, res) => {
   }
 };
 
-const update = async (req, res) => {};
+const update = async (req, res) => {
+  const { _id, name, organization, image, conferenceId } = req.body;
 
-const remove = async (req, res) => {};
+  const keynoteFields = {};
+
+  if (name) keynoteFields.name = name;
+  if (organization) keynoteFields.organization = organization;
+
+  try {
+    let keynote = await Keynote.findById(_id);
+
+    if (image) {
+      const uploadResponse = await cloudinary.uploader.upload(image, {
+        upload_preset: 'ml_default',
+      });
+
+      if (uploadResponse) {
+        keynoteFields.image = uploadResponse.secure_url;
+      }
+    }
+
+    if (!keynote) {
+      res.status(404).json({
+        message: 'Keynote speaker is not availabe',
+      });
+    }
+
+    keynote = await Keynote.findByIdAndUpdate(
+      _id,
+      { $set: keynoteFields },
+      { new: true }
+    );
+
+    res.status(200).json({ keynote, success: true });
+  } catch (error) {
+    res.status(500);
+  }
+};
+
+const remove = async (req, res) => {
+  console.log('in');
+  const id = req.params.id;
+
+  try {
+    const keynote = await Keynote.findById(id);
+
+    if (keynote === null) {
+      ress.status(404).json({
+        msg: 'keynote speaker not found',
+      });
+    }
+
+    await Keynote.findByIdAndRemove(id);
+
+    res.status(200).json({
+      msg: 'keynote speaker deleted',
+    });
+  } catch (error) {
+    res.status(500);
+  }
+};
 
 const getKeynotes = async (req, res) => {
-  console.log(req.params.id);
   try {
     const id = req.params.id;
     const data = await Keynote.find({ conferenceId: id });
