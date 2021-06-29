@@ -30,6 +30,8 @@ const update = async (req, res) => {
     endDate,
     location,
     description,
+    attendPrice,
+    researchPrice,
     image,
     status,
     _id,
@@ -46,6 +48,8 @@ const update = async (req, res) => {
   if (image) conferenceFields.image = image;
   if (status) conferenceFields.status = status;
   if (keynotes) conferenceFields.keynotes = keynotes;
+  if (attendPrice) conferenceFields.attendPrice = attendPrice;
+  if (researchPrice) conferenceFields.researchPrice = researchPrice;
 
   try {
     let conference = await Conference.findById(_id);

@@ -7,11 +7,13 @@ import ConferencesContext from '../../context/auth/conference/conference-context
 
 const PendingConference = () => {
   const conferencesContext = useContext(ConferencesContext);
-  const { conferences, getAllConferences } = conferencesContext;
+  const { conferences, getAllConferences, filtered, clearFilter } =
+    conferencesContext;
 
   const user = 'editor';
 
   useEffect(() => {
+    clearFilter();
     getAllConferences();
   }, []);
 
@@ -29,15 +31,35 @@ const PendingConference = () => {
           <Search />
         </Grid>
         {conferences !== null &&
-          conferences.map((conf) => (
-            <Fragment key={conf._id}>
-              {conf.status === 'pending' && (
-                <Grid item style={{ marginTop: '15px' }} lg={4} md={6} sm={12}>
-                  <Conferences conference={conf} />
-                </Grid>
-              )}
-            </Fragment>
-          ))}
+          (filtered !== null
+            ? filtered.map((conf) => (
+                <Fragment key={conf._id}>
+                  {conf.status === 'pending' && (
+                    <Grid
+                      item
+                      style={{ marginTop: '15px' }}
+                      lg={4}
+                      md={6}
+                      sm={12}>
+                      <Conferences conference={conf} />
+                    </Grid>
+                  )}
+                </Fragment>
+              ))
+            : conferences.map((conf) => (
+                <Fragment key={conf._id}>
+                  {conf.status === 'pending' && (
+                    <Grid
+                      item
+                      style={{ marginTop: '15px' }}
+                      lg={4}
+                      md={6}
+                      sm={12}>
+                      <Conferences conference={conf} />
+                    </Grid>
+                  )}
+                </Fragment>
+              )))}
       </Grid>
     </Fragment>
   );

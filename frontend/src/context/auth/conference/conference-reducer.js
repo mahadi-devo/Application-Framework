@@ -48,6 +48,24 @@ const ConferenceReducer = (state, action) => {
         keynotes: [action.payload, ...state.keynotes],
       };
 
+    case FILTER_CONFERENCE:
+      return {
+        ...state,
+        filtered: state.conferences.filter((conference) => {
+          const regex = RegExp(`${action.payload}`, 'gi');
+
+          return (
+            conference.title.match(regex) || conference.location.match(regex)
+          );
+        }),
+      };
+
+    case CLEAR_FILTER:
+      return {
+        ...state,
+        filtered: null,
+      };
+
     default:
       break;
   }

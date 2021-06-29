@@ -5,12 +5,13 @@ import ConferenceContext from '../../context/auth/conference/conference-context'
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import StripeCheckout from 'react-stripe-checkout';
 import Dialog from '@material-ui/core/Dialog';
 import AddConference from './AddConference';
 import KeynoteMap from './KeynoteMap';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
@@ -115,17 +116,20 @@ const ConferenceHome = ({ match }) => {
     endDate,
     image,
     location,
+    attendPrice,
+    status,
+    researchPrice,
     _id,
   } = conference;
 
   const researchButton = {
-    url: image,
+    url: 'https://res.cloudinary.com/mahadi/image/upload/v1624966205/jogc1e3rj4g2ibqzt22w_bvh2h0.jpg',
     title: 'Research Presentations',
     width: '50%',
   };
 
   const workshops = {
-    url: image,
+    url: 'https://res.cloudinary.com/mahadi/image/upload/v1624975924/uihwgwangknjmjwku9g1.jpg',
     title: 'Workshops',
     width: '50%',
   };
@@ -144,7 +148,32 @@ const ConferenceHome = ({ match }) => {
     setOpen(false);
   };
 
-  console.log(keynotes);
+  const handleToken = async (token) => {
+    try {
+      const res = await axios.post('http://localhost:5000/api/v1/stripe', {
+        token,
+        attendPrice,
+      });
+      const { status } = res.data;
+
+      if (status === 'success') {
+        // const body = {
+        //   email: localStorage.getItem('email'),
+        //   subject: 'Order Confirmation',
+        //   textBody:
+        //     'Thank you for placing order, your order successfully placed.',
+        //   htmlBody: `<h2>Order Confirmation</h2></br><h4>Thank you for placing order, we hope you enjoyed shopping with us. Amount of $${getsubtotal()} is added to your monthly bill.</h4>
+        //     </br><p>Thank You</p>
+        //     </br><p>Mini Store</p>`,
+        // };
+        // return await axios.post('/api/v1/response/email', body);
+
+        console.log('suc');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Fragment>
@@ -282,6 +311,21 @@ const ConferenceHome = ({ match }) => {
               </ButtonBase>
             </Grid>
           </Grid>
+        </Grid>
+
+        <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
+          {status === 'approved' && (
+            <StripeCheckout
+              stripeKey='pk_test_51Is6w9CaLuVljyXivn0DHr71gLQiazZPrZxF39DWKVpnTfrkoxrAsOX4QsPeYY8Inc9EshMfkzXHmki436baPGoy00Bqae1QFZ'
+              amount={parseInt(attendPrice) * 100}
+              token={handleToken}
+              style={{
+                width: '-webkit-fill-available',
+                background:
+                  'linear-gradient(rgb(125, 197, 238), rgb(0, 140, 221) 85%, rgb(48, 162, 228))',
+              }}
+            />
+          )}
         </Grid>
       </Grid>
 
