@@ -9,7 +9,6 @@ cloudinary.config({
 
 const add = async (req, res) => {
   console.log('Back');
-  console.log(req.body);
   const { title, author, email, abstract, area, file, conference } = req.body;
   try {
     //const user = req.body.user;
@@ -17,8 +16,6 @@ const add = async (req, res) => {
     const uploadResponse = await cloudinary.uploader.upload(file, {
       upload_preset: 'ml_default',
     });
-
-    console.log('Back');
 
     const newResearcher = new ResearcherModel({
       //user: user,
@@ -77,6 +74,7 @@ const update = async (req, res) => {
 const get = async (req, res) => {
   try {
     const research = await ResearcherModel.find();
+
     res.json(research);
   } catch (err) {
     console.error(err);
