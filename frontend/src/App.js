@@ -22,7 +22,7 @@ const App = () => {
     <Router>
       <CssBaseline />
       <Header />
-      <Container maxWidth='lg' style={{ minHeight: '90vh' }}>
+      <div style={{ minHeight: '90vh' }}>
         <ConferenceState>
           <ResearcherState>
             <WorkshopState>
@@ -49,7 +49,7 @@ const App = () => {
             </WorkshopState>
           </ResearcherState>
         </ConferenceState>
-      </Container>
+      </div>
 
       <Footer />
     </Router>

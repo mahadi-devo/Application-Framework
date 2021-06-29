@@ -1,16 +1,25 @@
 import React from 'react';
+import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import TimelineIcon from '@material-ui/icons/Timeline';
-import { Link, useRouteMatch } from 'react-router-dom';
+import PaymentIcon from '@material-ui/icons/Payment';
+import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+
+const drawerWidth = 250;
 
 const useStyles = makeStyles({
-  root: {
-    flex: 1,
-    position: 'sticky',
-    height: 'calc(  100vh - 64px)',
+  drawer: {
+    width: drawerWidth,
+  },
+  darawerPaper: {
+    width: drawerWidth,
   },
   menu: {
     listStyle: 'none',
@@ -20,68 +29,70 @@ const useStyles = makeStyles({
     marginTop: '10px',
     marginLeft: '10px',
   },
-  menuItem: {
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    paddingLeft: '10px',
-    padding: '5px',
-    '&:hover': {
-      background: '#3C3DEB',
-    },
-  },
-  link:{
-    textDecoration: 'none',
-    color: 'inherit'
-}
+  active: {
+    background: '#f4f4f4'
+  }
 });
 
 function SideBar() {
   const { url } = useRouteMatch();
-
+  const history = useHistory();
+  const location = useLocation();
   const classes = useStyles();
 
+  const manuList = [
+    {
+      itemText: 'Home',
+      itemIcon: <HomeIcon color="primary" />,
+      to: `${url}/home`,
+    },
+    {
+      itemText: 'User',
+      itemIcon: <PeopleAltIcon color="primary" />,
+      to: `${url}/user`,
+    },
+    {
+      itemText: 'Conference Request',
+      itemIcon: <TimelineIcon color="primary" />,
+      to: `${url}/confirmconferencerequest`,
+    },
+    {
+      itemText: 'Conference Details',
+      itemIcon: <TimelineIcon color="primary" />,
+      to: `${url}/conference`,
+    },
+    {
+      itemText: 'Payment',
+      itemIcon: <PaymentIcon color="primary" />,
+      to: `${url}/payment`,
+    },
+  ];
+
   return (
-    <div className={classes.root}>
+    <Drawer
+      className={classes.drawer}
+      variant="permanent"
+      anchor="left"
+      classes={{ paper: classes.darawerPaper }}
+    >
       <Typography variant="h5" className={classes.menuTitle}>
-        Dashboard
+        Admin Dashboard
       </Typography>
 
-      <ul className={classes.menu}>
-        <Link to={`${url}`} className={classes.link}>
-          <li className={classes.menuItem}>
-            <HomeIcon />
-            <Typography variant="h6" display="inline">
-              Home
-            </Typography>
-          </li>
-        </Link>
-        <Link to={`${url}/user`} className={classes.link}>
-          <li className={classes.menuItem}>
-            <PeopleAltIcon />
-            <Typography variant="h6" display="inline">
-              User
-            </Typography>
-          </li>
-        </Link>
-        <Link to={`${url}/conferencerequest`} className={classes.link}>
-          <li className={classes.menuItem}>
-            <TimelineIcon />
-            <Typography variant="h6" display="inline">
-              Conference Request
-            </Typography>
-          </li>
-        </Link>
-        <Link to={`${url}/conference`} className={classes.link}>
-          <li className={classes.menuItem}>
-            <TimelineIcon />
-            <Typography variant="h6" display="inline">
-              Conference
-            </Typography>
-          </li>
-        </Link>
-      </ul>
-    </div>
+      <List className={classes.menu}>
+        {manuList.map((item) => (
+          <ListItem
+            button
+            key={item.itemText}
+            onClick={() => history.push(item.to)}
+            className={location.pathname.includes(item.to) ? classes.active : null}
+          >
+            <ListItemIcon>{item.itemIcon}</ListItemIcon>
+            <ListItemText primary={item.itemText} />
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
   );
 }
 

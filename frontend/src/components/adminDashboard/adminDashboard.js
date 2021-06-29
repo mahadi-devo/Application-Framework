@@ -42,10 +42,10 @@ const adminDashboard = () => {
           />
           <Route
             exact
-            path={`${path}/conferencerequest`}
+            path={`${path}/confirmconferencerequest`}
             component={ConferenceRequest}
           />
-          <Route exact path={`${path}`} component={Home} />
+          <Route exact path={`${path}/home`} component={Home} />
         </Switch>
       </div>
     </div>

@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import { Link,useRouteMatch } from 'react-router-dom';
 
 import ConferencesContext from '../../../context/auth/conference/conference-context';
 
@@ -30,11 +31,12 @@ const useStyles = makeStyles((theme) => ({
 
 const conferenceManage = () => {
   const classes = useStyles();
+  const { url } = useRouteMatch();
 
-  const { pendingConferences, getPendingConferences } = useContext(ConferencesContext);
+  const { conferences, getAllConferences } = useContext(ConferencesContext);
 
   const columns = [
-    { field: 'name', headerName: 'Conference Name', flex: 1, },
+    { field: 'title', headerName: 'Conference Title', flex: 1, },
     { field: 'startDate', headerName: 'Start Date', width: 150 },
     {
       field: 'endDate',
@@ -60,6 +62,8 @@ const conferenceManage = () => {
               size="small"
               className={classes.button}
               startIcon={<VisibilityIcon />}
+              component={Link}
+              to={`${url}/${params.row.id}`}
             >
               View
             </Button>
@@ -68,26 +72,26 @@ const conferenceManage = () => {
     },
   ];
 
-  let rows;
-  if(pendingConferences) {
-    // rows = pendingConferences;
-  } else {
-    console.log('in con',pendingConferences);
-    rows = [
-      {
-        id:"60b3ce0e92ac32b7fba8acd2",
-        name:"React world",
-        startDate:"2021-12-31T18:30:00.000+00:00",
-        endDate:"2021-03-31T18:30:00.000+00:00",
-        workshops:["60b3ced0c512ec7927f39f32","60b3ceddc512ec7927f39f33"],
-        researches:["60b3cefac512ec7927f39f34","60b3cf01c512ec7927f39f35"],
-        status:"pending",
-      },
-    ];
-  }
+  let rows = [
+    {
+      id:"60b3ce0e92ac32b7fba8acd2",
+      title:"React world",
+      startDate:"2021-12-31T18:30:00.000+00:00",
+      endDate:"2021-03-31T18:30:00.000+00:00",
+      workshops:["60b3ced0c512ec7927f39f32","60b3ceddc512ec7927f39f33"],
+      researches:["60b3cefac512ec7927f39f34","60b3cf01c512ec7927f39f35"],
+      status:"pending",
+    },
+  ];
+  console.log('in con',conferences);
+  if(conferences) {
+    rows = conferences.map(row => {
+      return { ...row, id: row._id}
+    });
+  } 
 
   useEffect(() => {
-    getPendingConferences();
+    getAllConferences();
   }, []);
 
   return (
@@ -107,6 +111,7 @@ const conferenceManage = () => {
           columns={columns}
           pageSize={7}
           checkboxSelection
+          disableSelectionOnClick
         />
       </div>
     </div>

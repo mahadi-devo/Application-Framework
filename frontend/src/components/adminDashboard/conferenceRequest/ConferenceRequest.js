@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Typography,
@@ -11,8 +11,7 @@ import {
 } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import axios from 'axios';
 
 import ConferencesContext from '../../../context/auth/conference/conference-context';
 
@@ -26,23 +25,47 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
     padding: theme.spacing(0.5),
-  }
+  },
 }));
 
 const ConferenceRequest = () => {
   const classes = useStyles();
 
-  const { pendingConferences, getPendingConferences } = useContext(ConferencesContext);
-  
+  const { pendingConferences, getPendingConferences } =
+    useContext(ConferencesContext);
+
+  const OnButtonClicked = (id, status) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const values = { _id: id, status };
+    axios
+      .put(
+        `http://localhost:5000/api/v1/conferences/confirmation`,
+        values,
+        config
+      )
+      .then((res) => {
+        // console.log(res.data.conference);
+        getPendingConferences();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const columns = [
-    { field: 'title', headerName: 'Conference Title', flex: 1, },
+    { field: 'title', headerName: 'Conference Title', flex: 1 },
     { field: 'startDate', headerName: 'Start Date', width: 145 },
     {
       field: 'endDate',
       headerName: 'End Date',
       sortable: true,
       valueGetter: '',
-      width: 140
+      width: 140,
     },
     {
       field: 'user',
@@ -55,6 +78,7 @@ const ConferenceRequest = () => {
       headerName: 'Action',
       width: 170,
       renderCell: (params) => {
+        // console.log('params',params);
         return (
           <>
             <Button
@@ -62,6 +86,7 @@ const ConferenceRequest = () => {
               color="primary"
               size="small"
               className={classes.button}
+              onClick={() => OnButtonClicked(params.row._id, 1)}
             >
               Accept
             </Button>
@@ -69,7 +94,8 @@ const ConferenceRequest = () => {
             <Button
               variant="contained"
               size="small"
-              color="secondary" 
+              color="secondary"
+              onClick={() => OnButtonClicked(params.row._id, 2)}
               className={classes.button}
             >
               Decline
@@ -81,9 +107,9 @@ const ConferenceRequest = () => {
   ];
 
   let rows = [];
-  if(pendingConferences) {
-    rows = pendingConferences.map(row => {
-      return { ...row, id: row._id}
+  if (pendingConferences) {
+    rows = pendingConferences.map((row) => {
+      return { ...row, id: row._id };
     });
   }
 
@@ -108,10 +134,11 @@ const ConferenceRequest = () => {
           columns={columns}
           pageSize={7}
           checkboxSelection
+          disableSelectionOnClick
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ConferenceRequest
+export default ConferenceRequest;

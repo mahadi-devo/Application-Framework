@@ -71,6 +71,7 @@ const AddUser = (props) => {
     if (name === '' || email === '' || password === '' || phone === '') {
       toast('Fields can not be empty', { type: 'error' });
     } else {
+      
     }
 
     setUser({
