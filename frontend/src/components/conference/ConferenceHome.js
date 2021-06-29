@@ -101,7 +101,7 @@ const useStyles2 = makeStyles((theme) => ({
   },
 }));
 
-const ConferenceHome = ({ match }) => {
+const ConferenceHome = ({ match, id }) => {
   const classes = useStyles();
   const classes1 = useStyles2();
   const conferenceContext = useContext(ConferenceContext);
@@ -137,7 +137,11 @@ const ConferenceHome = ({ match }) => {
   const user = localStorage.getItem("userRole");
 
   useEffect(() => {
-    getConference(match.params.id);
+    if(id){
+      getConference(id);
+    } else {
+      getConference(match.params.id);
+    }
   }, []);
 
   const handleClickOpen = () => {
@@ -253,7 +257,7 @@ const ConferenceHome = ({ match }) => {
           </Typography>
         </Grid>
         <Grid item style={{ marginTop: "23px" }} lg={9} md={9} sm={12}>
-          {keynotes && <KeynoteMap id={match.params.id} />}
+          {keynotes && <KeynoteMap id={id ? id : match.params.id} />}
         </Grid>
         <Grid item style={{ marginTop: "23px" }} lg={9} md={9} sm={12}>
           <Grid container spacing={2}>
@@ -261,7 +265,7 @@ const ConferenceHome = ({ match }) => {
               <ButtonBase
                 focusRipple
                 component={Link}
-                to={`research/${match.params.id}`}
+                to={'research/'+ id ? id : match.params.id}
                 className={classes1.image}
                 focusVisibleClassName={classes1.focusVisible}
                 style={{
@@ -293,7 +297,7 @@ const ConferenceHome = ({ match }) => {
               <ButtonBase
                 focusRipple
                 component={Link}
-                to={`workshop/${match.params.id}`}
+                to={`workshop/${id ? id : match.params.id}`}
                 className={classes1.image}
                 focusVisibleClassName={classes1.focusVisible}
                 style={{
