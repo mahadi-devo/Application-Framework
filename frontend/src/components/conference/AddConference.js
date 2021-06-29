@@ -79,18 +79,20 @@ const AddConference = (confer) => {
 
   const getFile = (FileData) => {
     const reader = new FileReader();
-    if (FileData.size > 1000000 || FileData.size === 0) {
-      toast('File size must be less than 1mb and greater that 0', {
-        type: 'error',
-      });
-    } else {
-      reader.readAsDataURL(FileData);
-      reader.onloadend = () => {
-        setConference({ ...conference, image: reader.result });
-      };
-      reader.onerror = () => {
-        console.error('AHHHHHHHH!!');
-      };
+    if (FileData !== null) {
+      if (FileData.size > 1000000 || FileData.size === 0) {
+        toast('File size must be less than 1mb and greater that 0', {
+          type: 'error',
+        });
+      } else {
+        reader.readAsDataURL(FileData);
+        reader.onloadend = () => {
+          setConference({ ...conference, image: reader.result });
+        };
+        reader.onerror = () => {
+          console.error('AHHHHHHHH!!');
+        };
+      }
     }
   };
 
