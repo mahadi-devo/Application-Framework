@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
@@ -14,6 +15,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Radio } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 toast.configure();
 
@@ -49,59 +51,80 @@ const AddUser = (props) => {
     password: '',
     phone: '',
     role: 'admin',
+    sendemail: false,
   });
 
-  const { name, email, password, phone, role, username } = user;
+  const { name, email, password, phone, role, username, sendemail } = user;
 
   const [, setCheck] = useState(false);
 
   const onChange = (e) => {
+    console.log(e.target.name,' ', e.target.value);
     setUser({ ...user, [e.target.name]: e.target.value });
     setCheck(e.target.checked);
-  };
-
-  const getFile = (FileData) => {
-    setUser({ ...user, resource: FileData });
   };
 
   const onsubmit = async (e) => {
     e.preventDefault();
 
-    if (name === '' || email === '' || password === '' || phone === '') {
+    if (name === '' || email === '' || phone === '') {
       toast('Fields can not be empty', { type: 'error' });
     } else {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      axios
+        .post(
+          'http://localhost:5000/api/v1/user',
+          { name, email, phone, role, password: user.name },
+          config
+        )
+        .then((res) => {
+          console.log(res.data.user);
+          toast('User successfully added', { type: 'success' });
+
+          if(sendemail === 'true') {
+            console.log('sendemail');
+          }
+          history.goBack();
+        })
+        .catch((error) => {});
     }
 
     setUser({
       name: '',
+      username: '',
       email: '',
       password: '',
       phone: '',
-      role: 'buyer',
+      role: '',
     });
   };
 
   return (
-    <Container component='main' maxWidth='md' style={{ marginBottom: '30px' }}>
+    <Container component="main" maxWidth="md" style={{ marginBottom: '30px' }}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <PersonAddIcon />
         </Avatar>
-        <Typography component='h1' variant='h6'>
+        <Typography component="h1" variant="h6">
           Add User
         </Typography>
         <form className={classes.form} onSubmit={onsubmit}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
-                autoComplete='username'
-                name='username'
-                variant='outlined'
+                autoComplete="username"
+                name="username"
+                variant="outlined"
                 required
                 fullWidth
-                id='username'
-                label='Username'
+                id="username"
+                label="Username"
                 value={username}
                 autoFocus
                 onChange={onChange}
@@ -109,94 +132,126 @@ const AddUser = (props) => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                autoComplete='name'
-                name='name'
-                variant='outlined'
+                autoComplete="name"
+                name="name"
+                variant="outlined"
                 required
                 fullWidth
-                id='name'
-                label='Name'
+                id="name"
+                label="Name"
                 value={name}
                 onChange={onChange}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                variant='outlined'
+                variant="outlined"
                 required
                 fullWidth
-                id='email'
-                label='Email Address'
-                name='email'
-                autoComplete='email'
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
                 value={email}
                 onChange={onChange}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                variant='outlined'
+                variant="outlined"
                 required
                 fullWidth
-                name='phone'
-                label='Phone number'
-                type='number'
-                id='phone'
+                name="phone"
+                label="Phone number"
+                type="number"
+                id="phone"
                 value={phone}
-                autoComplete='current-password'
+                autoComplete="current-password"
                 onChange={onChange}
               />
             </Grid>
-            <Grid item md={12}>
+            <Grid item md={6}>
               <Typography
                 style={{ marginTop: '20px' }}
-                variant='subtitle2'
-                gutterBottom>
+                variant="subtitle2"
+                gutterBottom
+              >
                 User Type
               </Typography>
               <RadioGroup
-                aria-label='customerType'
-                name='role'
+                aria-label="customerType"
+                name="role"
                 value={role}
                 onChange={onChange}
-                style={{ marginLeft: '20px' }}>
+                style={{ marginLeft: '20px' }}
+              >
                 <FormControlLabel
-                  value='researcher'
-                  control={<Radio color='primary' />}
-                  label='Admin'
+                  value="admin"
+                  control={<Radio color="primary" />}
+                  label="Admin"
                 />
                 <FormControlLabel
-                  value='workshopConductor'
-                  control={<Radio color='primary' />}
-                  label='Editor'
+                  value="editor"
+                  control={<Radio color="primary" />}
+                  label="Editor"
                 />
                 <FormControlLabel
-                  value='attendee'
-                  control={<Radio color='primary' />}
-                  label='Reviewer'
+                  value="reviewer"
+                  control={<Radio color="primary" />}
+                  label="Reviewer"
                 />
               </RadioGroup>
             </Grid>
+            <Grid item md={6}>
+              <Typography
+                style={{ marginTop: '20px' }}
+                variant="subtitle2"
+                gutterBottom
+              >
+                Send Email to the User
+              </Typography>
+              <RadioGroup
+                aria-label="customerType"
+                name="sendemail"
+                value={sendemail}
+                onChange={onChange}
+                style={{ marginLeft: '20px' }}
+              >
+                <FormControlLabel
+                  value='true'
+                  control={<Radio color="primary" />}
+                  label="Yes"
+                />
+                <FormControlLabel
+                  value={'false'}
+                  control={<Radio color="primary" />}
+                  label="No"
+                />
+              </RadioGroup>
+            </Grid>
+          
           </Grid>
           <Grid container spacing={2}>
             <Grid item item xs={6}>
               <Button
-                type='submit'
+                type="submit"
                 fullWidth
-                variant='contained'
-                color='primary'
-                className={classes.button}>
+                variant="contained"
+                color="primary"
+                className={classes.button}
+              >
                 Add User
               </Button>
             </Grid>
             <Grid item item xs={6}>
               <Button
-                type='submit'
+                type="submit"
                 fullWidth
-                variant='contained'
-                color='secondary'
+                variant="contained"
+                color="secondary"
                 className={classes.button}
-                onClick={history.goBack}>
+                onClick={history.goBack}
+              >
                 Cancle
               </Button>
             </Grid>

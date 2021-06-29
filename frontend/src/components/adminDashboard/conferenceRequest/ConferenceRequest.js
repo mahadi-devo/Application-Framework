@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Typography,
@@ -11,8 +11,9 @@ import {
 } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import axios from 'axios';
+
+import ConferencesContext from '../../../context/auth/conference/conference-context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,31 +22,63 @@ const useStyles = makeStyles((theme) => ({
   title: {
     marginTop: '10px',
   },
+  button: {
+    margin: theme.spacing(1),
+    padding: theme.spacing(0.5),
+  },
 }));
 
 const ConferenceRequest = () => {
   const classes = useStyles();
 
+  const { pendingConferences, getPendingConferences } =
+    useContext(ConferencesContext);
+
+  const OnButtonClicked = (id, status) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const values = { _id: id, status };
+    axios
+      .put(
+        `http://localhost:5000/api/v1/conferences/confirmation`,
+        values,
+        config
+      )
+      .then((res) => {
+        // console.log(res.data.conference);
+        getPendingConferences();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const columns = [
-    { field: 'name', headerName: 'Conference Name', flex: 1, },
-    { field: 'startDate', headerName: 'Start Date', width: 150 },
+    { field: 'title', headerName: 'Conference Title', flex: 1 },
+    { field: 'startDate', headerName: 'Start Date', width: 145 },
     {
       field: 'endDate',
       headerName: 'End Date',
       sortable: true,
       valueGetter: '',
+      width: 140,
     },
     {
-      field: 'status',
-      headerName: 'Role',
+      field: 'user',
+      headerName: 'Editor',
       type: 'string',
-      width: 110,
+      width: 150,
     },
     {
       field: 'action',
       headerName: 'Action',
-      width: 230,
+      width: 170,
       renderCell: (params) => {
+        // console.log('params',params);
         return (
           <>
             <Button
@@ -53,6 +86,7 @@ const ConferenceRequest = () => {
               color="primary"
               size="small"
               className={classes.button}
+              onClick={() => OnButtonClicked(params.row._id, 1)}
             >
               Accept
             </Button>
@@ -60,7 +94,9 @@ const ConferenceRequest = () => {
             <Button
               variant="contained"
               size="small"
-              color="secondary" 
+              color="secondary"
+              onClick={() => OnButtonClicked(params.row._id, 2)}
+              className={classes.button}
             >
               Decline
             </Button>
@@ -70,17 +106,16 @@ const ConferenceRequest = () => {
     },
   ];
 
-  const rows = [
-    {
-      id:"60b3ce0e92ac32b7fba8acd2",
-      name:"React world",
-      startDate:"2021-12-31T18:30:00.000+00:00",
-      endDate:"2021-03-31T18:30:00.000+00:00",
-      workshops:["60b3ced0c512ec7927f39f32","60b3ceddc512ec7927f39f33"],
-      researches:["60b3cefac512ec7927f39f34","60b3cf01c512ec7927f39f35"],
-      status:"pending",
-    },
-  ];
+  let rows = [];
+  if (pendingConferences) {
+    rows = pendingConferences.map((row) => {
+      return { ...row, id: row._id };
+    });
+  }
+
+  useEffect(() => {
+    getPendingConferences();
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -99,10 +134,11 @@ const ConferenceRequest = () => {
           columns={columns}
           pageSize={7}
           checkboxSelection
+          disableSelectionOnClick
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ConferenceRequest
+export default ConferenceRequest;

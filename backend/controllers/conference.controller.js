@@ -23,6 +23,22 @@ const get = async (req, res) => {
   }
 };
 
+const getPending = async (req, res) => {
+  try {
+    const data = await Conference.find({ status: 'pending' });
+
+    res.status(200).json({
+      data,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error,
+      success: false,
+    });
+  }
+};
+
 const update = async (req, res) => {
   const {
     title,
@@ -77,6 +93,43 @@ const update = async (req, res) => {
     ).populate("keynotes");
 
     res.status(200).json({ conference, success: true });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      mss: error,
+    });
+  }
+};
+
+const conferenceConfirmation = async (req, res) => {
+  const { status, _id } = req.body;
+
+  const conferenceFields = {};
+
+  if (status === 1) {
+    conferenceFields.status = 'approved';
+  } else if (status === 2) {
+    conferenceFields.status = 'declined';
+  } else {
+    conferenceFields.status = 'pending';
+  }
+
+  try {
+    let conference = await Conference.findById(_id);
+    if (!conference) {
+      res.status(404).json({
+        message: 'conference is not availabe',
+      });
+    }
+
+    conference = await Conference.findByIdAndUpdate(
+      _id,
+      { $set: conferenceFields },
+      { new: true }
+    );
+
+    res.status(200).json({ conference, success: true });
+    
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -146,4 +199,12 @@ const updateKeynotes = async (conferenceId, keynoteId) => {
   );
 };
 
-module.exports = { add, get, update, getConference, updateKeynotes };
+module.exports = {
+  add,
+  get,
+  update,
+  getConference,
+  updateKeynotes,
+  getPending,
+  conferenceConfirmation,
+};
