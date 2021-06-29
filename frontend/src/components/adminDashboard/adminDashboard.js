@@ -27,7 +27,7 @@ const adminDashboard = () => {
   const { path } = useRouteMatch();
 
   const classes = useStyles();
-  console.log('path is ', path);
+  
   return (
     <div className={classes.root}>
       <SideBar />

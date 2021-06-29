@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
 import SignIn from "./components/auth/SigIn";
 import SignUp from "./components/auth/SignUp";
 import Header from "./components/shared/Header";
@@ -22,7 +22,7 @@ const App = () => {
     <Router>
       <CssBaseline />
       <Header />
-      <Container maxWidth="lg" style={{ minHeight: "90vh" }}>
+      <div style={{ minHeight: "90vh" }}>
         <ConferenceState>
           <ResearcherState>
             <WorkshopState>
@@ -58,7 +58,7 @@ const App = () => {
             </WorkshopState>
           </ResearcherState>
         </ConferenceState>
-      </Container>
+      </div>
 
       <Footer />
     </Router>

@@ -31,8 +31,7 @@ const useStyles = makeStyles((theme) => ({
 const ConferenceRequest = () => {
   const classes = useStyles();
 
-  const { pendingConferences, getPendingConferences } =
-    useContext(ConferencesContext);
+  const { pendingConferences, getPendingConferences } = useContext(ConferencesContext);
 
   const OnButtonClicked = (id, status) => {
     const config = {
