@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Grid,
@@ -15,6 +15,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { DataGrid } from '@material-ui/data-grid';
 import { Link,useRouteMatch } from 'react-router-dom';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -80,11 +81,36 @@ const useStyles = makeStyles((theme) => ({
 const userManage = () => {
   const classes = useStyles();
 
+  let [rows, setRows] = useState([{
+    role: "researcher",
+    id: "60db1cc5002d29137eeea226",
+    email: "mh@gmail.com",
+    name: "mh",
+    phone: 123456789,
+}]);
+
+
+  useEffect(() => {
+    axios
+        .get('http://localhost:5000/api/v1/user')
+        .then((res) => {
+          console.log('before map',res.data.data);
+          const newRows = res.data.data.map( row => {
+            return { ...row, id: row._id };
+          });
+
+          console.log(newRows);
+
+          setRows(newRows);
+        })
+        .catch((error) => {});
+  }, []);
+
   const { url } = useRouteMatch();
 
   const columns = [
-    { field: 'firstName', headerName: 'First name', width: 150 },
-    { field: 'lastName', headerName: 'Last name', width: 150 },
+    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'phone', headerName: 'Phone No', width: 150, type: 'number', },
     {
       field: 'email',
       headerName: 'Email',
@@ -131,114 +157,6 @@ const userManage = () => {
         );
       },
     },
-  ];
-
-  const rows = [
-    {
-      id: 1,
-      lastName: 'Snow',
-      firstName: 'Jon',
-      role: 'admin',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 2,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 3,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 4,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 5,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 6,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 7,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 8,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 9,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 10,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 11,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 13,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 14,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 15,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    },
-    {
-      id: 16,
-      lastName: 'Lannister',
-      firstName: 'Cersei',
-      role: 'editor',
-      email: 'asdf@gmail.com',
-    }
   ];
 
   return (

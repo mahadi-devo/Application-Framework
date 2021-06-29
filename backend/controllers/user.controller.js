@@ -109,4 +109,36 @@ const removeUser = async (req, res) => {
   }
 }
 
-module.exports = { addUser, updateUser, getUser, getAllUser, removeUser};
+const getAllTypes = async (req, res) => {
+  try {
+    const data = await User.distinct( 'role' );
+
+    res.status(200).json({
+      data,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error,
+      success: false,
+    });
+  }
+}
+const getUserCount = async (req, res) => {
+  try {
+    const data = await User.find( {role: req.params.type} );
+
+    const count = data.length;
+
+    res.status(200).json({
+      count,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error,
+      success: false,
+    });
+  }
+}
+module.exports = { addUser, updateUser, getUser, getAllUser, removeUser, getAllTypes, getUserCount};
