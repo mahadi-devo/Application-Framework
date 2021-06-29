@@ -31,8 +31,9 @@ const AdminHeader = () => {
         <Box mr={1}>
           <Button
             size='small'
-            variant='outlined'
+            variant='contained'
             component={Link}
+            color='secondary'
             to='/conferences'>
             Approved Conferneces
           </Button>
@@ -41,8 +42,9 @@ const AdminHeader = () => {
         <Box mr={1}>
           <Button
             size='small'
-            variant='outlined'
+            variant='contained'
             component={Link}
+            color='secondary'
             to='/conferences-add'>
             Add Confernece
           </Button>
@@ -51,18 +53,13 @@ const AdminHeader = () => {
         <Box mr={1}>
           <Button
             size='small'
-            variant='outlined'
+            variant='contained'
             component={Link}
+            color='secondary'
             to='/pending'>
             Pending Conferences
           </Button>
         </Box>
-
-        {/*<form onSubmit={onsubmit}>*/}
-        {/*  <Button type="submit" size="small" variant="outlined">*/}
-        {/*    Logout*/}
-        {/*  </Button>*/}
-        {/*</form>*/}
       </Toolbar>
     </React.Fragment>
   );

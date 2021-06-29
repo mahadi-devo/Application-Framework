@@ -8,9 +8,9 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import AddConference from './AddConference';
-import Keynote from './Keynote';
 import KeynoteMap from './KeynoteMap';
-import AddKeynote from './AddKeynote';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -25,12 +25,87 @@ const useStyles = makeStyles({
   },
 });
 
+const useStyles2 = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    minWidth: 300,
+    width: '100%',
+  },
+  image: {
+    position: 'relative',
+    height: 200,
+    [theme.breakpoints.down('xs')]: {
+      width: '100% !important', // Overrides inline-style
+      height: 100,
+    },
+    '&:hover, &$focusVisible': {
+      zIndex: 1,
+      '& $imageBackdrop': {
+        opacity: 0.15,
+      },
+      '& $imageMarked': {
+        opacity: 0,
+      },
+      '& $imageTitle': {
+        border: '4px solid currentColor',
+      },
+    },
+  },
+  focusVisible: {},
+  imageButton: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.common.white,
+  },
+  imageSrc: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center 40%',
+  },
+  imageBackdrop: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: theme.palette.common.black,
+    opacity: 0.4,
+    transition: theme.transitions.create('opacity'),
+  },
+  imageTitle: {
+    position: 'relative',
+    padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${
+      theme.spacing(1) + 6
+    }px`,
+  },
+  imageMarked: {
+    height: 3,
+    width: 18,
+    backgroundColor: theme.palette.common.white,
+    position: 'absolute',
+    bottom: -2,
+    left: 'calc(50% - 9px)',
+    transition: theme.transitions.create('opacity'),
+  },
+}));
+
 const ConferenceHome = ({ match }) => {
   const classes = useStyles();
+  const classes1 = useStyles2();
   const conferenceContext = useContext(ConferenceContext);
   const { getConference, conference } = conferenceContext;
   const [open, setOpen] = React.useState(false);
-  const [openKeynote, setOpenKeynote] = React.useState(false);
 
   const {
     title,
@@ -43,6 +118,18 @@ const ConferenceHome = ({ match }) => {
     _id,
   } = conference;
 
+  const researchButton = {
+    url: image,
+    title: 'Research Presentations',
+    width: '50%',
+  };
+
+  const workshops = {
+    url: image,
+    title: 'Workshops',
+    width: '50%',
+  };
+
   const user = 'editor';
 
   useEffect(() => {
@@ -53,13 +140,8 @@ const ConferenceHome = ({ match }) => {
     setOpen(true);
   };
 
-  const handleClickOpenKeynote = () => {
-    setOpenKeynote(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
-    setOpenKeynote(false);
   };
 
   console.log(keynotes);
@@ -138,6 +220,69 @@ const ConferenceHome = ({ match }) => {
         <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
           {keynotes && <KeynoteMap id={match.params.id} />}
         </Grid>
+        <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
+          <Grid container spacing={2}>
+            <Grid item lg={6} className={classes1.root}>
+              <ButtonBase
+                focusRipple
+                component={Link}
+                to={`research/${match.params.id}`}
+                className={classes1.image}
+                focusVisibleClassName={classes1.focusVisible}
+                style={{
+                  width: '100%',
+                }}>
+                <span
+                  className={classes1.imageSrc}
+                  style={{
+                    backgroundImage: `url(${researchButton.url})`,
+                  }}
+                />
+                <span className={classes1.imageBackdrop} />
+                <span className={classes1.imageButton}>
+                  <Typography
+                    component='span'
+                    variant='subtitle1'
+                    color='inherit'
+                    className={classes1.imageTitle}>
+                    {researchButton.title}
+                    <span className={classes1.imageMarked} />
+                  </Typography>
+                </span>
+              </ButtonBase>
+            </Grid>
+
+            <Grid item lg={6} className={classes1.root}>
+              <ButtonBase
+                focusRipple
+                component={Link}
+                to={`workshop/${match.params.id}`}
+                className={classes1.image}
+                focusVisibleClassName={classes1.focusVisible}
+                style={{
+                  width: '100%',
+                }}>
+                <span
+                  className={classes1.imageSrc}
+                  style={{
+                    backgroundImage: `url(${workshops.url})`,
+                  }}
+                />
+                <span className={classes1.imageBackdrop} />
+                <span className={classes1.imageButton}>
+                  <Typography
+                    component='span'
+                    variant='subtitle1'
+                    color='inherit'
+                    className={classes1.imageTitle}>
+                    {workshops.title}
+                    <span className={classes1.imageMarked} />
+                  </Typography>
+                </span>
+              </ButtonBase>
+            </Grid>
+          </Grid>
+        </Grid>
       </Grid>
 
       <Dialog
@@ -145,12 +290,6 @@ const ConferenceHome = ({ match }) => {
         onClose={handleClose}
         aria-labelledby='form-dialog-title'>
         <AddConference confer={conference} />
-      </Dialog>
-      <Dialog
-        open={openKeynote}
-        onClose={handleClose}
-        aria-labelledby='form-dialog-title'>
-        <AddKeynote conferId={_id} />
       </Dialog>
     </Fragment>
   );

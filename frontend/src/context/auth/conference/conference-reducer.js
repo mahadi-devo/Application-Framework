@@ -4,7 +4,7 @@ import {
   GET_CONFERENCE,
   FILTER_CONFERENCE,
   CLEAR_FILTER,
-  CLEAR_KEYNOTES,
+  SAVE_KEYNOTES,
   SAVE_CONFERENCE,
   GET_KEYNOTES,
   EDIT_CONFERENCE,
@@ -42,10 +42,10 @@ const ConferenceReducer = (state, action) => {
         keynotes: action.payload,
       };
 
-    case CLEAR_KEYNOTES:
+    case SAVE_KEYNOTES:
       return {
         ...state,
-        keynotes: null,
+        keynotes: [action.payload, ...state.keynotes],
       };
 
     default:

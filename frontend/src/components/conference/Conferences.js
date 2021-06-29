@@ -64,9 +64,7 @@ const Conferences = ({ conference }) => {
   //       });
   //     }
   //   };
-  const onHandle = () => {
-    clearKeynotes();
-  };
+  const onHandle = () => {};
 
   return (
     <div>
@@ -90,7 +88,7 @@ const Conferences = ({ conference }) => {
               color='textSecondary'
               component='p'
               style={{ textAlign: 'center' }}>
-              {description}
+              {description.slice(0, 150)}
             </Typography>
             <Typography
               variant='body2'

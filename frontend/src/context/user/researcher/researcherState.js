@@ -26,12 +26,21 @@ const researcherState = (props) => {
       },
     };
 
-    console.log(research);
+    const data = {};
+
+    data.title = research.research.title;
+    data.author = research.research.author;
+    data.email = research.research.email;
+    data.abstract = research.research.abstract;
+    data.area = research.research.area;
+    data.file = research.research.file;
+    data.conference = research.confrence;
+    console.log(data);
 
     try {
       const res = await axios.post(
         'http://localhost:5000/api/v1/researcher',
-        research,
+        data,
         config
       );
       dispatch({ type: ADD_RESEARC, payload: res.data });
@@ -43,7 +52,7 @@ const researcherState = (props) => {
   const getResearch = async () => {
     try {
       const res = await axios.get('http://localhost:5000/api/v1/researcher');
-      console.log(res);
+      //console.log(res);
       dispatch({ type: GET_RESEARC, payload: res.data });
     } catch (error) {
       console.error(error);
@@ -56,7 +65,7 @@ const researcherState = (props) => {
         'Content-Type': 'application/json',
       },
     };
-    console.log(id);
+    // console.log(id);
     try {
       const res = await axios.delete(
         `http://localhost:5000/api/v1/researcher/${id}`
@@ -81,6 +90,7 @@ const researcherState = (props) => {
       );
       console.log(res);
       dispatch({ type: UPDATE_RESEARC, payload: res.data });
+      getResearch();
     } catch (error) {
       console.error();
     }

@@ -9,13 +9,14 @@ cloudinary.config({
 
 const add = async (req, res) => {
   console.log('Back');
-  const { title, author, email, abstract, area, file } = req.body;
+  console.log(req.body);
+  const { title, author, email, abstract, area, file, conference } = req.body;
   try {
     //const user = req.body.user;
 
-    // const uploadResponse = await cloudinary.uploader.upload(file, {
-    //   upload_preset: 'ml_default',
-    // });
+    const uploadResponse = await cloudinary.uploader.upload(file, {
+      upload_preset: 'ml_default',
+    });
 
     console.log('Back');
 
@@ -26,7 +27,8 @@ const add = async (req, res) => {
       email: email,
       abstract: abstract,
       area: area,
-      //file: uploadResponse.secure_url,
+      conference: conference,
+      file: uploadResponse.secure_url,
     });
 
     console.log(newResearcher);

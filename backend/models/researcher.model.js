@@ -28,6 +28,10 @@ const ResearcherModel = mongoose.Schema({
   file: {
     type: String,
   },
+  conference: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'conference',
+  },
 });
 
 module.exports = mongoose.model('researcher', ResearcherModel);

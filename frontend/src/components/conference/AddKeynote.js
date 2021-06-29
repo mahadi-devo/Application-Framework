@@ -37,13 +37,12 @@ const useStyles = makeStyles((theme) => ({
 const AddKeynote = (conferId) => {
   const classes = useStyles();
 
-  console.log(conferId.conferId);
-
   const conferenceContext = useContext(ConferenceContext);
   const { addKeynote, conferenceId } = conferenceContext;
 
   useEffect(() => {
-    if (conferId !== null) {
+    if (conferId.conferId !== null) {
+      console.log('con id na');
       setKeynote({
         name: '',
         organization: '',
@@ -51,6 +50,7 @@ const AddKeynote = (conferId) => {
         image: '',
       });
     } else {
+      console.log('con id tiye');
       setKeynote({
         name: '',
         organization: '',
@@ -58,8 +58,9 @@ const AddKeynote = (conferId) => {
         image: '',
       });
     }
-    console.log(conferenceId);
   }, [conferenceId, addKeynote]);
+
+  console.log('add keynote', conferenceId);
 
   const [keynote, setKeynote] = useState({
     name: '',
@@ -75,23 +76,28 @@ const AddKeynote = (conferId) => {
 
   const getFile = (FileData) => {
     const reader = new FileReader();
-    if (FileData.size > 1000000 || FileData.size === 0) {
-      toast('File size must be less than 1mb and greater that 0', {
-        type: 'error',
-      });
-    } else {
-      reader.readAsDataURL(FileData);
-      reader.onloadend = () => {
-        setKeynote({ ...keynote, image: reader.result });
-      };
-      reader.onerror = () => {
-        console.error('AHHHHHHHH!!');
-      };
+    console.log(FileData);
+    if (FileData !== null) {
+      if (FileData.size > 1000000 || FileData.size === 0) {
+        toast('File size must be less than 1mb and greater that 0', {
+          type: 'error',
+        });
+      } else {
+        reader.readAsDataURL(FileData);
+        reader.onloadend = () => {
+          setKeynote({ ...keynote, image: reader.result });
+        };
+        reader.onerror = () => {
+          console.error('AHHHHHHHH!!');
+        };
+      }
     }
   };
 
   const onsubmit = async (e) => {
     e.preventDefault();
+
+    console.log('submit', keynote);
 
     if (name === '' || organization === '') {
       toast('Fields can not be empty', { type: 'error' });

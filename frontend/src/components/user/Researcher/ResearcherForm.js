@@ -8,14 +8,22 @@ import ResearcherContext from '../../../context/user/researcher/researcher-conte
 import { makeStyles } from '@material-ui/core/styles';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+//import { Link, useRouteMatch } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
 }));
-const ResearcherForm = () => {
+const ResearcherForm = ({ confrence }) => {
   const classes = useStyles();
+
+  // const { url } = useRouteMatch();
+
+  // var stuff = url.split('/');
+  // var id = stuff[stuff.length - 1];
+  //console.log(id);
+  console.log(confrence);
 
   const researcherContext = useContext(ResearcherContext);
 
@@ -31,6 +39,7 @@ const ResearcherForm = () => {
         email: '',
         abstract: '',
         area: '',
+        file: '',
       });
     }
   }, [researcherContext, current]);
@@ -59,7 +68,7 @@ const ResearcherForm = () => {
     } else {
       reader.readAsDataURL(FileData);
       reader.onloadend = () => {
-        setConference({ ...conference, image: reader.result });
+        setResearch({ ...research, file: reader.result });
       };
       reader.onerror = () => {
         console.error('AHHHHHHHH!!');
@@ -81,7 +90,7 @@ const ResearcherForm = () => {
       ) {
         toast('Fields can not be empty', { type: 'error' });
       } else {
-        researcherContext.addResearch(research);
+        researcherContext.addResearch({ research, confrence });
         toast('Research created successfully', { type: 'success' });
       }
     } else {

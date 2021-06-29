@@ -34,15 +34,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EditKeynote = (key) => {
+const EditKeynote = (keynot) => {
   const classes = useStyles();
 
   const conferenceContext = useContext(ConferenceContext);
-  const { addKeynote, conferenceId } = conferenceContext;
+  const { updateKeynote, conferenceId } = conferenceContext;
+
+  const [keynote, setKeynote] = useState({
+    name: '',
+    organization: '',
+    image: '',
+    conferenceId: '',
+  });
 
   useEffect(() => {
-    if (key.key !== null) {
-      setKeynote(key.key);
+    if (keynot.keynot !== null) {
+      setKeynote(keynot.keynot);
     } else {
       setKeynote({
         name: '',
@@ -51,15 +58,9 @@ const EditKeynote = (key) => {
         image: '',
       });
     }
-    console.log(conferenceId);
-  }, [conferenceId, addKeynote]);
+    console.log(keynot.keynot);
+  }, [conferenceId, updateKeynote]);
 
-  const [keynote, setKeynote] = useState({
-    name: '',
-    organization: '',
-    image: '',
-    conferenceId: '',
-  });
   const { name, organization, image } = keynote;
 
   const onChange = (e) => {
@@ -68,18 +69,20 @@ const EditKeynote = (key) => {
 
   const getFile = (FileData) => {
     const reader = new FileReader();
-    if (FileData.size > 1000000 || FileData.size === 0) {
-      toast('File size must be less than 1mb and greater that 0', {
-        type: 'error',
-      });
-    } else {
-      reader.readAsDataURL(FileData);
-      reader.onloadend = () => {
-        setKeynote({ ...keynote, image: reader.result });
-      };
-      reader.onerror = () => {
-        console.error('AHHHHHHHH!!');
-      };
+    if (FileData) {
+      if (FileData.size > 1000000 || FileData.size === 0) {
+        toast('File size must be less than 1mb and greater that 0', {
+          type: 'error',
+        });
+      } else {
+        reader.readAsDataURL(FileData);
+        reader.onloadend = () => {
+          setKeynote({ ...keynote, image: reader.result });
+        };
+        reader.onerror = () => {
+          console.error('AHHHHHHHH!!');
+        };
+      }
     }
   };
 
@@ -89,14 +92,8 @@ const EditKeynote = (key) => {
     if (name === '' || organization === '') {
       toast('Fields can not be empty', { type: 'error' });
     } else {
-      if (key.key !== null) {
-        // if (editConference(conference)) {
-        //   toast('Conference edited successfully', { type: 'success' });
-        // }
-      } else {
-        if (addKeynote(keynote)) {
-          toast('Keynote Speaker added successfully', { type: 'success' });
-        }
+      if (updateKeynote(keynote)) {
+        toast('Keynote Speaker updated successfully', { type: 'success' });
       }
 
       setKeynote({
@@ -112,7 +109,7 @@ const EditKeynote = (key) => {
       <CssBaseline />
       <div className={classes.paperContainer}>
         <Typography component='h1' variant='h6'>
-          {key.key !== null ? 'Edit Keynote Speaker' : 'Create Keynote Speaker'}
+          Edit Keynote Speaker
         </Typography>
         <form className={classes.form} onSubmit={onsubmit}>
           <Grid container spacing={2}>
@@ -162,12 +159,12 @@ const EditKeynote = (key) => {
   );
 };
 
-AddKeynote.propTypes = {
-  key: PropTypes.object,
+EditKeynote.propTypes = {
+  keynot: PropTypes.object,
 };
 
-AddKeynote.defaultProps = {
-  key: null,
+EditKeynote.defaultProps = {
+  keynot: null,
 };
 
 export default EditKeynote;

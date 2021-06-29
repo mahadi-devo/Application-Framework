@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const WorkshopForm = () => {
+const WorkshopForm = ({ confrence }) => {
   const workshopContext = useContext(WorkshopContext);
 
   const { current, clearItem } = workshopContext;
@@ -59,9 +59,24 @@ const WorkshopForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    console.log(confrence);
+
     if (current == null) {
-      workshopContext.addWorkshop(workshop);
-      toast('Workshop created successfully', { type: 'success' });
+      if (
+        title == '' ||
+        author == '' ||
+        email == '' ||
+        phone == '' ||
+        discription == '' ||
+        address == '' ||
+        start == '' ||
+        end == ''
+      ) {
+        toast('Fields can not be empty', { type: 'error' });
+      } else {
+        workshopContext.addWorkshop({ workshop, confrence });
+        toast('Workshop created successfully', { type: 'success' });
+      }
     } else {
       workshopContext.updateeWorkshop(workshop);
       toast('Workshop edited successfully', { type: 'success' });

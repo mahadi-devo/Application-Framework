@@ -37,6 +37,10 @@ const WorkshopSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  conference: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'conference',
+  },
 });
 
 module.exports = mongoose.model('workshop', WorkshopSchema);

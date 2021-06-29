@@ -5,7 +5,6 @@ import {
   SET_WORKSHOP,
   UPDATE_WORKSHOP,
   CLEAR_WORKSHOP,
-  DELETE_WORKSHOP,
 } from './types';
 
 export default (state, action) => {

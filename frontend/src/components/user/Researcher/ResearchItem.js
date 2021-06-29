@@ -2,7 +2,9 @@ import React, { useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import ResearcherContext from '../../../context/user/researcher/researcher-context';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -20,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ResearchItem = ({ research }) => {
-  const { _id, title, author, email, abstract, area } = research;
+  const { _id, title, author, email, abstract, area, file } = research;
 
   const researcherContext = useContext(ResearcherContext);
 
@@ -43,6 +45,15 @@ const ResearchItem = ({ research }) => {
     handleClose();
   };
 
+  const fileDownload = (fileUrl, name) => {
+    console.log(fileUrl);
+    var link = document.createElement('a');
+    link.download = name;
+    link.href = fileUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -63,6 +74,12 @@ const ResearchItem = ({ research }) => {
         </Typography>
         <Typography variant='h6' gutterBottom>
           <b>Research Area:</b> {area}
+        </Typography>
+        <Typography variant='h6' gutterBottom>
+          <b>File:</b>
+          <a href={file} target='_blank'>
+            <InsertDriveFileIcon />
+          </a>
         </Typography>
       </Grid>
       <Grid>
