@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
 import SignIn from "./components/auth/SigIn";
 import SignUp from "./components/auth/SignUp";
 import Header from "./components/shared/Header";
@@ -23,7 +23,7 @@ const App = () => {
     <Router>
       <CssBaseline />
       <Header />
-      <Container maxWidth="lg" style={{ minHeight: "90vh" }}>
+      <div style={{ minHeight: "90vh" }}>
         <ConferenceState>
           <ResearcherState>
             <WorkshopState>
@@ -31,28 +31,12 @@ const App = () => {
                 <Route exact path="/sign-in" component={SignIn} />
                 <Route exact path="/sign-up" component={SignUp} />
                 <Route exact path="/conferences" component={Conference} />
-                <Route
-                  exact
-                  path="/conferences/:id"
-                  component={ConferenceHome}
-                />
-                <Route
-                  exact
-                  path="/conferences-add"
-                  component={AddConference}
-                />
+                <Route exact path="/conferences/:id" component={ConferenceHome}/>
+                <Route exact path="/conferences-add" component={AddConference}/>
                 <Route exact path="/pending" component={PendingConference} />
                 <Route exact path="/keynote-add" component={AddKeynote} />
-                <Route
-                  exact
-                  path="/conferences/research/:id"
-                  component={Researcher}
-                />
-                <Route
-                  exact
-                  path="/conferences/workshop/:id"
-                  component={Workshop}
-                />
+                <Route exact path="/conferences/research/:id" component={Researcher}/>
+                <Route exact path="/conferences/workshop/:id" component={Workshop} />
                 <Route path="/adminDashboard" component={AdminDashboard} />
                 <Route path="/approvals" component={approvalComponent} />
                 <Route exact path="/" component={Conference} />
@@ -60,7 +44,7 @@ const App = () => {
             </WorkshopState>
           </ResearcherState>
         </ConferenceState>
-      </Container>
+      </div>
 
       <Footer />
     </Router>

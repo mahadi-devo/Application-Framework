@@ -11,7 +11,10 @@ import ConferenceManage from './conferenceManage/conferenceManage';
 import Home from './home/home';
 import UserManage from './userManage/userManage';
 import AddUser from './userManage/AddUser/AddUser';
+import UpdateUser from './userManage/UpdateUser/UpdateUser';
 import ConferenceRequest from './conferenceRequest/ConferenceRequest';
+import Research from './research//research';
+import Workshop from './workshop/workshop';
 
 const useStyles = makeStyles({
   root: {
@@ -27,7 +30,7 @@ const adminDashboard = () => {
   const { path } = useRouteMatch();
 
   const classes = useStyles();
-  console.log('path is ', path);
+  
   return (
     <div className={classes.root}>
       <SideBar />
@@ -35,16 +38,11 @@ const adminDashboard = () => {
         <Switch>
           <Route exact path={`${path}/user`} component={UserManage} />
           <Route exact path={`${path}/user/add`} component={AddUser} />
-          <Route
-            exact
-            path={`${path}/conference`}
-            component={ConferenceManage}
-          />
-          <Route
-            exact
-            path={`${path}/confirmconferencerequest`}
-            component={ConferenceRequest}
-          />
+          <Route exact path={`${path}/user/update/:id`} component={UpdateUser} />
+          <Route exact path={`${path}/research`} component={Research} />
+          <Route exact path={`${path}/workshop`} component={Workshop} />
+          <Route exact path={`${path}/conference`} component={ConferenceManage} />
+          <Route exact path={`${path}/confirmconferencerequest`} component={ConferenceRequest} />
           <Route exact path={`${path}/home`} component={Home} />
         </Switch>
       </div>

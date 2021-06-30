@@ -1,16 +1,19 @@
-import React from "react";
-import Drawer from "@material-ui/core/Drawer";
-import Typography from "@material-ui/core/Typography";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import { makeStyles } from "@material-ui/core/styles";
-import HomeIcon from "@material-ui/icons/Home";
-import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import TimelineIcon from "@material-ui/icons/Timeline";
-import PaymentIcon from "@material-ui/icons/Payment";
-import { Link, useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import React from 'react';
+import Drawer from '@material-ui/core/Drawer';
+import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles } from '@material-ui/core/styles';
+import HomeIcon from '@material-ui/icons/Home';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import TimelineIcon from '@material-ui/icons/Timeline';
+import PaymentIcon from '@material-ui/icons/Payment';
+import SearchIcon from '@material-ui/icons/Search';
+import WorkIcon from '@material-ui/icons/Work';
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
+import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
 const drawerWidth = 250;
 
@@ -52,8 +55,8 @@ function SideBar({ approvalConfig = null }) {
       to: `${url}/user`,
     },
     {
-      itemText: "Conference Request",
-      itemIcon: <TimelineIcon color="primary" />,
+      itemText: 'Conference Request',
+      itemIcon: <CreateNewFolderIcon color="primary" />,
       to: `${url}/confirmconferencerequest`,
     },
     {
@@ -62,7 +65,17 @@ function SideBar({ approvalConfig = null }) {
       to: `${url}/conference`,
     },
     {
-      itemText: "Payment",
+      itemText: 'Research',
+      itemIcon: <SearchIcon color="primary" />,
+      to: `${url}/research`,
+    },
+    {
+      itemText: 'Workshop',
+      itemIcon: <WorkIcon color="primary" />,
+      to: `${url}/workshop`,
+    },
+    {
+      itemText: 'Payment',
       itemIcon: <PaymentIcon color="primary" />,
       to: `${url}/payment`,
     },

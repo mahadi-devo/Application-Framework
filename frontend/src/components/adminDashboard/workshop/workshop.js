@@ -12,8 +12,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { Link, useRouteMatch } from 'react-router-dom';
 
-import ConferencesContext from '../../../context/conference/conference-context';
-import ConferenceHome from '../../conference/ConferenceHome';
+import workshopContext from '../../../context/user/workshop/workshop-context';
 import Search from '../../shared/Search';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,40 +44,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const conferenceManage = () => {
+const workshop = () => {
   const classes = useStyles();
   const { url } = useRouteMatch();
 
-  const { conferences, getAllConferences, filtered, clearFilter } =
-    useContext(ConferencesContext);
-  const [showConference, setShowConference] = useState(false);
+  const { workshops, getWorkshop } =
+    useContext(workshopContext);
+  const [showWorkshops, setShowWorkshops] = useState(false);
   const [current, setCurrent] = useState('');
 
   const OnIconClicked = (id) => {
     setCurrent(id);
-    setShowConference(true);
-    clearFilter();
+    setShowWorkshops(true);
   };
 
   const OnBackIconClicked = () => {
-    setShowConference(false);
+    setShowWorkshops(false);
   };
 
   const columns = [
-    { field: 'title', headerName: 'Conference Title', flex: 1 },
-    { field: 'startDate', headerName: 'Start Date', width: 150 },
+    { field: 'title', headerName: 'Title', flex: 1 },
+    { field: 'author', headerName: 'author', width: 150 },
     {
-      field: 'endDate',
-      headerName: 'End Date',
+      field: 'discription',
+      headerName: 'Discription',
       sortable: true,
       valueGetter: '',
+      flex: 1,
     },
-    {
-      field: 'status',
-      headerName: 'Role',
-      type: 'string',
-      width: 110,
-    },
+    { field: 'status', headerName: 'Status', width: 150 },
     {
       field: 'action',
       headerName: 'Action',
@@ -104,28 +98,22 @@ const conferenceManage = () => {
     {
       id: '60b3ce0e92ac32b7fba8acd2',
       title: 'React world',
-      startDate: '2021-12-31T18:30:00.000+00:00',
-      endDate: '2021-03-31T18:30:00.000+00:00',
+      author: '2021-12-31T18:30:00.000+00:00',
+      discription: '2021-03-31T18:30:00.000+00:00',
       workshops: ['60b3ced0c512ec7927f39f32', '60b3ceddc512ec7927f39f33'],
       researches: ['60b3cefac512ec7927f39f34', '60b3cf01c512ec7927f39f35'],
       status: 'pending',
     },
   ];
-  console.log('in con', conferences);
-  if (conferences) {
-    rows = conferences.map((row) => {
-      return { ...row, id: row._id };
-    });
-  }
-
-  if (filtered) {
-    rows = filtered.map((row) => {
+  // console.log('in con', workshops);
+  if (workshops) {
+    rows = workshops.map((row) => {
       return { ...row, id: row._id };
     });
   }
 
   useEffect(() => {
-    getAllConferences();
+    getWorkshop();
   }, []);
 
   return (
@@ -150,11 +138,11 @@ const conferenceManage = () => {
                 Total :
               </Typography>
               <Typography variant="h5" gutterBottom>
-                {conferences.length}
+                {workshops.length}
               </Typography>
             </div>
         </Grid>
-        {showConference ? (
+        {showWorkshops ? (
           <Grid item md={4}>
             <IconButton
               aria-label="back"
@@ -172,7 +160,7 @@ const conferenceManage = () => {
         )}
       </Grid>
 
-      {!showConference ? (
+      {!showWorkshops ? (
         <div style={{ height: '65vh', width: '100%' }}>
           <DataGrid
             rows={rows}
@@ -182,13 +170,9 @@ const conferenceManage = () => {
             disableSelectionOnClick
           />
         </div>
-      ) : (
-        <Container maxWidth="lg">
-          <ConferenceHome id={current} />
-        </Container>
-      )}
+      ) : null }
     </div>
   );
 };
 
-export default conferenceManage;
+export default workshop

@@ -13,7 +13,7 @@ import {
 
 const researcherState = (props) => {
   const initialState = {
-    researchs: null,
+    researchs: [],
     current: null,
   };
 

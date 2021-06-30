@@ -13,7 +13,7 @@ import {
 
 const workshopState = (props) => {
   const initialState = {
-    workshops: null,
+    workshops: [],
     current: null,
   };
 

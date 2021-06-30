@@ -1,30 +1,38 @@
-import React, { useEffect, useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect, useContext, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Typography,
   Grid,
   Button,
   IconButton,
-  FormControl,
-  InputLabel,
-  Select,
-} from "@material-ui/core";
-import { DataGrid } from "@material-ui/data-grid";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import axios from "axios";
+  Container,
+} from '@material-ui/core';
+import { DataGrid } from '@material-ui/data-grid';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
-import ConferencesContext from "../../../context/conference/conference-context";
+import ConferencesContext from '../../../context/conference/conference-context';
+import ConferenceHome from '../../conference/ConferenceHome';
+
+
+toast.configure();
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: "10px",
+    margin: '10px',
   },
   title: {
-    marginTop: "10px",
+    marginTop: '10px',
   },
   button: {
     margin: theme.spacing(1),
     padding: theme.spacing(0.5),
+  },
+  buttonback: {
+    margin: theme.spacing(1),
+    marginRight: theme.spacing(3),
   },
 }));
 
@@ -34,11 +42,23 @@ const ConferenceRequest = () => {
   const { pendingConferences, getPendingConferences } =
     useContext(ConferencesContext);
 
+  const [showConference, setShowConference] = useState(false);
+  const [current, setCurrent] = useState('');
+
+  const OnIconClicked = (id) => {
+    setCurrent(id);
+    setShowConference(true);
+  };
+
+  const OnBackIconClicked = () => {
+    setShowConference(false);
+  }
+
   const OnButtonClicked = (id, status) => {
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("token")}`,
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     };
 
@@ -51,6 +71,13 @@ const ConferenceRequest = () => {
       )
       .then((res) => {
         // console.log(res.data.conference);
+        if (status === 1) {
+          toast('successfully Accepted', { type: 'success' });
+        }
+
+        if (status === 2) {
+          toast('successfully Declined', { type: 'success' });
+        }
         getPendingConferences();
       })
       .catch((error) => {
@@ -59,29 +86,36 @@ const ConferenceRequest = () => {
   };
 
   const columns = [
-    { field: "title", headerName: "Conference Title", flex: 1 },
-    { field: "startDate", headerName: "Start Date", width: 145 },
+    { field: 'title', headerName: 'Conference Title', flex: 1 },
+    { field: 'startDate', headerName: 'Start Date', width: 145 },
     {
-      field: "endDate",
-      headerName: "End Date",
+      field: 'endDate',
+      headerName: 'End Date',
       sortable: true,
-      valueGetter: "",
+      valueGetter: '',
       width: 140,
     },
     {
-      field: "user",
-      headerName: "Editor",
-      type: "string",
+      field: 'user',
+      headerName: 'Editor',
+      type: 'string',
       width: 150,
     },
     {
-      field: "action",
-      headerName: "Action",
-      width: 170,
+      field: 'action',
+      headerName: 'Action',
+      width: 220,
       renderCell: (params) => {
         // console.log('params',params);
         return (
           <>
+            <IconButton
+              aria-label="view"
+              onClick={() => OnIconClicked(params.row._id)}
+              color="primary"
+            >
+              <VisibilityIcon />
+            </IconButton>
             <Button
               variant="contained"
               color="primary"
@@ -120,24 +154,51 @@ const ConferenceRequest = () => {
 
   return (
     <div className={classes.root}>
-      <Typography
-        className={classes.title}
-        variant="h5"
-        color="textPrimary"
-        gutterBottom
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
       >
-        Conference Request
-      </Typography>
+        <Grid item>
+          <Typography
+            className={classes.title}
+            variant="h5"
+            color="textPrimary"
+            gutterBottom
+          >
+            Conference Request
+          </Typography>
+        </Grid>
+        {showConference ? (
+          <Grid item>
+            <IconButton
+              aria-label="back"
+              onClick={() => OnBackIconClicked()}
+              className={classes.buttonback}
+              color="primary"
+            >
+              <ArrowBackIcon fontSize="large" />
+            </IconButton>
+          </Grid>
+        ) : null}
+      </Grid>
 
-      <div style={{ height: "65vh", width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={7}
-          checkboxSelection
-          disableSelectionOnClick
-        />
-      </div>
+      {!showConference ? (
+        <div style={{ height: '65vh', width: '100%' }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={7}
+            checkboxSelection
+            disableSelectionOnClick
+          />
+        </div>
+      ) : (
+        <Container maxWidth="lg">
+          <ConferenceHome id={current} />
+        </Container>
+      )}
     </div>
   );
 };
