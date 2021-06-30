@@ -1,39 +1,39 @@
-import React, { Fragment, useContext } from 'react';
-import cx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Avatar from '@material-ui/core/Avatar';
-import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
-import EditKeynote from './EditKeynote';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import ConferenceContext from '../../context/auth/conference/conference-context';
+import React, { Fragment, useContext } from "react";
+import cx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Avatar from "@material-ui/core/Avatar";
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
+import EditKeynote from "./EditKeynote";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+import ConferenceContext from "../../context/conference/conference-context";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='up' ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const useStyles = makeStyles(({ palette }) => ({
   card: {
     borderRadius: 12,
     maxWidth: 400,
-    textAlign: 'center',
+    textAlign: "center",
   },
   avatar: {
     width: 150,
     height: 150,
-    margin: 'auto',
+    margin: "auto",
   },
   heading: {
     fontSize: 18,
-    fontWeight: 'bold',
-    letterSpacing: '0.5px',
+    fontWeight: "bold",
+    letterSpacing: "0.5px",
     marginTop: 8,
     marginBottom: 2,
   },
@@ -51,9 +51,9 @@ const useStyles = makeStyles(({ palette }) => ({
   },
   statValue: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 4,
-    letterSpacing: '1px',
+    letterSpacing: "1px",
   },
 }));
 
@@ -79,7 +79,7 @@ const Keynote = (keynote) => {
   };
 
   const delKeynote = () => {
-    console.log('delete');
+    console.log("delete");
     deleteKeynote(keynote.keynote);
   };
 
@@ -87,7 +87,7 @@ const Keynote = (keynote) => {
     setOpenDelete(true);
   };
 
-  const user = 'editor';
+  const user = localStorage.getItem("userRole");
 
   return (
     <Fragment>
@@ -97,21 +97,23 @@ const Keynote = (keynote) => {
           <h3 className={styles.heading}>{name}</h3>
           <span className={styles.subheader}>{organization}</span>
         </CardContent>
-        {user === 'editor' && (
+        {user === "editor" && (
           <CardActions>
             <Button
-              size='small'
-              variant='contained'
-              color='secondary'
-              onClick={handleClickOpen}>
+              size="small"
+              variant="contained"
+              color="secondary"
+              onClick={handleClickOpen}
+            >
               Edit
             </Button>
 
             <Button
-              size='small'
-              variant='contained'
-              color='secondary'
-              onClick={handleClickOpenDelete}>
+              size="small"
+              variant="contained"
+              color="secondary"
+              onClick={handleClickOpenDelete}
+            >
               Delete
             </Button>
           </CardActions>
@@ -121,7 +123,8 @@ const Keynote = (keynote) => {
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby='form-dialog-title'>
+        aria-labelledby="form-dialog-title"
+      >
         <EditKeynote keynot={keynote.keynote} />
       </Dialog>
 
@@ -130,18 +133,19 @@ const Keynote = (keynote) => {
         TransitionComponent={Transition}
         keepMounted
         onClose={handleClose}
-        aria-labelledby='alert-dialog-slide-title'
-        aria-describedby='alert-dialog-slide-description'>
-        <DialogTitle id='alert-dialog-slide-title'>
-          {'Delete Keynote Speaker from conference'}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+          {"Delete Keynote Speaker from conference"}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id='alert-dialog-slide-description'>
+          <DialogContentText id="alert-dialog-slide-description">
             {`Delete ${keynote.keynote.name}`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color='primary'>
+          <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
           <Button
@@ -149,7 +153,8 @@ const Keynote = (keynote) => {
               delKeynote();
               handleClose();
             }}
-            color='primary'>
+            color="primary"
+          >
             Delete
           </Button>
         </DialogActions>

@@ -16,6 +16,8 @@ const conference = require('./routes/conference.route');
 const researcher = require('./routes/researcher.route');
 const workshop = require('./routes/workshop.route');
 const keynote = require('./routes/keynote.route');
+const stripe = require('./routes/stripe.route');
+const user = require('./routes/user.route');
 
 const app = express();
 
@@ -28,9 +30,11 @@ app.use(cors());
 // Mount routes
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/conferences', conference);
+app.use('/api/v1/user', user);
 app.use('/api/v1/researcher', researcher);
 app.use('/api/v1/workshop', workshop);
 app.use('/api/v1/keynotes', keynote);
+app.use('/api/v1/stripe', stripe);
 
 // morgan http
 process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : '';

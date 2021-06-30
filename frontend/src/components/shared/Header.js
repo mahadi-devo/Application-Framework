@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
@@ -6,6 +7,10 @@ import Typography from "@material-ui/core/Typography";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -24,9 +29,34 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
   const classes = useStyles();
+  let history = useHistory();
+  let [auth, setAuth] = useState(false);
 
-  const onsubmit = async (e) => {
+  const getToken = () => {
+    const token = localStorage.getItem("token");
+    if (token === "null") {
+      setAuth(false);
+    } else {
+      setAuth(true);
+    }
+  };
+
+  useEffect(() => {
+    getToken();
+  }, [auth]);
+
+  const onsubmit = async (e, props) => {
     e.preventDefault();
+
+    await localStorage.setItem("userId", null);
+    await localStorage.setItem("userEmail", null);
+    await localStorage.setItem("userRole", null);
+    await localStorage.setItem("token", null);
+
+    setAuth("null");
+
+    toast("Log out success!", { type: "success" });
+    history.push("/conferences");
   };
 
   return (
@@ -44,20 +74,30 @@ const Header = () => {
         >
           Conference Management System
         </Typography>
-        <Box mr={1}>
-          <Button size="small" component={Link} to="/sign-in">
-            Sign in
+        {!auth && (
+          <Box mr={1}>
+            <Button size="small" component={Link} to="/sign-in">
+              Sign in
+            </Button>
+          </Box>
+        )}{" "}
+        {!auth && (
+          <Button
+            variant="outlined"
+            size="small"
+            component={Link}
+            to="/sign-up"
+          >
+            Sign up
           </Button>
-        </Box>
-        <Button variant="outlined" size="small" component={Link} to="/sign-up">
-          Sign up
-        </Button>
-
-        {/*<form onSubmit={onsubmit}>*/}
-        {/*  <Button type="submit" size="small" variant="outlined">*/}
-        {/*    Logout*/}
-        {/*  </Button>*/}
-        {/*</form>*/}
+        )}
+        {auth && (
+          <form onSubmit={onsubmit}>
+            <Button type="submit" size="small" variant="outlined">
+              Logout
+            </Button>
+          </form>
+        )}
       </Toolbar>
     </React.Fragment>
   );

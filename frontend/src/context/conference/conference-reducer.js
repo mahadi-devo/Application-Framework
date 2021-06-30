@@ -8,6 +8,7 @@ import {
   SAVE_CONFERENCE,
   GET_KEYNOTES,
   EDIT_CONFERENCE,
+  GET_PENDING_CONFERENCES,
 } from './types';
 
 const ConferenceReducer = (state, action) => {
@@ -22,6 +23,12 @@ const ConferenceReducer = (state, action) => {
       return {
         ...state,
         conference: action.payload,
+      };
+
+    case GET_PENDING_CONFERENCES:
+      return {
+        ...state,
+        pendingConference: action.payload,
       };
 
     case EDIT_CONFERENCE:
@@ -46,6 +53,24 @@ const ConferenceReducer = (state, action) => {
       return {
         ...state,
         keynotes: [action.payload, ...state.keynotes],
+      };
+
+    case FILTER_CONFERENCE:
+      return {
+        ...state,
+        filtered: state.conferences.filter((conference) => {
+          const regex = RegExp(`${action.payload}`, 'gi');
+
+          return (
+            conference.title.match(regex) || conference.location.match(regex)
+          );
+        }),
+      };
+
+    case CLEAR_FILTER:
+      return {
+        ...state,
+        filtered: null,
       };
 
     default:
