@@ -67,7 +67,27 @@ const Header = () => {
           <>
             {localStorage.getItem('userRole') === 'admin' ? (
               <Box mr={1}>
-                <Button variant="contained" color="primary" size="small" component={Link} to="/adminDashboard/conference">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  component={Link}
+                  to="/adminDashboard/conference"
+                >
+                  Dashboard
+                </Button>
+              </Box>
+            ) : null}
+
+            {localStorage.getItem('userRole') === 'reviewer' ? (
+              <Box mr={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  component={Link}
+                  to="/approvals/workshops"
+                >
                   Dashboard
                 </Button>
               </Box>
