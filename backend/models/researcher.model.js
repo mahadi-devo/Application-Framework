@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const ResearcherModel = mongoose.Schema({
-  // user: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'user',
-  // },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+  },
   title: {
     type: String,
     required: true,
@@ -28,13 +28,14 @@ const ResearcherModel = mongoose.Schema({
   file: {
     type: String,
   },
+  status: {
+    type: String,
+    enum: ['Pending', 'Approved', 'Rejected'],
+    default: 'Pending',
+  },
   conference: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'conference',
-  },
-  status: {
-    type: String,
-    default: 'pending',
   },
 });
 

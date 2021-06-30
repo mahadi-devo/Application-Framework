@@ -23,6 +23,7 @@ const researcherState = (props) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     };
 
@@ -50,8 +51,17 @@ const researcherState = (props) => {
   };
 
   const getResearch = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    };
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/researcher');
+      const res = await axios.get(
+        'http://localhost:5000/api/v1/researcher',
+        config
+      );
       //console.log(res);
       dispatch({ type: GET_RESEARC, payload: res.data });
     } catch (error) {
@@ -63,12 +73,14 @@ const researcherState = (props) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     };
     // console.log(id);
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/v1/researcher/${id}`
+        `http://localhost:5000/api/v1/researcher/${id}`,
+        config
       );
       dispatch({ type: DELETE_RESEARC, payload: id });
     } catch (error) {
@@ -80,6 +92,7 @@ const researcherState = (props) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     };
     try {

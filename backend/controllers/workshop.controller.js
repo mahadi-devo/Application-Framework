@@ -13,8 +13,11 @@ const add = async (req, res) => {
     conference,
   } = req.body;
 
+  user = req.user._id;
+
   try {
     const newWorkShop = new Workshop({
+      user,
       address,
       author,
       discription,
@@ -72,9 +75,42 @@ const update = async (req, res) => {
   }
 };
 
-const get = async (req, res) => {
+const updateWorkshopStatus = async (req, res) => {
   try {
-    const workshop = await Workshop.find();
+    const { workshopId, type } = req.body;
+
+    let workshop = await Workshop.findById(workshopId);
+
+    if (!workshop) {
+      return res.status(400).json({ msg: 'workshop cannot be found' });
+    }
+
+    const result = await Workshop.updateOne(
+      { _id: workshop._id },
+      { status: type }
+    );
+
+    res.status(200).json({ result });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json('Server error update');
+  }
+};
+
+const get = async (req, res) => {
+  user = req.user._id;
+
+  try {
+    const workshop = await Workshop.find({ user: user });
+    res.json(workshop);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const getAllWorkshops = async (req, res) => {
+  try {
+    const workshop = await Workshop.find().populate('conference');
     res.json(workshop);
   } catch (err) {
     console.error(err);
@@ -93,4 +129,11 @@ const del = async (req, res) => {
     console.log(error);
   }
 };
-module.exports = { add, get, update, del };
+module.exports = {
+  add,
+  get,
+  update,
+  del,
+  getAllWorkshops,
+  updateWorkshopStatus,
+};

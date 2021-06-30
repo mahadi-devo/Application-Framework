@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ResearchItem = ({ research }) => {
-  const { _id, title, author, email, abstract, area, file } = research;
+  const { _id, title, author, email, abstract, area, file, status } = research;
 
   const researcherContext = useContext(ResearcherContext);
 
@@ -76,6 +76,9 @@ const ResearchItem = ({ research }) => {
           <b>Research Area:</b> {area}
         </Typography>
         <Typography variant='h6' gutterBottom>
+          <b>Status:</b> {status}
+        </Typography>
+        <Typography variant='h6' gutterBottom>
           <b>File:</b>
           <a href={file} target='_blank'>
             <InsertDriveFileIcon />
@@ -83,14 +86,19 @@ const ResearchItem = ({ research }) => {
         </Typography>
       </Grid>
       <Grid>
-        <Button
-          variant='contained'
-          onClick={() => setItem(research)}
-          color='primary'
-          className='p-1'
-          className={classes.button}>
-          Update
-        </Button>
+        {status == 'Approved' ? (
+          <Typography></Typography>
+        ) : (
+          <Button
+            variant='contained'
+            onClick={() => setItem(research)}
+            color='primary'
+            className='p-1'
+            className={classes.button}>
+            Update
+          </Button>
+        )}
+
         <Button
           variant='contained'
           color='secondary'

@@ -16,6 +16,7 @@ import AdminDashboard from "./components/adminDashboard/adminDashboard";
 import PendingConference from "./components/conference/PendingConference";
 import AddKeynote from "./components/conference/AddKeynote";
 import { Container, CssBaseline } from "@material-ui/core";
+import approvalComponent from "./components/adminDashboard/approvals/approvals";
 
 const App = () => {
   return (
@@ -53,6 +54,7 @@ const App = () => {
                   component={Workshop}
                 />
                 <Route path="/adminDashboard" component={AdminDashboard} />
+                <Route path="/approvals" component={approvalComponent} />
                 <Route exact path="/" component={Conference} />
               </Switch>
             </WorkshopState>

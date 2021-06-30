@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { Fragment, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -11,6 +11,11 @@ import { Link } from 'react-router-dom';
 import StripeCheckout from 'react-stripe-checkout';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import 'react-toastify/dist/ReactToastify.css';
 
 toast.configure();
@@ -27,6 +32,13 @@ const useStyles = makeStyles({
 });
 
 const Conferences = ({ conference }) => {
+  const [open, setOpen] = React.useState(false);
+  const [email, setEmail] = useState('');
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const classes = useStyles();
   const {
     title,
@@ -36,10 +48,13 @@ const Conferences = ({ conference }) => {
     attendPrice,
     description,
     _id,
+    location,
     status,
   } = conference;
 
   const onHandle = () => {};
+
+  const user = localStorage.getItem('userRole');
 
   const handleToken = async (token) => {
     try {
@@ -50,18 +65,37 @@ const Conferences = ({ conference }) => {
       const { status } = res.data;
 
       if (status === 'success') {
-        // const body = {
-        //   email: localStorage.getItem('email'),
-        //   subject: 'Order Confirmation',
-        //   textBody:
-        //     'Thank you for placing order, your order successfully placed.',
-        //   htmlBody: `<h2>Order Confirmation</h2></br><h4>Thank you for placing order, we hope you enjoyed shopping with us. Amount of $${getsubtotal()} is added to your monthly bill.</h4>
-        //     </br><p>Thank You</p>
-        //     </br><p>Mini Store</p>`,
-        // };
-        // return await axios.post('/api/v1/response/email', body);
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        };
 
-        console.log('suc');
+        const res = await axios.post(
+          'http://localhost:5000/api/v1/payment',
+          { conferenceId: _id, type: '1' },
+          config
+        );
+
+        if (res.data.payment.type === '1') {
+          setEmail(res.data.payment.user.email);
+          setOpen(true);
+        }
+
+        const body = {
+          email: localStorage.getItem('userEmail'),
+          subject: 'Conference Registration Confirmation',
+          textBody: 'Attendance Registration Confirmation',
+          htmlBody: `<h2>Registration Confirmation</h2></br><h4>Thank you for registering for ${title} on ${startDate} to
+            ${endDate} at ${location}
+          , </h4>
+            </br><p>Reference Id</p><p>${res.data.payment._id}</p>
+            </br><p>Thank You</p>
+            </br><p>Conference Management System</p>`,
+        };
+
+        await axios.post('http://localhost:5000/api/v1/response', body);
       }
     } catch (error) {
       console.log(error);
@@ -133,6 +167,27 @@ const Conferences = ({ conference }) => {
           )}
         </CardActions>
       </Card>
+      <Fragment>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'>
+          <DialogTitle id='alert-dialog-title'>
+            {'Registration to the conference is successfull'}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id='alert-dialog-description'>
+              {`Confirmation email will be sent to ${email}`}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color='primary' autoFocus>
+              close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Fragment>
     </div>
   );
 };

@@ -1,91 +1,95 @@
-import React, { Fragment, useContext, useEffect } from "react";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
-import ConferenceContext from "../../context/conference/conference-context";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import StripeCheckout from "react-stripe-checkout";
-import Dialog from "@material-ui/core/Dialog";
-import AddConference from "./AddConference";
-import KeynoteMap from "./KeynoteMap";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { Fragment, useContext, useEffect, useState } from 'react';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import ConferenceContext from '../../context/conference/conference-context';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import StripeCheckout from 'react-stripe-checkout';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import AddConference from './AddConference';
+import KeynoteMap from './KeynoteMap';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: "maxContent",
+    maxWidth: 'maxContent',
   },
   header1: {
-    marginTop: "20px",
+    marginTop: '20px',
   },
   headerImg: {
-    objectPosition: "center",
-    marginTop: "10px",
+    objectPosition: 'center',
+    marginTop: '10px',
   },
 });
 
 const useStyles2 = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    flexWrap: "wrap",
+    display: 'flex',
+    flexWrap: 'wrap',
     minWidth: 300,
-    width: "100%",
+    width: '100%',
   },
   image: {
-    position: "relative",
+    position: 'relative',
     height: 200,
-    [theme.breakpoints.down("xs")]: {
-      width: "100% !important", // Overrides inline-style
+    [theme.breakpoints.down('xs')]: {
+      width: '100% !important', // Overrides inline-style
       height: 100,
     },
-    "&:hover, &$focusVisible": {
+    '&:hover, &$focusVisible': {
       zIndex: 1,
-      "& $imageBackdrop": {
+      '& $imageBackdrop': {
         opacity: 0.15,
       },
-      "& $imageMarked": {
+      '& $imageMarked': {
         opacity: 0,
       },
-      "& $imageTitle": {
-        border: "4px solid currentColor",
+      '& $imageTitle': {
+        border: '4px solid currentColor',
       },
     },
   },
   focusVisible: {},
   imageButton: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     color: theme.palette.common.white,
   },
   imageSrc: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    backgroundSize: "cover",
-    backgroundPosition: "center 40%",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center 40%',
   },
   imageBackdrop: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
     backgroundColor: theme.palette.common.black,
     opacity: 0.4,
-    transition: theme.transitions.create("opacity"),
+    transition: theme.transitions.create('opacity'),
   },
   imageTitle: {
-    position: "relative",
+    position: 'relative',
     padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${
       theme.spacing(1) + 6
     }px`,
@@ -94,10 +98,10 @@ const useStyles2 = makeStyles((theme) => ({
     height: 3,
     width: 18,
     backgroundColor: theme.palette.common.white,
-    position: "absolute",
+    position: 'absolute',
     bottom: -2,
-    left: "calc(50% - 9px)",
-    transition: theme.transitions.create("opacity"),
+    left: 'calc(50% - 9px)',
+    transition: theme.transitions.create('opacity'),
   },
 }));
 
@@ -107,6 +111,8 @@ const ConferenceHome = ({ match }) => {
   const conferenceContext = useContext(ConferenceContext);
   const { getConference, conference } = conferenceContext;
   const [open, setOpen] = React.useState(false);
+  const [openConfirmation, setOpenConfirmation] = React.useState(false);
+  const [email, setEmail] = useState('');
 
   const {
     title,
@@ -123,18 +129,18 @@ const ConferenceHome = ({ match }) => {
   } = conference;
 
   const researchButton = {
-    url: "https://res.cloudinary.com/mahadi/image/upload/v1624966205/jogc1e3rj4g2ibqzt22w_bvh2h0.jpg",
-    title: "Research Presentations",
-    width: "50%",
+    url: 'https://res.cloudinary.com/mahadi/image/upload/v1624966205/jogc1e3rj4g2ibqzt22w_bvh2h0.jpg',
+    title: 'Research Presentations',
+    width: '50%',
   };
 
   const workshops = {
-    url: "https://res.cloudinary.com/mahadi/image/upload/v1624975924/uihwgwangknjmjwku9g1.jpg",
-    title: "Workshops",
-    width: "50%",
+    url: 'https://res.cloudinary.com/mahadi/image/upload/v1624975924/uihwgwangknjmjwku9g1.jpg',
+    title: 'Workshops',
+    width: '50%',
   };
 
-  const user = localStorage.getItem("userRole");
+  const user = localStorage.getItem('userRole');
 
   useEffect(() => {
     getConference(match.params.id);
@@ -146,17 +152,18 @@ const ConferenceHome = ({ match }) => {
 
   const handleClose = () => {
     setOpen(false);
+    setOpenConfirmation(false);
   };
 
   const handleToken = async (token) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/v1/stripe", {
+      const res = await axios.post('http://localhost:5000/api/v1/stripe', {
         token,
         attendPrice,
       });
       const { status } = res.data;
 
-      if (status === "success") {
+      if (status === 'success') {
         // const body = {
         //   email: localStorage.getItem('email'),
         //   subject: 'Order Confirmation',
@@ -168,7 +175,37 @@ const ConferenceHome = ({ match }) => {
         // };
         // return await axios.post('/api/v1/response/email', body);
 
-        console.log("suc");
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        };
+
+        const res = await axios.post(
+          'http://localhost:5000/api/v1/payment',
+          { conferenceId: _id, type: '1' },
+          config
+        );
+
+        if (res.data.payment.type === '1') {
+          setEmail(res.data.payment.user.email);
+          setOpenConfirmation(true);
+        }
+
+        const body = {
+          email: localStorage.getItem('userEmail'),
+          subject: 'Conference Registration Confirmation',
+          textBody: 'Attendance Registration Confirmation',
+          htmlBody: `<h2>Registration Confirmation</h2></br><h4>Thank you for registering for ${title} on ${startDate} to
+            ${endDate} at ${location}
+          , </h4>
+            </br><p>Reference Id</p><p>${res.data.payment._id}</p>
+            </br><p>Thank You</p>
+            </br><p>Conference Management System</p>`,
+        };
+
+        await axios.post('http://localhost:5000/api/v1/response', body);
       }
     } catch (error) {
       console.log(error);
@@ -177,15 +214,14 @@ const ConferenceHome = ({ match }) => {
 
   return (
     <Fragment>
-      <Grid container justify="center" style={{ marginTop: "15px" }}>
+      <Grid container justify='center' style={{ marginTop: '15px' }}>
         <Grid item>
-          {user === "editor" && (
+          {user === 'editor' && (
             <Button
-              style={{ marginTop: "10px", marginBottom: "10px" }}
-              variant="contained"
-              color="secondary"
-              onClick={handleClickOpen}
-            >
+              style={{ marginTop: '10px', marginBottom: '10px' }}
+              variant='contained'
+              color='secondary'
+              onClick={handleClickOpen}>
               Edit Conference
             </Button>
           )}
@@ -194,68 +230,63 @@ const ConferenceHome = ({ match }) => {
         <Grid
           item
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
           lg={12}
           md={12}
-          sm={12}
-        >
-          <img height="600" src={`${image}`}></img>
+          sm={12}>
+          <img height='600' src={`${image}`}></img>
         </Grid>
         <Grid item lg={9} md={9} sm={12}>
           <Typography
-            variant="h5"
-            color="primary"
+            variant='h5'
+            color='primary'
             className={classes.header1}
-            style={{ textAlign: "center" }}
-          >
+            style={{ textAlign: 'center' }}>
             About Conference
           </Typography>
           <Typography
-            variant="h4"
+            variant='h4'
             style={{
-              textAlign: "center",
-              color: "#212121",
-              marginTop: "15px",
-              letterSpacing: "1px",
-            }}
-          >
-            <Box fontWeight="fontWeightBold" m={1}>
+              textAlign: 'center',
+              color: '#212121',
+              marginTop: '15px',
+              letterSpacing: '1px',
+            }}>
+            <Box fontWeight='fontWeightBold' m={1}>
               {title}
             </Box>
           </Typography>
           <Typography
             style={{
-              textAlign: "justify",
-              color: "#424242",
-              marginTop: "25px",
-            }}
-          >
+              textAlign: 'justify',
+              color: '#424242',
+              marginTop: '25px',
+            }}>
             <Box fontSize={19} m={1}>
               {description}
             </Box>
           </Typography>
           <Typography
             style={{
-              textAlign: "center",
-              color: "#424242",
-              marginTop: "33px",
+              textAlign: 'center',
+              color: '#424242',
+              marginTop: '33px',
               fontSize: 20,
-              fontWeight: "bold",
+              fontWeight: 'bold',
               marginBottom: 4,
-            }}
-          >
-            <Box fontSize="h6.fontSize" m={1}>
+            }}>
+            <Box fontSize='h6.fontSize' m={1}>
               {`${startDate} to ${endDate} in ${location}`}
             </Box>
           </Typography>
         </Grid>
-        <Grid item style={{ marginTop: "23px" }} lg={9} md={9} sm={12}>
+        <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
           {keynotes && <KeynoteMap id={match.params.id} />}
         </Grid>
-        <Grid item style={{ marginTop: "23px" }} lg={9} md={9} sm={12}>
+        <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
           <Grid container spacing={2}>
             <Grid item lg={6} className={classes1.root}>
               <ButtonBase
@@ -265,9 +296,8 @@ const ConferenceHome = ({ match }) => {
                 className={classes1.image}
                 focusVisibleClassName={classes1.focusVisible}
                 style={{
-                  width: "100%",
-                }}
-              >
+                  width: '100%',
+                }}>
                 <span
                   className={classes1.imageSrc}
                   style={{
@@ -277,11 +307,10 @@ const ConferenceHome = ({ match }) => {
                 <span className={classes1.imageBackdrop} />
                 <span className={classes1.imageButton}>
                   <Typography
-                    component="span"
-                    variant="subtitle1"
-                    color="inherit"
-                    className={classes1.imageTitle}
-                  >
+                    component='span'
+                    variant='subtitle1'
+                    color='inherit'
+                    className={classes1.imageTitle}>
                     {researchButton.title}
                     <span className={classes1.imageMarked} />
                   </Typography>
@@ -297,9 +326,8 @@ const ConferenceHome = ({ match }) => {
                 className={classes1.image}
                 focusVisibleClassName={classes1.focusVisible}
                 style={{
-                  width: "100%",
-                }}
-              >
+                  width: '100%',
+                }}>
                 <span
                   className={classes1.imageSrc}
                   style={{
@@ -309,11 +337,10 @@ const ConferenceHome = ({ match }) => {
                 <span className={classes1.imageBackdrop} />
                 <span className={classes1.imageButton}>
                   <Typography
-                    component="span"
-                    variant="subtitle1"
-                    color="inherit"
-                    className={classes1.imageTitle}
-                  >
+                    component='span'
+                    variant='subtitle1'
+                    color='inherit'
+                    className={classes1.imageTitle}>
                     {workshops.title}
                     <span className={classes1.imageMarked} />
                   </Typography>
@@ -323,16 +350,16 @@ const ConferenceHome = ({ match }) => {
           </Grid>
         </Grid>
 
-        <Grid item style={{ marginTop: "23px" }} lg={9} md={9} sm={12}>
-          {status === "approved" && (
+        <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
+          {status === 'approved' && (
             <StripeCheckout
-              stripeKey="pk_test_51Is6w9CaLuVljyXivn0DHr71gLQiazZPrZxF39DWKVpnTfrkoxrAsOX4QsPeYY8Inc9EshMfkzXHmki436baPGoy00Bqae1QFZ"
+              stripeKey='pk_test_51Is6w9CaLuVljyXivn0DHr71gLQiazZPrZxF39DWKVpnTfrkoxrAsOX4QsPeYY8Inc9EshMfkzXHmki436baPGoy00Bqae1QFZ'
               amount={parseInt(attendPrice) * 100}
               token={handleToken}
               style={{
-                width: "-webkit-fill-available",
+                width: '-webkit-fill-available',
                 background:
-                  "linear-gradient(rgb(125, 197, 238), rgb(0, 140, 221) 85%, rgb(48, 162, 228))",
+                  'linear-gradient(rgb(125, 197, 238), rgb(0, 140, 221) 85%, rgb(48, 162, 228))',
               }}
             />
           )}
@@ -342,9 +369,28 @@ const ConferenceHome = ({ match }) => {
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="form-dialog-title"
-      >
+        aria-labelledby='form-dialog-title'>
         <AddConference confer={conference} />
+      </Dialog>
+
+      <Dialog
+        open={openConfirmation}
+        onClose={handleClose}
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'>
+        <DialogTitle id='alert-dialog-title'>
+          {'Registration to the conference is successfull'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id='alert-dialog-description'>
+            {`Confirmation email will be sent to ${email}`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color='primary' autoFocus>
+            close
+          </Button>
+        </DialogActions>
       </Dialog>
     </Fragment>
   );

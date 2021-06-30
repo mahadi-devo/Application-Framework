@@ -17,8 +17,12 @@ const add = async (req, res) => {
       upload_preset: 'ml_default',
     });
 
+    // console.log(req.user);
+
+    user = req.user._id;
+    console.log(user);
     const newResearcher = new ResearcherModel({
-      //user: user,
+      user: user,
       title: title,
       author: author,
       email: email,
@@ -72,8 +76,11 @@ const update = async (req, res) => {
 };
 
 const get = async (req, res) => {
+  user = req.user._id;
+  console.log(user);
+
   try {
-    const research = await ResearcherModel.find();
+    const research = await ResearcherModel.find({ user: user });
 
     res.json(research);
   } catch (err) {
