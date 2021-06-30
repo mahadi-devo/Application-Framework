@@ -1,8 +1,17 @@
 const Workshop = require('../models/workshop.model');
 
 const add = async (req, res) => {
-  const { address, author, discription, email, end, phone, start, title } =
-    req.body;
+  const {
+    address,
+    author,
+    discription,
+    email,
+    end,
+    phone,
+    start,
+    title,
+    conference,
+  } = req.body;
 
   try {
     const newWorkShop = new Workshop({
@@ -14,6 +23,7 @@ const add = async (req, res) => {
       phone,
       start,
       title,
+      conference,
     });
 
     const workshop = await newWorkShop.save();
@@ -27,8 +37,8 @@ const add = async (req, res) => {
 const update = async (req, res) => {
   const { address, author, discription, email, end, phone, start, title } =
     req.body;
-  console.log('Backend');
-  console.log(start);
+  // console.log('Backend');
+  // console.log(start);
   const workshopFields = {};
 
   if (address) workshopFields.address = address;

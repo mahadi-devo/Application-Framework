@@ -26,12 +26,25 @@ const workshopState = (props) => {
       },
     };
 
+    console.log(workshop.confrence);
+
+    const data = {};
+
+    data.title = workshop.workshop.title;
+    data.author = workshop.workshop.author;
+    data.email = workshop.workshop.email;
+    data.phone = workshop.workshop.phone;
+    data.discription = workshop.workshop.discription;
+    data.address = workshop.workshop.address;
+    data.start = workshop.workshop.start;
+    data.end = workshop.workshop.end;
+    data.conference = workshop.confrence;
     console.log(workshop);
 
     try {
       const res = await axios.post(
         'http://localhost:5000/api/v1/workshop',
-        workshop,
+        data,
         config
       );
       dispatch({ type: ADD_WORKSHOP, payload: res.data });
