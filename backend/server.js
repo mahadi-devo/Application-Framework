@@ -18,6 +18,7 @@ const workshop = require('./routes/workshop.route');
 const keynote = require('./routes/keynote.route');
 const stripe = require('./routes/stripe.route');
 const user = require('./routes/user.route');
+const payment = require('./routes/payment.route');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/v1/researcher', researcher);
 app.use('/api/v1/workshop', workshop);
 app.use('/api/v1/keynotes', keynote);
 app.use('/api/v1/stripe', stripe);
+app.use('/api/v1/payment', payment);
 
 // morgan http
 process.env.NODE_ENV === 'development' ? app.use(morgan('dev')) : '';

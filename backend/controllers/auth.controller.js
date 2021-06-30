@@ -1,4 +1,4 @@
-const User = require("../models/user.model");
+const User = require('../models/user.model');
 
 const registerController = async (req, res, next) => {
   try {
@@ -9,7 +9,7 @@ const registerController = async (req, res, next) => {
       return next(
         res.status(400).json({
           success: false,
-          message: "User already exist",
+          message: 'User already exist',
         })
       );
     }
@@ -29,16 +29,16 @@ const loginController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const userExist = await User.findOne({ email }).select("+password");
+    const userExist = await User.findOne({ email }).select('+password');
 
     if (!userExist) {
-      res.status(401).json({ success: false, message: "Invalid credentials" });
+      res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
     const isMatch = await userExist.comparePass(password);
 
     if (!isMatch) {
-      res.status(401).json({ success: false, message: "Invalid credentials" });
+      res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
     sendToken(userExist, 200, res);
