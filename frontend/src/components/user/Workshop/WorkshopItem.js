@@ -9,6 +9,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
 
 const WorkshopItem = ({ workshop }) => {
   const { _id, title, author, email, phone, discription, address, start, end } =
@@ -17,6 +26,8 @@ const WorkshopItem = ({ workshop }) => {
   const workshopContext = useContext(WorkshopContext);
 
   const { setItem } = workshopContext;
+
+  const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -28,6 +39,7 @@ const WorkshopItem = ({ workshop }) => {
 
   const deleteWorkshop = () => {
     workshopContext.deleteWorkshop(_id);
+    toast('Workshop deleted successfully', { type: 'success' });
     handleClose();
   };
 
@@ -68,14 +80,16 @@ const WorkshopItem = ({ workshop }) => {
           onClick={() => setItem(workshop)}
           variant='contained'
           color='primary'
-          className='p-1'>
+          className='p-1'
+          className={classes.button}>
           Update
         </Button>
         <Button
           variant='contained'
           color='secondary'
           className='p-1'
-          onClick={handleClickOpen}>
+          onClick={handleClickOpen}
+          className={classes.button}>
           Delete
         </Button>
       </Grid>

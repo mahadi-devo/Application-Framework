@@ -28,6 +28,14 @@ const ResearcherModel = mongoose.Schema({
   file: {
     type: String,
   },
+  conference: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'conference',
+  },
+  status: {
+    type: String,
+    default: 'pending',
+  },
 });
 
 module.exports = mongoose.model('researcher', ResearcherModel);

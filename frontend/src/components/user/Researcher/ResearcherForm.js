@@ -5,8 +5,26 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import FileUploader from '../../shared/FileUpload';
 import ResearcherContext from '../../../context/user/researcher/researcher-context';
+import { makeStyles } from '@material-ui/core/styles';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+//import { Link, useRouteMatch } from 'react-router-dom';
 
-const ResearcherForm = () => {
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
+const ResearcherForm = ({ confrence }) => {
+  const classes = useStyles();
+
+  // const { url } = useRouteMatch();
+
+  // var stuff = url.split('/');
+  // var id = stuff[stuff.length - 1];
+  //console.log(id);
+  console.log(confrence);
+
   const researcherContext = useContext(ResearcherContext);
 
   const { current, clearItem } = researcherContext;
@@ -21,6 +39,7 @@ const ResearcherForm = () => {
         email: '',
         abstract: '',
         area: '',
+        file: '',
       });
     }
   }, [researcherContext, current]);
@@ -42,18 +61,20 @@ const ResearcherForm = () => {
 
   const getFile = (FileData) => {
     const reader = new FileReader();
-    if (FileData.size > 1000000 || FileData.size === 0) {
-      toast('File size must be less than 1mb and greater that 0', {
-        type: 'error',
-      });
-    } else {
-      reader.readAsDataURL(FileData);
-      reader.onloadend = () => {
-        setConference({ ...conference, image: reader.result });
-      };
-      reader.onerror = () => {
-        console.error('AHHHHHHHH!!');
-      };
+    if (FileData !== null) {
+      if (FileData.size > 1000000 || FileData.size === 0) {
+        toast('File size must be less than 1mb and greater that 0', {
+          type: 'error',
+        });
+      } else {
+        reader.readAsDataURL(FileData);
+        reader.onloadend = () => {
+          setResearch({ ...research, file: reader.result });
+        };
+        reader.onerror = () => {
+          console.error('AHHHHHHHH!!');
+        };
+      }
     }
   };
 
@@ -61,9 +82,33 @@ const ResearcherForm = () => {
     e.preventDefault();
 
     if (current == null) {
-      researcherContext.addResearch(research);
+      if (
+        title == '' ||
+        author == '' ||
+        email == '' ||
+        abstract == '' ||
+        area == '' ||
+        file == ''
+      ) {
+        toast('Fields can not be empty', { type: 'error' });
+      } else {
+        researcherContext.addResearch({ research, confrence });
+        toast('Research created successfully', { type: 'success' });
+      }
     } else {
-      researcherContext.updateResearch(research);
+      if (
+        title == '' ||
+        author == '' ||
+        email == '' ||
+        abstract == '' ||
+        area == '' ||
+        file == ''
+      ) {
+        toast('Fields can not be empty', { type: 'error' });
+      } else {
+        researcherContext.updateResearch(research);
+        toast('Research edited successfully', { type: 'success' });
+      }
     }
   };
 
@@ -74,7 +119,7 @@ const ResearcherForm = () => {
   return (
     <form onSubmit={onSubmit}>
       <Typography variant='h5' className='m-2' gutterBottom>
-        Add Researcher
+        Add Researchs
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
@@ -111,7 +156,7 @@ const ResearcherForm = () => {
             type='email'
             value={email}
             onChange={onChange}
-            label='Email'
+            label='Emaill'
             name='email'
             autoComplete='email'
           />
@@ -166,12 +211,17 @@ const ResearcherForm = () => {
         <Grid item xs={12}>
           <Button
             type='submit'
+            className={classes.button}
             value='Add Research'
             variant='contained'
             color='primary'>
             Submit
           </Button>
-          <Button variant='contained' onClick={clear} color='secondary'>
+          <Button
+            variant='contained'
+            className={classes.button}
+            onClick={clear}
+            color='secondary'>
             Clear
           </Button>
         </Grid>
