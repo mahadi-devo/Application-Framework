@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
   add,
@@ -7,7 +7,7 @@ const {
   getConference,
   getPending,
   conferenceConfirmation,
-} = require('../controllers/conference.controller');
+} = require("../controllers/conference.controller");
 const {
   authorize,
   roleAuthorization,

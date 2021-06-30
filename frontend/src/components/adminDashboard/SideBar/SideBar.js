@@ -25,19 +25,19 @@ const useStyles = makeStyles({
     width: drawerWidth,
   },
   menu: {
-    listStyle: 'none',
-    paddingLeft: '0px',
+    listStyle: "none",
+    paddingLeft: "0px",
   },
   menuTitle: {
-    marginTop: '10px',
-    marginLeft: '10px',
+    marginTop: "10px",
+    marginLeft: "10px",
   },
   active: {
-    background: '#f4f4f4'
-  }
+    background: "#f4f4f4",
+  },
 });
 
-function SideBar() {
+function SideBar({ approvalConfig = null }) {
   const { url } = useRouteMatch();
   const history = useHistory();
   const location = useLocation();
@@ -45,12 +45,12 @@ function SideBar() {
 
   const manuList = [
     {
-      itemText: 'Home',
+      itemText: "Home",
       itemIcon: <HomeIcon color="primary" />,
       to: `${url}/home`,
     },
     {
-      itemText: 'User',
+      itemText: "User",
       itemIcon: <PeopleAltIcon color="primary" />,
       to: `${url}/user`,
     },
@@ -60,7 +60,7 @@ function SideBar() {
       to: `${url}/confirmconferencerequest`,
     },
     {
-      itemText: 'Conference Details',
+      itemText: "Conference Details",
       itemIcon: <TimelineIcon color="primary" />,
       to: `${url}/conference`,
     },
@@ -88,22 +88,46 @@ function SideBar() {
       anchor="left"
       classes={{ paper: classes.darawerPaper }}
     >
-      <Typography variant="h5" className={classes.menuTitle}>
-        Admin Dashboard
-      </Typography>
+      {approvalConfig && (
+        <Typography variant="h5" className={classes.menuTitle}>
+          Reviwer Dashboard
+        </Typography>
+      )}
+      {!approvalConfig && (
+        <Typography variant="h5" className={classes.menuTitle}>
+          Admin Dashboard
+        </Typography>
+      )}
 
       <List className={classes.menu}>
-        {manuList.map((item) => (
-          <ListItem
-            button
-            key={item.itemText}
-            onClick={() => history.push(item.to)}
-            className={location.pathname.includes(item.to) ? classes.active : null}
-          >
-            <ListItemIcon>{item.itemIcon}</ListItemIcon>
-            <ListItemText primary={item.itemText} />
-          </ListItem>
-        ))}
+        {approvalConfig === null &&
+          manuList.map((item) => (
+            <ListItem
+              button
+              key={item.itemText}
+              onClick={() => history.push(item.to)}
+              className={
+                location.pathname.includes(item.to) ? classes.active : null
+              }
+            >
+              <ListItemIcon>{item.itemIcon}</ListItemIcon>
+              <ListItemText primary={item.itemText} />
+            </ListItem>
+          ))}
+        {approvalConfig &&
+          approvalConfig.reviewerMenu.map((item) => (
+            <ListItem
+              button
+              key={item.itemText}
+              onClick={() => history.push(item.to)}
+              className={
+                location.pathname.includes(item.to) ? classes.active : null
+              }
+            >
+              <ListItemIcon>{item.itemIcon}</ListItemIcon>
+              <ListItemText primary={item.itemText} />
+            </ListItem>
+          ))}
       </List>
     </Drawer>
   );
