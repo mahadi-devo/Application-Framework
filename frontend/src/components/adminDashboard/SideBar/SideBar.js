@@ -10,6 +10,9 @@ import HomeIcon from '@material-ui/icons/Home';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import PaymentIcon from '@material-ui/icons/Payment';
+import SearchIcon from '@material-ui/icons/Search';
+import WorkIcon from '@material-ui/icons/Work';
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
 const drawerWidth = 250;
@@ -53,13 +56,23 @@ function SideBar() {
     },
     {
       itemText: 'Conference Request',
-      itemIcon: <TimelineIcon color="primary" />,
+      itemIcon: <CreateNewFolderIcon color="primary" />,
       to: `${url}/confirmconferencerequest`,
     },
     {
       itemText: 'Conference Details',
       itemIcon: <TimelineIcon color="primary" />,
       to: `${url}/conference`,
+    },
+    {
+      itemText: 'Research',
+      itemIcon: <SearchIcon color="primary" />,
+      to: `${url}/research`,
+    },
+    {
+      itemText: 'Workshop',
+      itemIcon: <WorkIcon color="primary" />,
+      to: `${url}/workshop`,
     },
     {
       itemText: 'Payment',

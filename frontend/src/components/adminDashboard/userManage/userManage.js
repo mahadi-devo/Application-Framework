@@ -114,6 +114,20 @@ const userManage = () => {
     setTypes({ ...types, current: currentType });
   };
 
+  const onDeleteClicked = (id) => {
+    axios
+        .delete(
+          "http://localhost:5000/api/v1/user",
+          { _id: id },
+          config
+        )
+        .then((res) => {
+          console.log(res.data.user);
+          toast("User successfully Deleted", { type: "success" });
+        })
+        .catch((error) => {});
+  }
+
   useEffect(() => {
     axios
       .get('http://localhost:5000/api/v1/user', config)
@@ -201,6 +215,8 @@ const userManage = () => {
               size="small"
               className={classes.buttonEdit}
               startIcon={<EditIcon />}
+              component={Link}
+              to={`${url}/update/${params.row.id}`}
             >
               Edit
             </Button>
@@ -209,6 +225,7 @@ const userManage = () => {
               aria-label="delete"
               color="secondary"
               className={classes.button}
+              onClick={() => onDeleteClicked(params.row.id)}
             >
               <DeleteIcon fontSize="small" />
             </IconButton>
@@ -335,6 +352,7 @@ const userManage = () => {
           columns={columns}
           pageSize={7}
           checkboxSelection
+          disableSelectionOnClick
         />
       </div>
     </div>

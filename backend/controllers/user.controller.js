@@ -27,6 +27,8 @@ const addUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
+  console.log('put');
+
   const { _id, email, name, role } = req.body;
 
   const userFields = {};
@@ -37,7 +39,7 @@ const updateUser = async (req, res) => {
   if (role) userFields.role = role;
 
   try {
-    let user = await User.findById(req.user);
+    let user = await User.findById(_id);
     console.log("findById");
     if (!user) {
       res.status(404).json({
@@ -47,7 +49,7 @@ const updateUser = async (req, res) => {
 
     user = await User.findByIdAndUpdate(
       _id,
-      { $set: userFields },
+      { $set: {email, name, role} },
       { new: true }
     );
     console.log("update");
@@ -62,8 +64,7 @@ const updateUser = async (req, res) => {
 };
 const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user);
-
+    const user = await User.findById(req.params.id);
     res.status(200).json({
       user,
       success: true,
