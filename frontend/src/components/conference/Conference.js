@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useContext } from 'react';
+import {Container} from '@material-ui/core';
 import Carasoul from './Carasoul';
 import Search from '../shared/Search';
 import Grid from '@material-ui/core/Grid';
@@ -20,52 +21,56 @@ const Conference = () => {
   }, []);
 
   return (
-    <Fragment>
-      <Grid container spacing={3} style={{ marginTop: '15' }}>
-        {user === 'editor' && (
-          <Grid item lg={12} md={12} sm={12}>
-            <AdminHeader />
+    <Container maxWidth="lg" style={{ minHeight: '90vh' }}>
+      <Fragment>
+        <Grid container spacing={3} style={{ marginTop: '15' }}>
+          {user === 'editor' && (
+            <Grid item lg={12} md={12} sm={12}>
+              <AdminHeader />
+            </Grid>
+          )}
+          <Grid item style={{ marginTop: '20px' }} lg={12} md={12} sm={12}>
+            <Search />
           </Grid>
-        )}
-        <Grid item style={{ marginTop: '20px' }} lg={12} md={12} sm={12}>
-          <Search />
-        </Grid>
-        <Grid item lg={12} md={12} sm={12}>
-          <Carasoul />
-        </Grid>
+          <Grid item lg={12} md={12} sm={12}>
+            <Carasoul />
+          </Grid>
 
-        {conferences !== null &&
-          (filtered !== null
-            ? filtered.map((conf) => (
-                <Fragment key={conf._id}>
-                  {conf.status === 'approved' && (
-                    <Grid
-                      item
-                      style={{ marginTop: '15px' }}
-                      lg={4}
-                      md={6}
-                      sm={12}>
-                      <Conferences conference={conf} />
-                    </Grid>
-                  )}
-                </Fragment>
-              ))
-            : conferences.map((conf) => (
-                <Fragment key={conf._id}>
-                  {conf.status === 'approved' && (
-                    <Grid
-                      item
-                      style={{ marginTop: '15px' }}
-                      lg={4}
-                      md={6}
-                      sm={12}>
-                      <Conferences conference={conf} />
-                    </Grid>
-                  )}
-                </Fragment>
-              )))}
-      </Grid>
-    </Fragment>
+          {conferences !== null &&
+            (filtered !== null
+              ? filtered.map((conf) => (
+                  <Fragment key={conf._id}>
+                    {conf.status === 'approved' && (
+                      <Grid
+                        item
+                        style={{ marginTop: '15px' }}
+                        lg={4}
+                        md={6}
+                        sm={12}
+                      >
+                        <Conferences conference={conf} />
+                      </Grid>
+                    )}
+                  </Fragment>
+                ))
+              : conferences.map((conf) => (
+                  <Fragment key={conf._id}>
+                    {conf.status === 'approved' && (
+                      <Grid
+                        item
+                        style={{ marginTop: '15px' }}
+                        lg={4}
+                        md={6}
+                        sm={12}
+                      >
+                        <Conferences conference={conf} />
+                      </Grid>
+                    )}
+                  </Fragment>
+                )))}
+        </Grid>
+      </Fragment>
+    </Container>
   );
 };
 
