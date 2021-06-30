@@ -23,6 +23,7 @@ const workshopState = (props) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     };
 
@@ -54,8 +55,17 @@ const workshopState = (props) => {
   };
 
   const getWorkshop = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    };
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/workshop');
+      const res = await axios.get(
+        'http://localhost:5000/api/v1/workshop',
+        config
+      );
       dispatch({ type: GET_WORKSHOP, payload: res.data });
     } catch (error) {
       console.error(error);
@@ -66,6 +76,7 @@ const workshopState = (props) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     };
     console.log(id);
@@ -83,6 +94,7 @@ const workshopState = (props) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     };
     try {

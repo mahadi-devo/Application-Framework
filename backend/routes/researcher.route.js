@@ -14,8 +14,8 @@ const {
   getAllResearches,
 } = require("../controllers/researcher.controller");
 
-router.post("/", add);
-router.get("/", get);
+router.post('/', authorize, roleAuthorization('researcher'), add);
+router.get('/', authorize, roleAuthorization('researcher'), get);
 router.get(
   "/all",
   authorize,

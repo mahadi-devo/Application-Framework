@@ -76,14 +76,18 @@ const WorkshopItem = ({ workshop }) => {
         </Typography>
       </Grid>
       <Grid>
-        <Button
-          onClick={() => setItem(workshop)}
-          variant='contained'
-          color='primary'
-          className='p-1'
-          className={classes.button}>
-          Update
-        </Button>
+        {status == 'Approved' ? (
+          <Typography></Typography>
+        ) : (
+          <Button
+            onClick={() => setItem(workshop)}
+            variant='contained'
+            color='primary'
+            className='p-1'
+            className={classes.button}>
+            Update
+          </Button>
+        )}
         <Button
           variant='contained'
           color='secondary'

@@ -16,8 +16,11 @@ const add = async (req, res) => {
     conference,
   } = req.body;
 
+  user = req.user._id;
+
   try {
     const newWorkShop = new Workshop({
+      user,
       address,
       author,
       discription,
@@ -33,7 +36,7 @@ const add = async (req, res) => {
     res.json(workshop);
   } catch (err) {
     console.error(err);
-    res.status(500).json("Server error add");
+    res.status(500).json('Server error add');
   }
 };
 
@@ -59,7 +62,7 @@ const update = async (req, res) => {
     let workshop = Workshop.findById(req.params.id);
 
     if (!workshop) {
-      return res.status(401).json({ msg: "Msg cannot be found" });
+      return res.status(401).json({ msg: 'Msg cannot be found' });
     }
 
     workshop = await Workshop.findByIdAndUpdate(
@@ -125,8 +128,10 @@ const updateWorkshopStatus = async (req, res) => {
 };
 
 const get = async (req, res) => {
+  user = req.user._id;
+
   try {
-    const workshop = await Workshop.find();
+    const workshop = await Workshop.find({ user: user });
     res.json(workshop);
   } catch (err) {
     console.error(err);
@@ -146,10 +151,10 @@ const del = async (req, res) => {
   try {
     let workshop = await Workshop.findById(req.params.id);
     console.log(req.params.id);
-    if (!workshop) return res.status(404).json({ msg: "Cannot found" });
+    if (!workshop) return res.status(404).json({ msg: 'Cannot found' });
 
     await Workshop.findByIdAndRemove(req.params.id);
-    res.json({ msg: "Workshop removed" });
+    res.json({ msg: 'Workshop removed' });
   } catch (error) {
     console.log(error);
   }

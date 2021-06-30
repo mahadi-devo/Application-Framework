@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const WorkshopSchema = mongoose.Schema({
-  //   user: {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: 'user',
-  //   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+  },
   address: {
     type: String,
     required: true,
@@ -47,13 +47,13 @@ const WorkshopSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["Pending", "Approved", "Rejected"],
-    default: "Pending",
+    enum: ['Pending', 'Approved', 'Rejected'],
+    default: 'Pending',
   },
   conference: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "conference",
+    ref: 'conference',
   },
 });
 
-module.exports = mongoose.model("workshop", WorkshopSchema);
+module.exports = mongoose.model('workshop', WorkshopSchema);

@@ -1,9 +1,9 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 const {
   authorize,
   roleAuthorization,
-} = require("../middleware/auth.middleware");
+} = require('../middleware/auth.middleware');
 const {
   add,
   get,
@@ -11,23 +11,23 @@ const {
   del,
   getAllWorkshops,
   updateWorkshopStatus,
-} = require("../controllers/workshop.controller");
+} = require('../controllers/workshop.controller');
 
-router.post("/", add);
-router.get("/", get);
+router.post('/', authorize, roleAuthorization('workshopConductor'), add);
+router.get('/', authorize, roleAuthorization('workshopConductor'), get);
 router.get(
-  "/all",
+  '/all',
   authorize,
-  roleAuthorization("admin", "reviewer"),
+  roleAuthorization('admin', 'reviewer'),
   getAllWorkshops
 );
 router.put(
-  "/updateStatus",
+  '/updateStatus',
   authorize,
-  roleAuthorization("admin", "reviewer"),
+  roleAuthorization('admin', 'reviewer'),
   updateWorkshopStatus
 );
-router.put("/:id", update);
-router.delete("/:id", del);
+router.put('/:id', authorize, roleAuthorization('workshopConductor'), update);
+router.delete('/:id', authorize, roleAuthorization('workshopConductor'), del);
 
 module.exports = router;
