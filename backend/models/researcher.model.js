@@ -28,13 +28,14 @@ const ResearcherModel = mongoose.Schema({
   file: {
     type: String,
   },
-  conference: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'conference',
-  },
   status: {
     type: String,
-    default: 'pending',
+    enum: ["Pending", "Approved", "Rejected"],
+    default: "Pending",
+  },
+  conference: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "conference",
   },
 });
 
