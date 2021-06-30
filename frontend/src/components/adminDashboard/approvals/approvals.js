@@ -6,6 +6,7 @@ import SideBar from "../SideBar/SideBar";
 import workshopResourceApproval from "./workshop/workshopResourceApproval";
 import HomeIcon from "@material-ui/icons/Home";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import researchResourceApproval from "./research/researchResourceApproval";
 
 const useStyles = makeStyles({
   root: {
@@ -45,7 +46,11 @@ const approvalComponent = () => {
             path={`${path}/workshops`}
             component={workshopResourceApproval}
           />
-          {/*<Route exact path={`${path}/researches`} component={} />*/}
+          <Route
+            exact
+            path={`${path}/researches`}
+            component={researchResourceApproval}
+          />
         </Switch>
       </div>
     </div>

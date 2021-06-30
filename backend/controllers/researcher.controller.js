@@ -1,5 +1,5 @@
-const ResearcherModel = require('../models/researcher.model');
-const cloudinary = require('cloudinary').v2;
+const ResearcherModel = require("../models/researcher.model");
+const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -8,13 +8,13 @@ cloudinary.config({
 });
 
 const add = async (req, res) => {
-  console.log('Back');
+  console.log("Back");
   const { title, author, email, abstract, area, file, conference } = req.body;
   try {
     //const user = req.body.user;
 
     const uploadResponse = await cloudinary.uploader.upload(file, {
-      upload_preset: 'ml_default',
+      upload_preset: "ml_default",
     });
 
     const newResearcher = new ResearcherModel({
@@ -39,7 +39,7 @@ const add = async (req, res) => {
 
 const update = async (req, res) => {
   const { title, author, abstract, email, area, file } = req.body;
-  console.log('Backend');
+  console.log("Backend");
   const researchFields = {};
 
   if (title) researchFields.title = title;
@@ -55,7 +55,7 @@ const update = async (req, res) => {
     let research = ResearcherModel.findById(req.params.id);
 
     if (!research) {
-      return res.status(401).json({ msg: 'Msg cannot be found' });
+      return res.status(401).json({ msg: "Msg cannot be found" });
     }
 
     research = await ResearcherModel.findByIdAndUpdate(
@@ -67,7 +67,29 @@ const update = async (req, res) => {
     res.json(research);
   } catch (err) {
     console.error(err);
-    res.status(500).json('Server error update');
+    res.status(500).json("Server error update");
+  }
+};
+
+const updateResearchStatus = async (req, res) => {
+  try {
+    const { researchId, type } = req.body;
+
+    let research = await ResearcherModel.findById(researchId);
+
+    if (!research) {
+      return res.status(400).json({ msg: "research cannot be found" });
+    }
+
+    const result = await ResearcherModel.updateOne(
+      { _id: research._id },
+      { status: type }
+    );
+
+    res.status(200).json({ result });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Server error update");
   }
 };
 
@@ -81,18 +103,34 @@ const get = async (req, res) => {
   }
 };
 
+const getAllResearches = async (req, res) => {
+  try {
+    const workshop = await ResearcherModel.find().populate("conference");
+    res.json(workshop);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const del = async (req, res) => {
   try {
-    console.log('Hi');
+    console.log("Hi");
     let research = await ResearcherModel.findById(req.params.id);
     console.log(req.params.id);
-    if (!research) return res.status(404).json({ msg: 'Cannot found' });
+    if (!research) return res.status(404).json({ msg: "Cannot found" });
 
     await ResearcherModel.findByIdAndRemove(req.params.id);
-    res.json({ msg: 'Research removed' });
+    res.json({ msg: "Research removed" });
   } catch (error) {
     console.log(error);
   }
 };
 
-module.exports = { add, del, get, update };
+module.exports = {
+  add,
+  del,
+  get,
+  update,
+  getAllResearches,
+  updateResearchStatus,
+};

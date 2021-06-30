@@ -19,6 +19,18 @@ export const getAllWorkShops = async () => {
   }
 };
 
+export const getAllResearches = async () => {
+  try {
+    const res = await axios.get(
+      "http://localhost:5000/api/v1/researcher/all",
+      config
+    );
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const updateWorkShopStatus = async (data) => {
   try {
     const workShop = await axios.put(
@@ -27,6 +39,19 @@ export const updateWorkShopStatus = async (data) => {
       config
     );
     return workShop.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const updateResearchStatus = async (data) => {
+  try {
+    const res = await axios.put(
+      "http://localhost:5000/api/v1/researcher/updateStatus",
+      data,
+      config
+    );
+    return res.data;
   } catch (e) {
     console.log(e);
   }
