@@ -14,6 +14,7 @@ import { Link, useRouteMatch } from 'react-router-dom';
 
 import ConferencesContext from '../../../context/conference/conference-context';
 import ConferenceHome from '../../conference/ConferenceHome';
+import Search from '../../shared/Search';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     padding: theme.spacing(0.5),
   },
-  buttonback: {
+  margin: {
     margin: theme.spacing(1),
     marginRight: theme.spacing(3),
   },
@@ -36,13 +37,14 @@ const conferenceManage = () => {
   const classes = useStyles();
   const { url } = useRouteMatch();
 
-  const { conferences, getAllConferences } = useContext(ConferencesContext);
+  const { conferences, getAllConferences, filtered, clearFilter } = useContext(ConferencesContext);
   const [showConference, setShowConference] = useState(false);
   const [current, setCurrent] = useState('');
 
   const OnIconClicked = (id) => {
     setCurrent(id);
     setShowConference(true);
+    clearFilter();
   };
 
   const OnBackIconClicked = () => {
@@ -101,6 +103,12 @@ const conferenceManage = () => {
     rows = conferences.map((row) => {
       return { ...row, id: row._id };
     });
+  } 
+
+  if(filtered) {
+    rows = filtered.map((row) => {
+      return { ...row, id: row._id };
+    });
   }
 
   useEffect(() => {
@@ -130,13 +138,17 @@ const conferenceManage = () => {
             <IconButton
               aria-label="back"
               onClick={() => OnBackIconClicked()}
-              className={classes.buttonback}
+              className={classes.margin}
               color="primary"
             >
               <ArrowBackIcon fontSize="large" />
             </IconButton>
           </Grid>
-        ) : null}
+        ) : (
+          <Grid item lg={3} className={classes.margin}>
+            <Search />
+          </Grid>
+        )}
       </Grid>
 
       {!showConference ? (
