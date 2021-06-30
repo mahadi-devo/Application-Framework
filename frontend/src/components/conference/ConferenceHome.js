@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import ConferenceContext from '../../context/conference/conference-context';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import {Box, Container} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import StripeCheckout from 'react-stripe-checkout';
 import Dialog from '@material-ui/core/Dialog';
@@ -143,7 +143,7 @@ const ConferenceHome = ({ match, id }) => {
   const user = localStorage.getItem('userRole');
 
   useEffect(() => {
-    if(id){
+    if (id) {
       getConference(id);
     } else {
       getConference(match.params.id);
@@ -217,186 +217,200 @@ const ConferenceHome = ({ match, id }) => {
   };
 
   return (
-    <Fragment>
-      <Grid container justify='center' style={{ marginTop: '15px' }}>
-        <Grid item>
-          {user === 'editor' && (
-            <Button
-              style={{ marginTop: '10px', marginBottom: '10px' }}
-              variant='contained'
-              color='secondary'
-              onClick={handleClickOpen}>
-              Edit Conference
-            </Button>
-          )}
-        </Grid>
+    <Container maxWidth="lg" style={{ minHeight: '90vh' }}>
+      <Fragment>
+        <Grid container justify="center" style={{ marginTop: '15px' }}>
+          <Grid item>
+            {user === 'editor' && (
+              <Button
+                style={{ marginTop: '10px', marginBottom: '10px' }}
+                variant="contained"
+                color="secondary"
+                onClick={handleClickOpen}
+              >
+                Edit Conference
+              </Button>
+            )}
+          </Grid>
 
-        <Grid
-          item
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          lg={12}
-          md={12}
-          sm={12}>
-          <img height='600' src={`${image}`}></img>
-        </Grid>
-        <Grid item lg={9} md={9} sm={12}>
-          <Typography
-            variant='h5'
-            color='primary'
-            className={classes.header1}
-            style={{ textAlign: 'center' }}>
-            About Conference
-          </Typography>
-          <Typography
-            variant='h4'
+          <Grid
+            item
             style={{
-              textAlign: 'center',
-              color: '#212121',
-              marginTop: '15px',
-              letterSpacing: '1px',
-            }}>
-            <Box fontWeight='fontWeightBold' m={1}>
-              {title}
-            </Box>
-          </Typography>
-          <Typography
-            style={{
-              textAlign: 'justify',
-              color: '#424242',
-              marginTop: '25px',
-            }}>
-            <Box fontSize={19} m={1}>
-              {description}
-            </Box>
-          </Typography>
-          <Typography
-            style={{
-              textAlign: 'center',
-              color: '#424242',
-              marginTop: '33px',
-              fontSize: 20,
-              fontWeight: 'bold',
-              marginBottom: 4,
-            }}>
-            <Box fontSize='h6.fontSize' m={1}>
-              {`${startDate} to ${endDate} in ${location}`}
-            </Box>
-          </Typography>
-        </Grid>
-        <Grid item style={{ marginTop: "23px" }} lg={9} md={9} sm={12}>
-          {keynotes && <KeynoteMap id={id ? id : match.params.id} />}
-        </Grid>
-        <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
-          <Grid container spacing={2}>
-            <Grid item lg={6} className={classes1.root}>
-              <ButtonBase
-                focusRipple
-                component={Link}
-                to={'research/'+ id ? id : match.params.id}
-                className={classes1.image}
-                focusVisibleClassName={classes1.focusVisible}
-                style={{
-                  width: '100%',
-                }}>
-                <span
-                  className={classes1.imageSrc}
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            lg={12}
+            md={12}
+            sm={12}
+          >
+            <img height="600" src={`${image}`}></img>
+          </Grid>
+          <Grid item lg={9} md={9} sm={12}>
+            <Typography
+              variant="h5"
+              color="primary"
+              className={classes.header1}
+              style={{ textAlign: 'center' }}
+            >
+              About Conference
+            </Typography>
+            <Typography
+              variant="h4"
+              style={{
+                textAlign: 'center',
+                color: '#212121',
+                marginTop: '15px',
+                letterSpacing: '1px',
+              }}
+            >
+              <Box fontWeight="fontWeightBold" m={1}>
+                {title}
+              </Box>
+            </Typography>
+            <Typography
+              style={{
+                textAlign: 'justify',
+                color: '#424242',
+                marginTop: '25px',
+              }}
+            >
+              <Box fontSize={19} m={1}>
+                {description}
+              </Box>
+            </Typography>
+            <Typography
+              style={{
+                textAlign: 'center',
+                color: '#424242',
+                marginTop: '33px',
+                fontSize: 20,
+                fontWeight: 'bold',
+                marginBottom: 4,
+              }}
+            >
+              <Box fontSize="h6.fontSize" m={1}>
+                {`${startDate} to ${endDate} in ${location}`}
+              </Box>
+            </Typography>
+          </Grid>
+          <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
+            {keynotes && <KeynoteMap id={id ? id : match.params.id} />}
+          </Grid>
+          <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
+            <Grid container spacing={2}>
+              <Grid item lg={6} className={classes1.root}>
+                <ButtonBase
+                  focusRipple
+                  component={Link}
+                  to={'research/' + id ? id : match.params.id}
+                  className={classes1.image}
+                  focusVisibleClassName={classes1.focusVisible}
                   style={{
-                    backgroundImage: `url(${researchButton.url})`,
+                    width: '100%',
                   }}
-                />
-                <span className={classes1.imageBackdrop} />
-                <span className={classes1.imageButton}>
-                  <Typography
-                    component='span'
-                    variant='subtitle1'
-                    color='inherit'
-                    className={classes1.imageTitle}>
-                    {researchButton.title}
-                    <span className={classes1.imageMarked} />
-                  </Typography>
-                </span>
-              </ButtonBase>
-            </Grid>
+                >
+                  <span
+                    className={classes1.imageSrc}
+                    style={{
+                      backgroundImage: `url(${researchButton.url})`,
+                    }}
+                  />
+                  <span className={classes1.imageBackdrop} />
+                  <span className={classes1.imageButton}>
+                    <Typography
+                      component="span"
+                      variant="subtitle1"
+                      color="inherit"
+                      className={classes1.imageTitle}
+                    >
+                      {researchButton.title}
+                      <span className={classes1.imageMarked} />
+                    </Typography>
+                  </span>
+                </ButtonBase>
+              </Grid>
 
-            <Grid item lg={6} className={classes1.root}>
-              <ButtonBase
-                focusRipple
-                component={Link}
-                to={`workshop/${id ? id : match.params.id}`}
-                className={classes1.image}
-                focusVisibleClassName={classes1.focusVisible}
-                style={{
-                  width: '100%',
-                }}>
-                <span
-                  className={classes1.imageSrc}
+              <Grid item lg={6} className={classes1.root}>
+                <ButtonBase
+                  focusRipple
+                  component={Link}
+                  to={`workshop/${id ? id : match.params.id}`}
+                  className={classes1.image}
+                  focusVisibleClassName={classes1.focusVisible}
                   style={{
-                    backgroundImage: `url(${workshops.url})`,
+                    width: '100%',
                   }}
-                />
-                <span className={classes1.imageBackdrop} />
-                <span className={classes1.imageButton}>
-                  <Typography
-                    component='span'
-                    variant='subtitle1'
-                    color='inherit'
-                    className={classes1.imageTitle}>
-                    {workshops.title}
-                    <span className={classes1.imageMarked} />
-                  </Typography>
-                </span>
-              </ButtonBase>
+                >
+                  <span
+                    className={classes1.imageSrc}
+                    style={{
+                      backgroundImage: `url(${workshops.url})`,
+                    }}
+                  />
+                  <span className={classes1.imageBackdrop} />
+                  <span className={classes1.imageButton}>
+                    <Typography
+                      component="span"
+                      variant="subtitle1"
+                      color="inherit"
+                      className={classes1.imageTitle}
+                    >
+                      {workshops.title}
+                      <span className={classes1.imageMarked} />
+                    </Typography>
+                  </span>
+                </ButtonBase>
+              </Grid>
             </Grid>
+          </Grid>
+
+          <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
+            {status === 'approved' && (
+              <StripeCheckout
+                stripeKey="pk_test_51Is6w9CaLuVljyXivn0DHr71gLQiazZPrZxF39DWKVpnTfrkoxrAsOX4QsPeYY8Inc9EshMfkzXHmki436baPGoy00Bqae1QFZ"
+                amount={parseInt(attendPrice) * 100}
+                token={handleToken}
+                style={{
+                  width: '-webkit-fill-available',
+                  background:
+                    'linear-gradient(rgb(125, 197, 238), rgb(0, 140, 221) 85%, rgb(48, 162, 228))',
+                }}
+              />
+            )}
           </Grid>
         </Grid>
 
-        <Grid item style={{ marginTop: '23px' }} lg={9} md={9} sm={12}>
-          {status === 'approved' && (
-            <StripeCheckout
-              stripeKey='pk_test_51Is6w9CaLuVljyXivn0DHr71gLQiazZPrZxF39DWKVpnTfrkoxrAsOX4QsPeYY8Inc9EshMfkzXHmki436baPGoy00Bqae1QFZ'
-              amount={parseInt(attendPrice) * 100}
-              token={handleToken}
-              style={{
-                width: '-webkit-fill-available',
-                background:
-                  'linear-gradient(rgb(125, 197, 238), rgb(0, 140, 221) 85%, rgb(48, 162, 228))',
-              }}
-            />
-          )}
-        </Grid>
-      </Grid>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <AddConference confer={conference} />
+        </Dialog>
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='form-dialog-title'>
-        <AddConference confer={conference} />
-      </Dialog>
-
-      <Dialog
-        open={openConfirmation}
-        onClose={handleClose}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'>
-        <DialogTitle id='alert-dialog-title'>
-          {'Registration to the conference is successfull'}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            {`Confirmation email will be sent to ${email}`}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color='primary' autoFocus>
-            close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Fragment>
+        <Dialog
+          open={openConfirmation}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {'Registration to the conference is successfull'}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {`Confirmation email will be sent to ${email}`}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary" autoFocus>
+              close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Fragment>
+    </Container>
   );
 };
 

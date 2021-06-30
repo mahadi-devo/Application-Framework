@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
-import SignIn from "./components/auth/SigIn";
-import SignUp from "./components/auth/SignUp";
-import Header from "./components/shared/Header";
-import Footer from "./components/shared/Footer";
-import Researcher from "./components/user/Researcher/Researcher";
-import Workshop from "./components/user/Workshop/Workshop";
-import Conference from "./components/conference/Conference";
-import ConferenceHome from "./components/conference/ConferenceHome";
-import ConferenceState from "./context/conference/conferenceState";
-import ResearcherState from "./context/user/researcher/researcherState";
-import WorkshopState from "./context/user/workshop/workshopState";
-import AddConference from "./components/conference/AddConference";
-import AdminDashboard from "./components/adminDashboard/adminDashboard";
-import PendingConference from "./components/conference/PendingConference";
-import AddKeynote from "./components/conference/AddKeynote";
-import { Container, CssBaseline } from "@material-ui/core";
-import approvalComponent from "./components/adminDashboard/approvals/approvals";
+import React, { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import SignIn from './components/auth/SigIn';
+import SignUp from './components/auth/SignUp';
+import Header from './components/shared/Header';
+import Footer from './components/shared/Footer';
+import Researcher from './components/user/Researcher/Researcher';
+import Workshop from './components/user/Workshop/Workshop';
+import Conference from './components/conference/Conference';
+import ConferenceHome from './components/conference/ConferenceHome';
+import ConferenceState from './context/conference/conferenceState';
+import ResearcherState from './context/user/researcher/researcherState';
+import WorkshopState from './context/user/workshop/workshopState';
+import AddConference from './components/conference/AddConference';
+import AdminDashboard from './components/adminDashboard/adminDashboard';
+import PendingConference from './components/conference/PendingConference';
+import AddKeynote from './components/conference/AddKeynote';
+import { Container, CssBaseline } from '@material-ui/core';
+import approvalComponent from './components/adminDashboard/approvals/approvals';
 
 const App = () => {
   return (
