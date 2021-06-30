@@ -192,6 +192,20 @@ const ConferenceHome = ({ match }) => {
           setEmail(res.data.payment.user.email);
           setOpenConfirmation(true);
         }
+
+        const body = {
+          email: localStorage.getItem('userEmail'),
+          subject: 'Conference Registration Confirmation',
+          textBody: 'Attendance Registration Confirmation',
+          htmlBody: `<h2>Registration Confirmation</h2></br><h4>Thank you for registering for ${title} on ${startDate} to
+            ${endDate} at ${location}
+          , </h4>
+            </br><p>Reference Id</p><p>${res.data.payment._id}</p>
+            </br><p>Thank You</p>
+            </br><p>Conference Management System</p>`,
+        };
+
+        await axios.post('http://localhost:5000/api/v1/response', body);
       }
     } catch (error) {
       console.log(error);

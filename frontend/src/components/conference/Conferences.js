@@ -48,6 +48,7 @@ const Conferences = ({ conference }) => {
     attendPrice,
     description,
     _id,
+    location,
     status,
   } = conference;
 
@@ -64,16 +65,6 @@ const Conferences = ({ conference }) => {
       const { status } = res.data;
 
       if (status === 'success') {
-        // const body = {
-        //   email: localStorage.getItem('email'),
-        //   subject: 'Order Confirmation',
-        //   textBody:
-        //     'Thank you for placing order, your order successfully placed.',
-        //   htmlBody: `<h2>Order Confirmation</h2></br><h4>Thank you for placing order, we hope you enjoyed shopping with us. Amount of $${getsubtotal()} is added to your monthly bill.</h4>
-        //     </br><p>Thank You</p>
-        //     </br><p>Mini Store</p>`,
-        // };
-        // return await axios.post('/api/v1/response/email', body);
         const config = {
           headers: {
             'Content-Type': 'application/json',
@@ -91,6 +82,20 @@ const Conferences = ({ conference }) => {
           setEmail(res.data.payment.user.email);
           setOpen(true);
         }
+
+        const body = {
+          email: localStorage.getItem('userEmail'),
+          subject: 'Conference Registration Confirmation',
+          textBody: 'Attendance Registration Confirmation',
+          htmlBody: `<h2>Registration Confirmation</h2></br><h4>Thank you for registering for ${title} on ${startDate} to
+            ${endDate} at ${location}
+          , </h4>
+            </br><p>Reference Id</p><p>${res.data.payment._id}</p>
+            </br><p>Thank You</p>
+            </br><p>Conference Management System</p>`,
+        };
+
+        await axios.post('http://localhost:5000/api/v1/response', body);
       }
     } catch (error) {
       console.log(error);
