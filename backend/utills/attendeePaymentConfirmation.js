@@ -1,8 +1,8 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
 const attendeeEmailConfirmation = (email, subject, textbody, htmlBody) => {
   let transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: "gmail",
     auth: {
       user: process.env.EMAIL_ADDRESS, // generated ethereal user
       pass: process.env.EMAIL_PASSWORD, // generated ethereal password

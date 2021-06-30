@@ -1,5 +1,5 @@
-const stripe = require('stripe')(
-  'sk_test_51Is6w9CaLuVljyXit2L6GKkDbFDjEREemZfHCmiNF68Vi7b3T8jFUVGRlRA0cxlOxr1WOFFdnh1dAc0kA2eRJIvo00zkFGrrJI'
+const stripe = require("stripe")(
+  "sk_test_51Is6w9CaLuVljyXit2L6GKkDbFDjEREemZfHCmiNF68Vi7b3T8jFUVGRlRA0cxlOxr1WOFFdnh1dAc0kA2eRJIvo00zkFGrrJI"
 );
 
 const pay = async (req, res) => {
@@ -15,18 +15,45 @@ const pay = async (req, res) => {
 
     const charge = await stripe.charges.create({
       amount: attendPrice * 100,
-      currency: 'usd',
+      currency: "usd",
       customer: customer.id,
       receipt_email: token.email,
     });
 
     console.log(charge);
 
-    res.json({ status: 'success' });
+    res.json({ status: "success" });
   } catch (error) {
     console.log(error);
-    res.json({ status: 'failure' });
+    res.json({ status: "failure" });
   }
 };
 
-module.exports = { pay };
+const researchPay = async (req, res) => {
+  try {
+    const { token, researchPrice } = req.body;
+
+    console.log(req.body.attendPrice);
+
+    const customer = await stripe.customers.create({
+      email: token.email,
+      source: token.id,
+    });
+
+    const charge = await stripe.charges.create({
+      amount: attendPrice * 100,
+      currency: "usd",
+      customer: customer.id,
+      receipt_email: token.email,
+    });
+
+    console.log(charge);
+
+    res.json({ status: "success" });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: "failure" });
+  }
+};
+
+module.exports = { pay, researchPay };

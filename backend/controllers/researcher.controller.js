@@ -1,5 +1,9 @@
 const ResearcherModel = require("../models/researcher.model");
+const UserModel = require("../models/user.model");
+const ConferenceModel = require("../models/conference.model");
 const cloudinary = require("cloudinary").v2;
+const crypto = require("crypto");
+const attendeeEmailConfirmation = require("../utills/attendeePaymentConfirmation");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -75,8 +79,11 @@ const updateResearchStatus = async (req, res) => {
   try {
     const { researchId, type } = req.body;
 
-    let research = await ResearcherModel.findById(researchId);
+    let research = await ResearcherModel.findById(researchId).populate(
+      "conference"
+    );
 
+    console.log(research.conference);
     if (!research) {
       return res.status(400).json({ msg: "research cannot be found" });
     }
@@ -85,6 +92,36 @@ const updateResearchStatus = async (req, res) => {
       { _id: research._id },
       { status: type }
     );
+
+    const user = await UserModel.findById(req.user);
+
+    let { token } = user;
+
+    if (!token) {
+      token = await UserModel.updateOne(
+        { _id: req.user },
+        { token: crypto.randomBytes(32).toString("hex") }
+      );
+    }
+
+    if (type === "Approved") {
+      const htmlBody = `<p>please pay and confirm by following link:</p><a href="http://${
+        req.headers.host ? req.headers.host : "localhost:3000"
+      }/researchPay/${user._id}/${token}">Click here</a>`;
+      await attendeeEmailConfirmation(
+        user.email,
+        `Research Approval Notification for the conference`,
+        "please pay and confirm by following link:\n",
+        htmlBody
+      );
+    } else if (type === "Rejected") {
+      await attendeeEmailConfirmation(
+        user.email,
+        `Research Rejection Notification for the conference`,
+        `Sorry Your research is rejected by the panel ${research.name}`,
+        ""
+      );
+    }
 
     res.status(200).json({ result });
   } catch (err) {

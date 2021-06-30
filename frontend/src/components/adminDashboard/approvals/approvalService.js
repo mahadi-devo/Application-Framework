@@ -56,3 +56,17 @@ export const updateResearchStatus = async (data) => {
     console.log(e);
   }
 };
+
+export const researchPay = async (data) => {
+  try {
+    const res = await axios.post(
+      `http://localhost:5000/api/v1/sripe/researchPay`,
+      data,
+      config
+    );
+
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+};

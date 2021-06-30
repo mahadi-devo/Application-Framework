@@ -1,4 +1,7 @@
 const Workshop = require("../models/workshop.model");
+const UserModel = require("../models/user.model");
+const attendeeEmailConfirmation = require("../utills/attendeePaymentConfirmation");
+const crypto = require("crypto");
 
 const add = async (req, res) => {
   const {
@@ -56,7 +59,7 @@ const update = async (req, res) => {
     let workshop = Workshop.findById(req.params.id);
 
     if (!workshop) {
-      return res.status(401).json({ msg: 'Msg cannot be found' });
+      return res.status(401).json({ msg: "Msg cannot be found" });
     }
 
     workshop = await Workshop.findByIdAndUpdate(
@@ -87,6 +90,33 @@ const updateWorkshopStatus = async (req, res) => {
       { status: type }
     );
 
+    const user = await UserModel.findById(req.user);
+
+    let { token } = user;
+
+    if (!token) {
+      token = await UserModel.updateOne(
+        { _id: req.user },
+        { token: crypto.randomBytes(32).toString("hex") }
+      );
+    }
+
+    if (type === "Approved") {
+      await attendeeEmailConfirmation(
+        user.email,
+        `Workshop Approval Notification for the conference`,
+        "Congratulation your work shop is approved",
+        ""
+      );
+    } else if (type === "Rejected") {
+      await attendeeEmailConfirmation(
+        user.email,
+        `Workshop Rejection Notification for the conference`,
+        `Sorry Your workshop is rejected by the panel`,
+        ""
+      );
+    }
+
     res.status(200).json({ result });
   } catch (err) {
     console.error(err);
@@ -116,10 +146,10 @@ const del = async (req, res) => {
   try {
     let workshop = await Workshop.findById(req.params.id);
     console.log(req.params.id);
-    if (!workshop) return res.status(404).json({ msg: 'Cannot found' });
+    if (!workshop) return res.status(404).json({ msg: "Cannot found" });
 
     await Workshop.findByIdAndRemove(req.params.id);
-    res.json({ msg: 'Workshop removed' });
+    res.json({ msg: "Workshop removed" });
   } catch (error) {
     console.log(error);
   }

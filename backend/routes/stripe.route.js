@@ -1,7 +1,8 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { pay } = require('../controllers/stripe.controller');
+const { pay, researchPay } = require("../controllers/stripe.controller");
 
-router.post('/', pay);
+router.post("/", pay);
+router.post("/researchPay", researchPay);
 
 module.exports = router;

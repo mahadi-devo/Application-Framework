@@ -188,10 +188,6 @@ const researchResourceApproval = () => {
                     </div>
                     <hr />
                     <div>
-                      Phone: <b>{item.phone}</b>
-                    </div>
-                    <hr />
-                    <div>
                       Email: <b>{item.email}</b>
                     </div>
                     <hr />
