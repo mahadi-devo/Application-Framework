@@ -1,4 +1,4 @@
-const Workshop = require('../models/workshop.model');
+const Workshop = require("../models/workshop.model");
 
 const add = async (req, res) => {
   const { address, author, discription, email, end, phone, start, title } =
@@ -20,15 +20,13 @@ const add = async (req, res) => {
     res.json(workshop);
   } catch (err) {
     console.error(err);
-    res.status(500).json('Server error add');
+    res.status(500).json("Server error add");
   }
 };
 
 const update = async (req, res) => {
   const { address, author, discription, email, end, phone, start, title } =
     req.body;
-  console.log('Backend');
-  console.log(start);
   const workshopFields = {};
 
   if (address) workshopFields.address = address;
@@ -46,7 +44,7 @@ const update = async (req, res) => {
     let workshop = Workshop.findById(req.params.id);
 
     if (!workshop) {
-      return res.status(401).json({ msg: 'Msg cannot be found' });
+      return res.status(401).json({ msg: "Msg cannot be found" });
     }
 
     workshop = await Workshop.findByIdAndUpdate(
@@ -58,7 +56,29 @@ const update = async (req, res) => {
     res.json(workshop);
   } catch (err) {
     console.error(err);
-    res.status(500).json('Server error update');
+    res.status(500).json("Server error update");
+  }
+};
+
+const updateWorkshopStatus = async (req, res) => {
+  try {
+    const { workshopId, type } = req.body;
+
+    let workshop = await Workshop.findById(workshopId);
+
+    if (!workshop) {
+      return res.status(400).json({ msg: "workshop cannot be found" });
+    }
+
+    const result = await Workshop.updateOne(
+      { _id: workshop._id },
+      { status: type }
+    );
+
+    res.status(200).json({ result });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Server error update");
   }
 };
 
@@ -71,16 +91,32 @@ const get = async (req, res) => {
   }
 };
 
+const getAllWorkshops = async (req, res) => {
+  try {
+    const workshop = await Workshop.find().populate("conference");
+    res.json(workshop);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const del = async (req, res) => {
   try {
     let workshop = await Workshop.findById(req.params.id);
     console.log(req.params.id);
-    if (!workshop) return res.status(404).json({ msg: 'Cannot found' });
+    if (!workshop) return res.status(404).json({ msg: "Cannot found" });
 
     await Workshop.findByIdAndRemove(req.params.id);
-    res.json({ msg: 'Workshop removed' });
+    res.json({ msg: "Workshop removed" });
   } catch (error) {
     console.log(error);
   }
 };
-module.exports = { add, get, update, del };
+module.exports = {
+  add,
+  get,
+  update,
+  del,
+  getAllWorkshops,
+  updateWorkshopStatus,
+};

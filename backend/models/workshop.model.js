@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const WorkshopSchema = mongoose.Schema({
   //   user: {
@@ -34,6 +34,15 @@ const WorkshopSchema = mongoose.Schema({
   title: {
     type: String,
   },
+  status: {
+    type: String,
+    enum: ["Pending", "Approved", "Rejected"],
+    default: "Pending",
+  },
+  conference: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "conference",
+  },
 });
 
-module.exports = mongoose.model('workshop', WorkshopSchema);
+module.exports = mongoose.model("workshop", WorkshopSchema);

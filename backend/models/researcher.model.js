@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const ResearcherModel = mongoose.Schema({
   // user: {
@@ -28,6 +28,15 @@ const ResearcherModel = mongoose.Schema({
   file: {
     type: String,
   },
+  status: {
+    type: String,
+    enum: ["Pending", "Approved", "Rejected"],
+    default: "Pending",
+  },
+  conference: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "conference",
+  },
 });
 
-module.exports = mongoose.model('researcher', ResearcherModel);
+module.exports = mongoose.model("researcher", ResearcherModel);
